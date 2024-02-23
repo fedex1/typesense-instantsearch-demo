@@ -30,6 +30,12 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
+    const format = new Intl.NumberFormat("en-US", {
+        style: "currency",
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0,
+        currency: "USD",
+    });
 
 const search = instantsearch({
   searchClient,
@@ -50,17 +56,22 @@ search.addWidgets([
     container: '#hits',
     templates: {
       item(item) {
+      let text=item._highlightResult.data.PropAddr.value;
+      const LIMIT=20
+      if (text.length > LIMIT) {
+        text = text.substring(0, LIMIT) + '...';
+      }
         return `
         <div>
           <!-- <img src="${item.image_url}" alt="${item.name}" height="100" /> -->
           <div class="hit-name">
-            <a target="_blank" href="https://prop.tidalforce.org/usa/delinquent-property/${item._highlightResult.data.id.value}">${item._highlightResult.data.PropAddr.value}</a>
+            <a target="_blank" href="https://prop.tidalforce.org/usa/delinquent-property/${item._highlightResult.data.id.value}">${text}</a>
           </div>
           <div class="hit-authors">
           ${item._highlightResult.data.PropOwner.value}
           </div>
           <div class="hit-publication-year">${item.data.BillYear}</div>
-          <!-- <div class="hit-rating">${item.average_rating}/5 rating</div> -->
+          <div class="hit-rating">Owes ${format.format(item.data.PropOwes)}</div>
         </div>
       `;
       },
