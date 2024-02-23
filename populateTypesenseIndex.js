@@ -14,7 +14,8 @@ module.exports = (async () => {
         protocol: 'http',
       },
     ],
-    apiKey: 'xyz',
+    // apiKey: 'xyz',
+    apiKey: process.env.TYPESENSE_ADMIN_API_KEY,
   });
 
   const schema = {

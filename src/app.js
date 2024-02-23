@@ -2,14 +2,21 @@
 
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
+// const TYPESENSE_API_KEY = "NCF9nxUpkuuxRnRHwDOm2a1tmnzabjik";
+const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey: 'xyz', // Be sure to use an API key that only allows searches, in production
+    apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
     nodes: [
       {
+      /*
         host: 'localhost',
         port: '8108',
         protocol: 'http',
+        */
+                        host: "1ztriixxhgxh.share.zrok.io",
+                        port: "443",
+                        protocol: "https",
       },
     ],
   },
@@ -18,16 +25,20 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    queryBy: 'title,authors',
+    // queryBy: 'title,authors',
+    queryBy: 'data.PropAddr,data.PropOwner',
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 const search = instantsearch({
   searchClient,
-  indexName: 'books',
+  // indexName: 'books',
+  indexName: 'algolia-store',
 });
 
+            // ${item._highlightResult.title.value}
+          // ${item._highlightResult.authors.map((a) => a.value).join(', ')}
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
@@ -41,15 +52,15 @@ search.addWidgets([
       item(item) {
         return `
         <div>
-          <img src="${item.image_url}" alt="${item.name}" height="100" />
+          <!-- <img src="${item.image_url}" alt="${item.name}" height="100" /> -->
           <div class="hit-name">
-            ${item._highlightResult.title.value}
+            <a target="_blank" href="https://prop.tidalforce.org/usa/delinquent-property/${item._highlightResult.data.id.value}">${item._highlightResult.data.PropAddr.value}</a>
           </div>
           <div class="hit-authors">
-          ${item._highlightResult.authors.map((a) => a.value).join(', ')}
+          ${item._highlightResult.data.PropOwner.value}
           </div>
-          <div class="hit-publication-year">${item.publication_year}</div>
-          <div class="hit-rating">${item.average_rating}/5 rating</div>
+          <div class="hit-publication-year">${item.data.BillYear}</div>
+          <!-- <div class="hit-rating">${item.average_rating}/5 rating</div> -->
         </div>
       `;
       },
