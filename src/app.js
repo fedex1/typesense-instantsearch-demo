@@ -14,7 +14,8 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         port: '8108',
         protocol: 'http',
         */
-                        host: "1ztriixxhgxh.share.zrok.io",
+                        //host: "1ztriixxhgxh.share.zrok.io",
+                        host: "8iv15rppo02e.share.zrok.io",
                         port: "443",
                         protocol: "https",
       },
@@ -26,7 +27,8 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
     // queryBy: 'title,authors',
-    queryBy: 'data.PropAddr,data.PropOwner',
+    // queryBy: 'data.PropAddr,data.PropOwner',
+    queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
