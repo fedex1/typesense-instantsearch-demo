@@ -72,7 +72,7 @@ search.addWidgets([
             <a target="_blank" href="https://prop.tidalforce.org/usa/delinquent-property/${item._highlightResult.data.id.value}">${text}</a>
           </div>
           <div class="hit-authors">
-          ${item._highlightResult.data.PropOwner.value}
+          ${item._highlightResult.data.PropOwner?item._highlightResult.data.PropOwner.value:"no-owner"}
           </div>
           <div class="hit-publication-year">${item.data.BillYear}</div>
           <div class="hit-rating">Owes ${format.format(item.data.PropOwes)}</div>
