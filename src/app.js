@@ -14,8 +14,9 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         port: '8108',
         protocol: 'http',
         */
-                        //host: "1ztriixxhgxh.share.zrok.io",
-                        host: "8iv15rppo02e.share.zrok.io",
+                        // host: "1ztriixxhgxh.share.zrok.io",
+                        // host: "8iv15rppo02e.share.zrok.io",
+                        host: "tidalforce.share.zrok.io",
                         port: "443",
                         protocol: "https",
       },
@@ -58,6 +59,7 @@ search.addWidgets([
     container: '#hits',
     templates: {
       item(item) {
+      try {
       let text=item._highlightResult.data.PropAddr.value;
       const LIMIT=20
       if (text.length > LIMIT) {
@@ -76,7 +78,11 @@ search.addWidgets([
           <div class="hit-rating">Owes ${format.format(item.data.PropOwes)}</div>
         </div>
       `;
-      },
+      } catch(e) {
+        return `<div>ISSUE ${e} ${JSON.stringify(item.data)}</div>`;
+      }
+      }
+      ,
     },
   }),
   instantsearch.widgets.pagination({
