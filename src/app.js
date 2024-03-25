@@ -3,7 +3,11 @@
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
 // const TYPESENSE_API_KEY = "NCF9nxUpkuuxRnRHwDOm2a1tmnzabjik";
-const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
+
+// const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
+// all collection search only
+const TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
+
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
     apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
@@ -29,7 +33,8 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   additionalSearchParameters: {
     // queryBy: 'title,authors',
     // queryBy: 'data.PropAddr,data.PropOwner',
-    queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
+    // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
+    queryBy: "Doc Date",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -43,7 +48,8 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 const search = instantsearch({
   searchClient,
   // indexName: 'books',
-  indexName: 'algolia-store',
+  // indexName: 'algolia-store',
+  indexName: 'nyc-mortgage',
 });
 
             // ${item._highlightResult.title.value}
@@ -79,7 +85,7 @@ search.addWidgets([
         </div>
       `;
       } catch(e) {
-        return `<div>ISSUE ${e} ${JSON.stringify(item.data)}</div>`;
+        return `<div>ISSUE ${e} ${JSON.stringify(item)}</div>`;
       }
       }
       ,
@@ -87,6 +93,14 @@ search.addWidgets([
   }),
   instantsearch.widgets.pagination({
     container: '#pagination',
+  }),
+  instantsearch.widgets.sortBy({
+    container: '#sort-by',
+       items: [
+      { label: "Default", value: "products" },
+      { label: "Price (asc)", value: "products/sort/price:asc" },
+      { label: "Price (desc)", value: "products/sort/price:desc" },
+    ],
   }),
 ]);
 

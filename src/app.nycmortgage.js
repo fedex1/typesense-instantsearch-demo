@@ -94,6 +94,13 @@ search.addWidgets([
   instantsearch.widgets.pagination({
     container: '#pagination',
   }),
+  instantsearch.widgets.sortBy({
+    container: '#sort-by',
+       items: [
+      { label: "Date (asc)", value: "nycmortgage/sort/updated:asc" },
+      { label: "Date (desc)", value: "nycmortgage/sort/updated:desc" },
+    ],
+  }),
 ]);
 
 search.start();
