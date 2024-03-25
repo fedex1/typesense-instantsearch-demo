@@ -248,7 +248,7 @@ search.addWidgets([
           ${item._highlightResult.propertyid.value}
           </div>
           <div class="hit-publication-year">Recorded ${item['Recorded / Filed']}</div>
-          <div class="hit-rating">Mortgage ${format.format(item['Doc Amount'])}</div>
+          <div class="hit-rating">Mortgage ${format.format(item['Doc Amount'])} for ${item['Party1']}</div>
         </div>
       `;
       } catch(e) {
