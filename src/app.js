@@ -246,7 +246,7 @@ search.addWidgets([
           <div class="hit-authors">
           ${item._highlightResult.propertyid.value}
           </div>
-          <div class="hit-publication-year">${item['Doc Date']}</div>
+          <div class="hit-publication-year">${item['Recorded / Filed']}</div>
           <div class="hit-rating">Mortgage ${format.format(item['Doc Amount'])}</div>
         </div>
       `;
@@ -265,6 +265,8 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
+      { label: "Recorded (asc)", value: `${index}/sort/recorded:asc` },
+      { label: "Recorded (desc)", value: `${index}/sort/recorded:desc` },
       { label: "Date (asc)", value: `${index}/sort/updated:asc` },
       { label: "Date (desc)", value: `${index}/sort/updated:desc` },
     ],
