@@ -199,7 +199,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     // queryBy: 'title,authors',
     // queryBy: 'data.PropAddr,data.PropOwner',
     // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-    queryBy: "Doc Date",
+    queryBy: "Doc Date,Party1",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
