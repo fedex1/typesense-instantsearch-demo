@@ -246,7 +246,7 @@ search.addWidgets([
           <div class="hit-authors">
           ${item._highlightResult.propertyid.value}
           </div>
-          <div class="hit-publication-year">${item['Recorded / Filed']}</div>
+          <div class="hit-publication-year">Recorded ${item['Recorded / Filed']}</div>
           <div class="hit-rating">Mortgage ${format.format(item['Doc Amount'])}</div>
         </div>
       `;
