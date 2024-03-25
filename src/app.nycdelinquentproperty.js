@@ -61,7 +61,7 @@ search.addWidgets([
       item(item) {
       try {
       // let text=item._highlightResult.data.PropAddr.value;
-      let text=item.PropAddr;
+      let text=item.data.PropAddr;
       const LIMIT=20
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
