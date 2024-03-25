@@ -231,7 +231,7 @@ search.addWidgets([
     container: '#hits',
     templates: {
       item(item) {
-        console.log("item",item);
+        // console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
       let text=item['Doc Date'];
