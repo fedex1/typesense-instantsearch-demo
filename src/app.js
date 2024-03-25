@@ -44,12 +44,13 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
         minimumFractionDigits: 0,
         currency: "USD",
     });
+const index="nyc-mortgage";
 
 const search = instantsearch({
   searchClient,
   // indexName: 'books',
   // indexName: 'algolia-store',
-  indexName: 'nyc-mortgage',
+  indexName: index,
 });
 
             // ${item._highlightResult.title.value}
@@ -85,6 +86,8 @@ search.addWidgets([
         </div>
       `;
       } catch(e) {
+        //console.log(`TRACE: ${JSON.stringify(item)}`);
+        console.log("item",item);
         return `<div>ISSUE ${e} ${JSON.stringify(item)}</div>`;
       }
       }
@@ -97,9 +100,8 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Default", value: "products" },
-      { label: "Price (asc)", value: "products/sort/price:asc" },
-      { label: "Price (desc)", value: "products/sort/price:desc" },
+      { label: "Date (asc)", value: `${index}/sort/updated:asc` },
+      { label: "Date (desc)", value: `${index}/sort/updated:desc` },
     ],
   }),
 ]);
