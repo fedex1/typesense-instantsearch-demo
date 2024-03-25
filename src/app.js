@@ -231,6 +231,7 @@ search.addWidgets([
     container: '#hits',
     templates: {
       item(item) {
+        console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
       let text=item['Doc Date'];
@@ -248,7 +249,7 @@ search.addWidgets([
           ${item._highlightResult.propertyid.value}
           </div>
           <div class="hit-publication-year">Recorded ${item['Recorded / Filed']}</div>
-          <div class="hit-rating">Mortgage ${format.format(item['Doc Amount'])}</div>
+          <div class="hit-rating">Mortgage ${format.format(item['Doc Amount'])} for ${item['Party1']}</div>
         </div>
       `;
       } catch(e) {
@@ -270,6 +271,8 @@ search.addWidgets([
       { label: "Recorded (desc)", value: `${index}/sort/recorded:desc` },
       { label: "Date (asc)", value: `${index}/sort/updated:asc` },
       { label: "Date (desc)", value: `${index}/sort/updated:desc` },
+      { label: "Amount (asc)", value: `${index}/sort/amount:asc` },
+      { label: "Amount (desc)", value: `${index}/sort/amount:desc` },
     ],
   }),
 ]);
