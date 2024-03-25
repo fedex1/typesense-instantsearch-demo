@@ -1,4 +1,169 @@
 /* global instantsearch */
+/*
+{
+    "Block": "1158",
+    "Borough": "MANHATTAN",
+    "CRFN": "2024000072710",
+    "Doc Amount": "216000000",
+    "Doc Date": "2024-03-21",
+    "Lot": "1701",
+    "Pages": 31,
+    "Partial": "ENTIRE LOT",
+    "Party1": "200 WEST 67TH ST OWNER, L.L.C.",
+    "Party2": "MF1 CAPITAL LLC",
+    "Recorded / Filed": "3/22/2024 12:47:42 PM",
+    "id": "1011581701-2024000072710",
+    "propertyid": 1011581701,
+    "updated": 1710993600000,
+    "objectID": "1011581701-2024000072710",
+    "_snippetResult": {
+        "Block": {
+            "value": "1158",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Borough": {
+            "value": "MANHATTAN",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "CRFN": {
+            "value": "2024000072710",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Doc Amount": {
+            "value": "216000000",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Doc Date": {
+            "value": "2024-03-21",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Lot": {
+            "value": "1701",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Pages": {
+            "value": "31",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Partial": {
+            "value": "ENTIRE LOT",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Party1": {
+            "value": "200 WEST 67TH ST OWNER, L.L.C.",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Party2": {
+            "value": "MF1 CAPITAL LLC",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Recorded / Filed": {
+            "value": "3/22/2024 12:47:42 PM",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "id": {
+            "value": "1011581701-2024000072710",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "propertyid": {
+            "value": "1011581701",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "updated": {
+            "value": "1710993600000",
+            "matchLevel": "none",
+            "matchedWords": []
+        }
+    },
+    "_highlightResult": {
+        "Block": {
+            "value": "1158",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Borough": {
+            "value": "MANHATTAN",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "CRFN": {
+            "value": "2024000072710",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Doc Amount": {
+            "value": "216000000",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Doc Date": {
+            "value": "2024-03-21",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Lot": {
+            "value": "1701",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Pages": {
+            "value": "31",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Partial": {
+            "value": "ENTIRE LOT",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Party1": {
+            "value": "200 WEST 67TH ST OWNER, L.L.C.",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Party2": {
+            "value": "MF1 CAPITAL LLC",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "Recorded / Filed": {
+            "value": "3/22/2024 12:47:42 PM",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "id": {
+            "value": "1011581701-2024000072710",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "propertyid": {
+            "value": "1011581701",
+            "matchLevel": "none",
+            "matchedWords": []
+        },
+        "updated": {
+            "value": "1710993600000",
+            "matchLevel": "none",
+            "matchedWords": []
+        }
+    },
+    "__position": 7,
+    "__hitIndex": 6
+}
+*/
 
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
@@ -67,7 +232,7 @@ search.addWidgets([
     templates: {
       item(item) {
       try {
-      let text=item._highlightResult.data.PropAddr.value;
+      let text=item._highlightResult['Doc Date'].value;
       const LIMIT=20
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
@@ -76,13 +241,13 @@ search.addWidgets([
         <div>
           <!-- <img src="${item.image_url}" alt="${item.name}" height="100" /> -->
           <div class="hit-name">
-            <a target="_blank" href="https://prop.tidalforce.org/usa/delinquent-property/${item._highlightResult.data.id.value}">${text}</a>
+            <a target="_blank" href="https://prop.tidalforce.org/search2/${item._highlightResult.propertyid.value}">${text}</a>
           </div>
           <div class="hit-authors">
-          ${item._highlightResult.data.PropOwner?item._highlightResult.data.PropOwner.value:"no-owner"}
+          ${item._highlightResult.propertyid.value}
           </div>
-          <div class="hit-publication-year">${item.data.BillYear}</div>
-          <div class="hit-rating">Owes ${format.format(item.data.PropOwes)}</div>
+          <div class="hit-publication-year">${item['Doc Date']}</div>
+          <div class="hit-rating">Mortgage ${format.format(item['Doc Amount'])}</div>
         </div>
       `;
       } catch(e) {
