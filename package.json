@@ -7,6 +7,7 @@
     "start": "parcel index.html --port 3000",
     "build": "parcel build index.html",
     "buildnycmortgage": "parcel build nycmortgage.html",
+    "buildevents": "parcel build events.html",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "typesenseServer": "docker run -i -p 8108:8108 -v`pwd`/typesense-server-data-1c/:/data typesense/typesense:0.24.0 --data-dir /data --api-key=xyz --listen-port 8108 --enable-cors",
