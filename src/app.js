@@ -1,4 +1,5 @@
 /* global instantsearch */
+// {"first_name":"Crystal","last_name":"Devitt","addresses":{},"gender":"female","age":46,"birth_date":"1977-11-25","email":"monchiquita@gmail.com","name":"Crystal Devitt"}
 
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
@@ -69,7 +70,7 @@ search.addWidgets([
         // console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
-      let text=item['Doc Date'];
+      let text=item['name'];
       const LIMIT=20
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
@@ -81,10 +82,10 @@ search.addWidgets([
             <a target="_blank" href="https://prop.tidalforce.org/search2/${item.propertyid}">${text}</a>
           </div>
           <div class="hit-authors">
-          ${item._highlightResult.propertyid.value}
+          ${item._highlightResult.name.value}
           </div>
-          <div class="hit-publication-year">Recorded ${item['Recorded / Filed']}</div>
-          <div class="hit-rating">Mortgage ${format.format(item['Doc Amount'])} for ${item._highlightResult['Party1'].value}</div>
+          <div class="hit-publication-year">Recorded ${item['name']}</div>
+          <div class="hit-rating">Mortgage ${format.format(item['name'])} for ${item._highlightResult['name'].value}</div>
         </div>
       `;
       } catch(e) {
