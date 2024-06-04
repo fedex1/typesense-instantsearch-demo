@@ -84,8 +84,8 @@ search.addWidgets([
           <div class="hit-authors">
           ${item._highlightResult.name.value}
           </div>
-          <div class="hit-publication-year">Recorded ${item['name']}</div>
-          <div class="hit-rating">Mortgage ${format.format(item['name'])} for ${item._highlightResult['name'].value}</div>
+          <div class="hit-publication-year">Age ${item['age']}</div>
+          <div class="hit-rating">Gender {item['gender']} for ${item._highlightResult['name'].value}</div>
         </div>
       `;
       } catch(e) {
