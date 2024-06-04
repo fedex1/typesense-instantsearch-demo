@@ -1,4 +1,54 @@
 /* global instantsearch */
+/* [
+  {
+    "FILER_ID": true,
+    "FILER_PREVIOUS_ID": "A82861",
+    "CAND_COMM_NAME": "Anna Lewis For State Senate",
+    "ELECTION_YEAR": 2010,
+    "ELECTION_TYPE": "State/Local",
+    "COUNTY_DESC": null,
+    "FILING_ABBREV": "A",
+    "FILING_DESC": "32-Day Pre-Primary",
+    "R_AMEND": false,
+    "FILING_CAT_DESC": "Itemized",
+    "FILING_SCHED_ABBREV": "A",
+    "FILING_SCHED_DESC": "Monetary Contributions Received From Ind. & Part.",
+    "LOAN_LIB_NUMBER": null,
+    "TRANS_NUMBER": 8476853,
+    "TRANS_MAPPING": null,
+    "SCHED_DATE": "2010-08-11T00:00:00",
+    "ORG_DATE": null,
+    "CNTRBR_TYPE_DESC": "Individual",
+    "CNTRBN_TYPE_DESC": null,
+    "TRANSFER_TYPE_DESC": null,
+    "RECEIPT_TYPE_DESC": null,
+    "RECEIPT_CODE_DESC": null,
+    "PURPOSE_CODE_DESC": null,
+    "R_SUBCONTRACTOR": null,
+    "FLNG_ENT_NAME": null,
+    "FLNG_ENT_FIRST_NAME": "Lawrence",
+    "FLNG_ENT_MIDDLE_NAME": null,
+    "FLNG_ENT_LAST_NAME": "Yannuzzi Md",
+    "FLNG_ENT_ADD1": "460 Park Avenue 5th Floor",
+    "FLNG_ENT_CITY": "New York",
+    "FLNG_ENT_STATE": "NY",
+    "FLNG_ENT_ZIP": 10022,
+    "FLNG_ENT_COUNTRY": "United States",
+    "PAYMENT_TYPE_DESC": "Check",
+    "PAY_NUMBER": 2930,
+    "OWED_AMT": null,
+    "ORG_AMT": 500,
+    "LOAN_OTHER_DESC": null,
+    "TRANS_EXPLNTN": null,
+    "R_ITEMIZED": true,
+    "R_LIABILITY": null,
+    "ELECTION_YEAR_R": null,
+    "OFFICE_DESC": null,
+    "DISTRICT": null,
+    "DIST_OFF_CAND_BAL_PROP": null
+  }
+]
+*/
 // {"first_name":"Crystal","last_name":"Devitt","addresses":{},"gender":"female","age":46,"birth_date":"1977-11-25","email":"monchiquita@gmail.com","name":"Crystal Devitt"}
 
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
@@ -32,10 +82,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    // queryBy: 'title,authors',
-    // queryBy: 'data.PropAddr,data.PropOwner',
-    // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-    query_by: "profile.name",
+    query_by: "CAND_COMM_NAME",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -45,7 +92,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
         minimumFractionDigits: 0,
         currency: "USD",
     });
-const index="events";
+const index="nys-election-details";
 
 const search = instantsearch({
   searchClient,
@@ -70,21 +117,21 @@ search.addWidgets([
         // console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
-      let text=item.profile.name;
+      let text=item.CAND_COMM_NAME;
       const LIMIT=20
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
         return `
         <div>
-          <!-- <img src="${item.image_url}" alt="${item.profile.name}" height="100" /> -->
           <div class="hit-name">
             <a target="_blank" href="https://prop.tidalforce.org/search2/${text}">${text}</a>
           </div>
           <div class="hit-authors">
+          ${JSON.stringify(item,"",3)}
           </div>
-          <div class="hit-publication-year">Updated ${item.changed}</div>
-          <div class="hit-rating">Age ${item.profile.age} for ${item._highlightResult.profile.name.value}</div>
+          <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
+          <div class="hit-rating">Year ${item.ELECTION_YEAR} for ${item._highlightResult.FILING_SCHED_DESC.value}</div>
         </div>
       `;
       } catch(e) {
@@ -102,8 +149,8 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Date (asc)", value: `${index}/sort/changedint:asc` },
-      { label: "Date (desc)", value: `${index}/sort/changedint:desc` },
+      { label: "Date (asc)", value: `${index}/sort/SCHED_DATEint:asc` },
+      { label: "Date (desc)", value: `${index}/sort/SCHED_DATEint:desc` },
     ],
   }),
 ]);
