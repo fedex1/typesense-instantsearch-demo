@@ -79,7 +79,7 @@ search.addWidgets([
         <div>
           <!-- <img src="${item.image_url}" alt="${item.profile.name}" height="100" /> -->
           <div class="hit-name">
-            <a target="_blank" href="https://prop.tidalforce.org/search2/${item.propertyid}">${text}</a>
+            <a target="_blank" href="https://prop.tidalforce.org/search2/${text}">${text}</a>
           </div>
           <div class="hit-authors">
           </div>
@@ -102,8 +102,8 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Date (asc)", value: `${index}/sort/changed:asc` },
-      { label: "Date (desc)", value: `${index}/sort/changed:desc` },
+      { label: "Date (asc)", value: `${index}/sort/changedint:asc` },
+      { label: "Date (desc)", value: `${index}/sort/changedint:desc` },
     ],
   }),
 ]);
