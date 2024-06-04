@@ -84,7 +84,7 @@ search.addWidgets([
           <div class="hit-authors">
           </div>
           <div class="hit-publication-year">Updated ${item.changed}</div>
-          <div class="hit-rating">Age {item.profile.age} for ${item._highlightResult.profile.name.value}</div>
+          <div class="hit-rating">Age ${item.profile.age} for ${item._highlightResult.profile.name.value}</div>
         </div>
       `;
       } catch(e) {

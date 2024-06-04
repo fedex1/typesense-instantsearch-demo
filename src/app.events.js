@@ -35,7 +35,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     // queryBy: 'title,authors',
     // queryBy: 'data.PropAddr,data.PropOwner',
     // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-    query_by: "profile.name",
+    query_by: "profile.name,changed",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
