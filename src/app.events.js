@@ -35,7 +35,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     // queryBy: 'title,authors',
     // queryBy: 'data.PropAddr,data.PropOwner',
     // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-    queryBy: "name",
+    query_by: "profile.name",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -70,22 +70,21 @@ search.addWidgets([
         // console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
-      let text=item['name'];
+      let text=item.profile.name;
       const LIMIT=20
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
         return `
         <div>
-          <!-- <img src="${item.image_url}" alt="${item.name}" height="100" /> -->
+          <!-- <img src="${item.image_url}" alt="${item.profile.name}" height="100" /> -->
           <div class="hit-name">
             <a target="_blank" href="https://prop.tidalforce.org/search2/${item.propertyid}">${text}</a>
           </div>
           <div class="hit-authors">
-          ${item._highlightResult.name.value}
           </div>
-          <div class="hit-publication-year">Age ${item['age']}</div>
-          <div class="hit-rating">Gender {item['gender']} for ${item._highlightResult['name'].value}</div>
+          <div class="hit-publication-year">Updated ${item.changed}</div>
+          <div class="hit-rating">Age ${item.profile.age} for ${item._highlightResult.profile.name.value}</div>
         </div>
       `;
       } catch(e) {
@@ -103,12 +102,8 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Recorded (asc)", value: `${index}/sort/recorded:asc` },
-      { label: "Recorded (desc)", value: `${index}/sort/recorded:desc` },
-      { label: "Date (asc)", value: `${index}/sort/updated:asc` },
-      { label: "Date (desc)", value: `${index}/sort/updated:desc` },
-      { label: "Amount (asc)", value: `${index}/sort/amount:asc` },
-      { label: "Amount (desc)", value: `${index}/sort/amount:desc` },
+      { label: "Date (asc)", value: `${index}/sort/changed:asc` },
+      { label: "Date (desc)", value: `${index}/sort/changed:desc` },
     ],
   }),
 ]);
