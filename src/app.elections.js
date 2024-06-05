@@ -96,8 +96,6 @@ const index="nys-election-details";
 
 const search = instantsearch({
   searchClient,
-  // indexName: 'books',
-  // indexName: 'algolia-store',
   indexName: index,
 });
 
@@ -117,8 +115,9 @@ search.addWidgets([
         // console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
-      let text=item.CAND_COMM_NAME;
-      const LIMIT=20
+      const textfull=item.CAND_COMM_NAME;
+      let text=textfull;
+      const LIMIT=30
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
@@ -126,7 +125,7 @@ search.addWidgets([
         return `
         <div>
           <div class="hit-name">
-            <a target="_blank" href="https://prop.tidalforce.org/search2/${text}">${text}</a>
+            <a target="_blank" href="https://prop.tidalforce.org/electionsearch/${textfull}">${text}</a>
           </div>
           <div class="hit-authors">
           ${format.format(item.ORG_AMT)} zip ${item.FLNG_ENT_ZIP}
@@ -135,6 +134,10 @@ search.addWidgets([
           <div class="hit-rating">Year ${item.ELECTION_YEAR} for ${item._highlightResult.FILING_SCHED_DESC.value}</div>
           <div class="hit-rating">${item.FLNG_ENT_FIRST_NAME} ${item.FLNG_ENT_MIDDLE_NAME} ${item.FLNG_ENT_LAST_NAME} ${item.FLNG_ENT_ADD1}
           </div>
+          <div><pre>
+           ${JSON.stringify(item,"",3)}
+          </pre></div>
+
         </div>
       `;
       } catch(e) {
