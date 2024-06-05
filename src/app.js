@@ -154,6 +154,8 @@ search.addWidgets([
        items: [
       { label: "Date (asc)", value: `${index}/sort/SCHED_DATEint:asc` },
       { label: "Date (desc)", value: `${index}/sort/SCHED_DATEint:desc` },
+      { label: "Amount (asc)", value: `${index}/sort/ORG_AMT:asc` },
+      { label: "Amount (desc)", value: `${index}/sort/ORG_AMT:desc` },
     ],
   }),
 ]);
