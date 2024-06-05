@@ -122,13 +122,14 @@ search.addWidgets([
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
+          // ${JSON.stringify(item,"",3)}
         return `
         <div>
           <div class="hit-name">
             <a target="_blank" href="https://prop.tidalforce.org/search2/${text}">${text}</a>
           </div>
           <div class="hit-authors">
-          ${JSON.stringify(item,"",3)}
+          ${format.format(item.ORG_AMT)} zip ${item.FLNG_ENT_ZIP}
           </div>
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
           <div class="hit-rating">Year ${item.ELECTION_YEAR} for ${item._highlightResult.FILING_SCHED_DESC.value}</div>
