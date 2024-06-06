@@ -82,7 +82,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC",
+    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -134,9 +134,11 @@ search.addWidgets([
           <div class="hit-rating">Year ${item.ELECTION_YEAR} for ${item._highlightResult.FILING_SCHED_DESC.value}</div>
           <div class="hit-rating">${item.FLNG_ENT_FIRST_NAME} ${item.FLNG_ENT_MIDDLE_NAME} ${item.FLNG_ENT_LAST_NAME} ${item.FLNG_ENT_ADD1}
           </div>
+          <!--
           <div><pre>
            ${JSON.stringify(item,"",3)}
           </pre></div>
+          -->
 
         </div>
       `;
