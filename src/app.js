@@ -132,7 +132,7 @@ search.addWidgets([
           </div>
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
           <div class="hit-rating">Year ${item.ELECTION_YEAR} for ${item._highlightResult.FILING_SCHED_DESC.value}</div>
-          <div class="hit-rating">${item.FLNG_ENT_FIRST_NAME} ${item.FLNG_ENT_MIDDLE_NAME} ${item.FLNG_ENT_LAST_NAME} ${item.FLNG_ENT_ADD1}
+          <div class="hit-rating">${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value}
           </div>
           <!--
           <div><pre>

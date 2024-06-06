@@ -125,7 +125,8 @@ search.addWidgets([
         return `
         <div>
           <div class="hit-name">
-            <a target="_blank" href="https://prop.tidalforce.org/electionsearch/${textfull}">${text}</a>
+            <!-- <a target="_blank" href="https://app.tidalforce.org/electionsearch/${textfull}">${text}</a> -->
+            ${text}
           </div>
           <div class="hit-authors">
           ${format.format(item.ORG_AMT)} zip ${item.FLNG_ENT_ZIP}
