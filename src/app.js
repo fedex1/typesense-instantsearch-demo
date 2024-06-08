@@ -82,7 +82,9 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP",
+    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP,ELECTION_YEAR",
+    // facet_by: "ORG_AMTint",
+
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -97,6 +99,8 @@ const index="nys-election-details";
 const search = instantsearch({
   searchClient,
   indexName: index,
+  facets: ['*'],
+  routing: true,
 });
 
             // ${item._highlightResult.title.value}
@@ -106,8 +110,24 @@ search.addWidgets([
     container: '#searchbox',
   }),
   instantsearch.widgets.configure({
-    hitsPerPage: 8,
+    hitsPerPage: 10,
+        // facetFilters: ["ORG_AMTint:0"],
   }),
+
+    instantsearch.widgets.stats({
+      container: '#stats',
+    }),
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list',
+    attribute: "ORG_AMTint",
+    searchable: true,
+    searchablePlaceholder: "Search for Amounts",
+     templates: {
+     header: '<h3 class="widgettitle">Skill Level</h3>',
+	// item: '<input type="checkbox" class="ais-refinement-list--checkbox" value="&nbsp; {{label}}" {{#isRefined}}checked="true"{{/isRefined}}> {{label}} <span class="ais-refinement-list--count">({{count}})</span>',
+						},
+    }),
+
   instantsearch.widgets.hits({
     container: '#hits',
     templates: {
@@ -125,13 +145,14 @@ search.addWidgets([
         return `
         <div>
           <div class="hit-name">
-            <a target="_blank" href="https://prop.tidalforce.org/electionsearch/${textfull}">${text}</a>
+            <!-- <a target="_blank" href="https://app.tidalforce.org/electionsearch/${textfull}">${text}</a> -->
+            ${text}
           </div>
           <div class="hit-authors">
           ${format.format(item.ORG_AMT)} zip ${item.FLNG_ENT_ZIP}
           </div>
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
-          <div class="hit-rating">Year ${item.ELECTION_YEAR} for ${item._highlightResult.FILING_SCHED_DESC.value}</div>
+          <div class="hit-rating">Year ${item._highlightResult.ELECTION_YEAR.value} for ${item._highlightResult.FILING_SCHED_DESC.value}</div>
           <div class="hit-rating">${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value}
           </div>
           <!--

@@ -5,6 +5,7 @@
   "scripts": {
     "clean": "rm dist/*",
     "start": "parcel index.html --port 3000",
+    "startelections": "parcel elections.html --port 3000",
     "build": "parcel build index.html",
     "buildnycmortgage": "parcel build nycmortgage.html",
     "buildevents": "parcel build events.html",
