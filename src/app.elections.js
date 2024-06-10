@@ -196,7 +196,7 @@ search.addWidgets([
       // let text=item._highlightResult['Doc Date'].value;
       const textfull=item.CAND_COMM_NAME;
       let text=textfull;
-      const LIMIT=30
+      const LIMIT=50
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
