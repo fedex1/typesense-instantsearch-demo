@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4BBHW6DZKP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4BBHW6DZKP');
+</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="theme-color" content="#000000">
@@ -29,17 +38,22 @@
   <div class="container">
     <div class="search-panel">
       <div class="search-panel__results">
+        <b>Search All</b>
         <div id="searchbox"></div>
+
         <b>Sort</b>
         <div id="sort-by"></div>
         <div id="stats"></div>
         <b>Amount (USD)<b>
-        <div id="refinement-list"></div>
         <div id="hits"></div>
+        <div id="pagination"></div>
+        <div id="refinement-list"></div>
       </div>
     </div>
 
-    <div id="pagination"></div>
+
+        <b>Search Name</b>
+        <div id="autocomplete"></div>
   </div>
   <div>
 <footer>

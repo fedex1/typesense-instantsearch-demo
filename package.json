@@ -27,6 +27,7 @@
     "typesense": "^1.5.0-0"
   },
   "dependencies": {
+    "instantsearch.js": "^4.71.0",
     "typesense-instantsearch-adapter": "^2.5.0"
   }
 }

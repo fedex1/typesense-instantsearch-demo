@@ -50,7 +50,25 @@
 ]
 */
 // {"first_name":"Crystal","last_name":"Devitt","addresses":{},"gender":"female","age":46,"birth_date":"1977-11-25","email":"monchiquita@gmail.com","name":"Crystal Devitt"}
+import debounce from 'lodash.debounce';
 
+function googleAnalyticsMiddleware() {
+  const sendEventDebounced = debounce(() => {
+    gtag('event', 'page_view', {
+      page_location: window.location.pathname + window.location.search,
+    });
+  }, 3000);
+
+  return {
+    onStateChange() {
+      sendEventDebounced();
+    },
+    subscribe() {},
+    unsubscribe() {},
+  };
+}
+
+import { connectAutocomplete } from "instantsearch.js/es/connectors";
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
 // const TYPESENSE_API_KEY = "NCF9nxUpkuuxRnRHwDOm2a1tmnzabjik";
@@ -82,12 +100,36 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP,ELECTION_YEAR",
+    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP,ELECTION_YEAR,TRANS_EXPLNTN,TRANS_NUMBER",
     // facet_by: "ORG_AMTint",
 
   },
 });
+
+const typesenseInstantsearchAdapterautocomplete = new TypesenseInstantSearchAdapter({
+  server: {
+    apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
+    nodes: [
+      {
+                        host: "tidalforce.share.zrok.io",
+                        port: "443",
+                        protocol: "https",
+      },
+    ],
+  },
+  // The following parameters are directly passed to Typesense's search API endpoint.
+  //  So you can pass any parameters supported by the search endpoint below.
+  //  queryBy is required.
+  //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
+  additionalSearchParameters: {
+    query_by: "CAND_COMM_NAME",
+    // facet_by: "ORG_AMTint",
+  },
+});
+
 const searchClient = typesenseInstantsearchAdapter.searchClient;
+const searchClientautocomplete = typesenseInstantsearchAdapterautocomplete.searchClient;
+
     const format = new Intl.NumberFormat("en-US", {
         style: "currency",
         maximumFractionDigits: 0,
@@ -102,12 +144,22 @@ const search = instantsearch({
   facets: ['*'],
   routing: true,
 });
+const suggestions = instantsearch({
+  indexName: index,
+  searchClient: searchClientautocomplete,
+});
 
             // ${item._highlightResult.title.value}
           // ${item._highlightResult.authors.map((a) => a.value).join(', ')}
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
+    placeholder: 'Type in a search term... ',
+     autofocus: true,
+    cssClasses: {
+      input: 'form-control',
+      loadingIcon: 'stroke-primary',
+    },
   }),
   instantsearch.widgets.configure({
     hitsPerPage: 10,
@@ -121,11 +173,16 @@ search.addWidgets([
     container: '#refinement-list',
     attribute: "ORG_AMTint",
     searchable: true,
+    limit: 3,
     searchablePlaceholder: "Search for Amounts",
-     templates: {
-     header: '<h3 class="widgettitle">Skill Level</h3>',
+//    templates: {
+//      item(item) {
+//         console.log("item1",item);
+//         }},
+     //templates: {
+     //header: '<h3 class="widgettitle">Skill Level</h3>',
 	// item: '<input type="checkbox" class="ais-refinement-list--checkbox" value="&nbsp; {{label}}" {{#isRefined}}checked="true"{{/isRefined}}> {{label}} <span class="ais-refinement-list--count">({{count}})</span>',
-						},
+						//},
     }),
 
   instantsearch.widgets.hits({
@@ -149,10 +206,11 @@ search.addWidgets([
             ${text}
           </div>
           <div class="hit-authors">
-          ${format.format(item.ORG_AMT)} zip ${item.FLNG_ENT_ZIP}
+          ${format.format(item.ORG_AMT)}&nbsp;<b>zip</b>&nbsp;${item._highlightResult.FLNG_ENT_ZIP.value}&nbsp;
+          <b>explanation</b>&nbsp;${item._highlightResult.TRANS_EXPLNTN.value}
           </div>
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
-          <div class="hit-rating">Year ${item._highlightResult.ELECTION_YEAR.value} for ${item._highlightResult.FILING_SCHED_DESC.value}</div>
+          <div class="hit-rating">Year ${item._highlightResult.ELECTION_YEAR.value} for ${item._highlightResult.FILING_SCHED_DESC.value} <i>Id ${item._highlightResult.TRANS_NUMBER.value}</i></div>
           <div class="hit-rating">${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value}
           </div>
           <!--
@@ -186,4 +244,64 @@ search.addWidgets([
   }),
 ]);
 
+
+search.use(googleAnalyticsMiddleware);
+
 search.start();
+
+// ======== Autocomplete
+
+// Helper for the render function
+const renderIndexListItem = ({ hits }) => { /* console.log(hits); */
+hits = hits.filter((value, index, self) =>
+  index === self.findIndex((t) => (
+    t.CAND_COMM_NAME === value.CAND_COMM_NAME
+  ))
+)
+return `
+  <ol class="autocomplete-list">
+    ${hits
+      .map(
+        (hit) =>
+          `<li class="autocomplete-list-item">${instantsearch.highlight({
+            attribute: "CAND_COMM_NAME",
+            //attribute: "*",
+            hit,
+          })}<!--<br>${JSON.stringify(hit)}--></li>`
+      )
+      .join("")}
+  </ol>
+`};
+
+// Create the render function
+const renderAutocomplete = (renderOptions, isFirstRender) => {
+  const { indices, currentRefinement, refine, widgetParams } = renderOptions;
+
+  if (isFirstRender) {
+    const input = document.createElement("input");
+    const ul = document.createElement("ul");
+
+    input.addEventListener("input", (event) => {
+      refine(event.currentTarget.value);
+    });
+
+    widgetParams.container.appendChild(input);
+    widgetParams.container.appendChild(ul);
+  }
+
+  widgetParams.container.querySelector("input").value = currentRefinement;
+
+  widgetParams.container.querySelector("ul").innerHTML = indices.map(renderIndexListItem).join("");
+};
+
+// Create the custom widget
+const customAutocomplete = connectAutocomplete(renderAutocomplete);
+
+// Instantiate the custom widget
+suggestions.addWidgets([
+  customAutocomplete({
+    container: document.querySelector("#autocomplete"),
+  }),
+]);
+
+suggestions.start();
