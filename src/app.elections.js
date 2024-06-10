@@ -54,7 +54,9 @@ import debounce from 'lodash.debounce';
 
 function googleAnalyticsMiddleware() {
   const sendEventDebounced = debounce(() => {
-    gtag('event', 'page_view', {
+    // crazy but true leave as a for production
+    // gtag('event', 'page_view', {
+    a('event', 'page_view', {
       page_location: window.location.pathname + window.location.search,
     });
   }, 3000);
