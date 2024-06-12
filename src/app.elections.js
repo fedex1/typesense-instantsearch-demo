@@ -171,6 +171,7 @@ search.addWidgets([
     instantsearch.widgets.stats({
       container: '#stats',
     }),
+
     instantsearch.widgets.refinementList({
     container: '#refinement-list',
     attribute: "ORG_AMTint",
@@ -188,10 +189,24 @@ search.addWidgets([
     }),
 
   instantsearch.widgets.hits({
+    transformItems(items, { results }) {
+    // console.log(`DEBUG: ${JSON.stringify(results)}`);
+    // console.log(`DEBUG: ${JSON.stringify(results)}`);
+    // console.log(`DEBUG: ${JSON.stringify(results.facet_counts)}`);
+    // console.log(`DEBUG: ${typeof(results)}`);
+    // .results[]|.facet_counts[]|.stats|.sum'
+
+    // console.log('debug transform',results);
+    return items.map((item, index) => ({
+      ...item,
+      position: { index, page: results.page },
+      stats: results.facets_stats,
+    }));
+  },
     container: '#hits',
     templates: {
       item(item) {
-        // console.log("item",item);
+         console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
       const textfull=item.CAND_COMM_NAME;
@@ -214,6 +229,7 @@ search.addWidgets([
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
           <div class="hit-rating">Year ${item._highlightResult.ELECTION_YEAR.value} for ${item._highlightResult.FILING_SCHED_DESC.value} <i>Id ${item._highlightResult.TRANS_NUMBER.value}</i></div>
           <div class="hit-rating">${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value}
+          <div class="stats">Sum for query ${format.format(item.stats.ORG_AMTint.sum)}</div>
           </div>
           <!--
           <div><pre>
