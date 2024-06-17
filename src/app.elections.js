@@ -124,7 +124,7 @@ const typesenseInstantsearchAdapterautocomplete = new TypesenseInstantSearchAdap
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    query_by: "CAND_COMM_NAME",
+    query_by: "_autocomplete",
     // facet_by: "ORG_AMTint",
   },
 });
@@ -139,6 +139,7 @@ const searchClientautocomplete = typesenseInstantsearchAdapterautocomplete.searc
         currency: "USD",
     });
 const index="nys-election-details";
+const index_autocomplete="nys-election-details-autocomplete";
 
 const search = instantsearch({
   searchClient,
@@ -147,7 +148,7 @@ const search = instantsearch({
   routing: true,
 });
 const suggestions = instantsearch({
-  indexName: index,
+  indexName: index_autocomplete,
   searchClient: searchClientautocomplete,
 });
 
@@ -274,7 +275,7 @@ search.start();
 const renderIndexListItem = ({ hits }) => { /* console.log(hits); */
 hits = hits.filter((value, index, self) =>
   index === self.findIndex((t) => (
-    t.CAND_COMM_NAME === value.CAND_COMM_NAME
+    t._autocomplete === value._autocomplete
   ))
 )
 return `
@@ -283,7 +284,7 @@ return `
       .map(
         (hit) =>
           `<li class="autocomplete-list-item">${instantsearch.highlight({
-            attribute: "CAND_COMM_NAME",
+            attribute: "_autocomplete",
             //attribute: "*",
             hit,
           })}<!--<br>${JSON.stringify(hit)}--></li>`
@@ -321,6 +322,27 @@ suggestions.addWidgets([
   customAutocomplete({
     container: document.querySelector("#autocomplete"),
   }),
+  instantsearch.widgets.hits({
+    container: "#autocomplete",
+    templates: {
+      item(item) {
+      try {
+         console.log("autocomplete-item",item);
+         const text=item._autocomplete;
+        const link1 = (encodeURI(`nys-election-details[query]=${text}`));
+        return `
+        <div>
+          <div class="hit-name">
+            ${text} <a href="/elections?${link1}">link</a>
+          </div>
+          </div>`;
+      } catch(e) {
+        //console.log(`TRACE: ${JSON.stringify(item)}`);
+        console.log("item",item);
+        return `<div>ISSUE2 ${e} ${JSON.stringify(item)}</div>`;
+      }
+        }},
+        }),
 ]);
 
 suggestions.start();
