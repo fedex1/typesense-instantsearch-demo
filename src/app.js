@@ -278,6 +278,11 @@ hits = hits.filter((value, index, self) =>
     t._autocomplete === value._autocomplete
   ))
 )
+// console.log('hits',hits);
+
+        // const text=item._autocomplete;
+        // const link1 = (encodeURI(`nys-election-details[query]=${text}`));
+        //     ${text} <a href="/elections?${link1}">link</a>
 return `
   <ol class="autocomplete-list">
     ${hits
@@ -287,7 +292,7 @@ return `
             attribute: "_autocomplete",
             //attribute: "*",
             hit,
-          })}<!--<br>${JSON.stringify(hit)}--></li>`
+          })} <a href="/elections?${encodeURI('nys-election-details[query]='+hit._autocomplete)}'">link</a><!--<br>${JSON.stringify(hit)}--></li>`
       )
       .join("")}
   </ol>
@@ -322,12 +327,22 @@ suggestions.addWidgets([
   customAutocomplete({
     container: document.querySelector("#autocomplete"),
   }),
+  /*
+  instantsearch.widgets.searchBox({
+    container: '#autocomplete',
+    placeholder: 'Type in a search term... ',
+     autofocus: true,
+    cssClasses: {
+      input: 'form-control',
+      loadingIcon: 'stroke-primary',
+    },
+  }),
   instantsearch.widgets.hits({
     container: "#autocomplete",
     templates: {
       item(item) {
       try {
-         console.log("autocomplete-item",item);
+         // console.log("autocomplete-item",item);
          const text=item._autocomplete;
         const link1 = (encodeURI(`nys-election-details[query]=${text}`));
         return `
@@ -343,6 +358,7 @@ suggestions.addWidgets([
       }
         }},
         }),
+        */
 ]);
 
 suggestions.start();
