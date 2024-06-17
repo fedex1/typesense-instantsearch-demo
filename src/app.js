@@ -217,6 +217,11 @@ search.addWidgets([
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
+      let source="";
+      try {
+        source=item._highlightResult._source.value;
+      } catch(e){
+      }
           // ${JSON.stringify(item,"",3)}
         return `
         <div>
@@ -229,7 +234,7 @@ search.addWidgets([
           <b>explanation</b>&nbsp;${item._highlightResult.TRANS_EXPLNTN.value}
           </div>
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
-          <div class="hit-rating">Year ${item._highlightResult.ELECTION_YEAR.value} for ${item._highlightResult.FILING_SCHED_DESC.value} <i>Id ${item._highlightResult.TRANS_NUMBER.value}</i></div>
+          <div class="hit-rating">Year ${item._highlightResult.ELECTION_YEAR.value} for ${item._highlightResult.FILING_SCHED_DESC.value} <i>Id ${item._highlightResult.TRANS_NUMBER.value} Source ${source}</i></div>
           <div class="hit-rating">${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value}
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.ORG_AMTint.sum)} average ${format.format(item.stats.ORG_AMTint.avg)} max ${format.format(item.stats.ORG_AMTint.max)})</div>
           </div>
