@@ -292,7 +292,7 @@ return `
             attribute: "_autocomplete",
             //attribute: "*",
             hit,
-          })} <a href="/elections?${encodeURI('nys-election-details[query]='+hit._autocomplete)}'">link</a><!--<br>${JSON.stringify(hit)}--></li>`
+          })} <a href="/elections?${encodeURI('nys-election-details[query]='+hit._autocomplete)}">link</a><!--<br>${JSON.stringify(hit)}--></li>`
       )
       .join("")}
   </ol>
