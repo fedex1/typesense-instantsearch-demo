@@ -219,7 +219,8 @@ search.addWidgets([
       }
       let source="";
       try {
-        source=item._highlightResult._source.value;
+        // source=item._highlightResult._source.value;
+        source=item._source;
       } catch(e){
       }
           // ${JSON.stringify(item,"",3)}
