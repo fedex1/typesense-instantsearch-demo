@@ -177,7 +177,7 @@ search.addWidgets([
     container: '#refinement-list',
     attribute: "ORG_AMTint",
     searchable: true,
-    limit: 3,
+    limit: 10,
     searchablePlaceholder: "Search for Amounts",
 //    templates: {
 //      item(item) {
