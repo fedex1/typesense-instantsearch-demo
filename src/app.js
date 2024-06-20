@@ -198,6 +198,7 @@ search.addWidgets([
     // .results[]|.facet_counts[]|.stats|.sum'
 
     // console.log('debug transform',results);
+    document.title = `Election search: ${results.query.substring(0,30)} | Tidalforce`;
     return items.map((item, index) => ({
       ...item,
       position: { index, page: results.page },

@@ -102,7 +102,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP,ELECTION_YEAR,TRANS_EXPLNTN,TRANS_NUMBER",
+    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP,ELECTION_YEAR,TRANS_EXPLNTN,TRANS_NUMBER,SCHED_DATE",
     // facet_by: "ORG_AMTint",
 
   },
@@ -198,7 +198,7 @@ search.addWidgets([
     // .results[]|.facet_counts[]|.stats|.sum'
 
     // console.log('debug transform',results);
-    document.title = `Election search: ${results.query.substring(0,30)} | Tidalforce`'
+    document.title = `Election search: ${results.query.substring(0,30)} | Tidalforce`;
     return items.map((item, index) => ({
       ...item,
       position: { index, page: results.page },
