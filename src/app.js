@@ -177,7 +177,7 @@ search.addWidgets([
     container: '#refinement-list',
     attribute: "ORG_AMTint",
     searchable: true,
-    limit: 3,
+    limit: 10,
     searchablePlaceholder: "Search for Amounts",
 //    templates: {
 //      item(item) {
@@ -236,7 +236,7 @@ search.addWidgets([
           </div>
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
           <div class="hit-rating">Year ${item._highlightResult.ELECTION_YEAR.value} for ${item._highlightResult.FILING_SCHED_DESC.value} <i>Id ${item._highlightResult.TRANS_NUMBER.value} Source ${source}</i></div>
-          <div class="hit-rating">${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value}
+          <div class="hit-rating">${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value} ${item._highlightResult.FLNG_ENT_ZIP.value}
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.ORG_AMTint.sum)} average ${format.format(item.stats.ORG_AMTint.avg)} max ${format.format(item.stats.ORG_AMTint.max)})</div>
           </div>
           <!--
@@ -294,11 +294,11 @@ return `
     ${hits
       .map(
         (hit) =>
-          `<li class="autocomplete-list-item">${instantsearch.highlight({
+          `<li class="autocomplete-list-item"><a href="/elections?${encodeURI('nys-election-details[query]='+hit._autocomplete)}">${instantsearch.highlight({
             attribute: "_autocomplete",
             //attribute: "*",
             hit,
-          })} <a href="/elections?${encodeURI('nys-election-details[query]='+hit._autocomplete)}">link</a><!--<br>${JSON.stringify(hit)}--></li>`
+          })}</a><!--<br>${JSON.stringify(hit)}--></li>`
       )
       .join("")}
   </ol>
