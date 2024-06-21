@@ -83,7 +83,8 @@ search.addWidgets([
         <div>
           <!-- <img src="${item.image_url}" alt="${item.profile.name}" height="100" /> -->
           <div class="hit-name">
-            <a target="_blank" href="https://prop.tidalforce.org/search2/${text}">${text}</a>
+            <!--<a target="_blank" href="https://prop.tidalforce.org/search2/${text}">${text}</a> -->
+            ${text}
           </div>
           <div class="hit-authors">
           </div>
