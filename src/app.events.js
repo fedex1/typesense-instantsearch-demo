@@ -52,6 +52,7 @@ const search = instantsearch({
   // indexName: 'books',
   // indexName: 'algolia-store',
   indexName: index,
+  routing: true,
 });
 
             // ${item._highlightResult.title.value}
@@ -61,8 +62,11 @@ search.addWidgets([
     container: '#searchbox',
   }),
   instantsearch.widgets.configure({
-    hitsPerPage: 8,
+    hitsPerPage: 10,
   }),
+    instantsearch.widgets.stats({
+      container: '#stats',
+    }),
   instantsearch.widgets.hits({
     container: '#hits',
     templates: {
