@@ -103,8 +103,10 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
     query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP,ELECTION_YEAR,TRANS_EXPLNTN,TRANS_NUMBER,SCHED_DATE",
-    group_by: "FLNG_ENT_ZIP",
-    sort_by:  "_group_found:desc",
+
+    // group_by: "FLNG_ENT_ZIP",
+    // sort_by:  "_group_found:desc",
+
     // facet_by: "ORG_AMTint",
 
   },
@@ -176,6 +178,14 @@ search.addWidgets([
     }),
 
     instantsearch.widgets.refinementList({
+    container: '#refinement-list-zip',
+    attribute: "FLNG_ENT_ZIP",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Zipcodes",
+    }),
+
+    instantsearch.widgets.refinementList({
     container: '#refinement-list',
     attribute: "ORG_AMTint",
     searchable: true,
@@ -199,7 +209,8 @@ search.addWidgets([
     // console.log(`DEBUG: ${typeof(results)}`);
     // .results[]|.facet_counts[]|.stats|.sum'
 
-    // console.log('debug transform',results);
+    // console.log('debug transform results',results);
+    console.log('debug transform items', items);
     document.title = `Election search: ${results.query.substring(0,30)} | Tidalforce`;
     return items.map((item, index) => ({
       ...item,

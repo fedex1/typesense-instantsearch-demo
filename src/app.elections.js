@@ -178,6 +178,14 @@ search.addWidgets([
     }),
 
     instantsearch.widgets.refinementList({
+    container: '#refinement-list-zip',
+    attribute: "FLNG_ENT_ZIP",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Zipcodes",
+    }),
+
+    instantsearch.widgets.refinementList({
     container: '#refinement-list',
     attribute: "ORG_AMTint",
     searchable: true,
@@ -201,7 +209,8 @@ search.addWidgets([
     // console.log(`DEBUG: ${typeof(results)}`);
     // .results[]|.facet_counts[]|.stats|.sum'
 
-    // console.log('debug transform',results);
+    // console.log('debug transform results',results);
+    console.log('debug transform items', items);
     document.title = `Election search: ${results.query.substring(0,30)} | Tidalforce`;
     return items.map((item, index) => ({
       ...item,
