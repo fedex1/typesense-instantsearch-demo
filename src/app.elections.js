@@ -102,7 +102,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP,ELECTION_YEAR,TRANS_EXPLNTN,TRANS_NUMBER,SCHED_DATE",
+    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP,ELECTION_YEAR,TRANS_EXPLNTN,TRANS_NUMBER,SCHED_DATE,PURPOSE_CODE_DESC,TRANSFER_TYPE_DESC",
 
     // group_by: "FLNG_ENT_ZIP",
     // sort_by:  "_group_found:desc",
@@ -246,11 +246,13 @@ search.addWidgets([
           </div>
           <div class="hit-authors">
           ${format.format(item.ORG_AMT)}&nbsp;<b>zip</b>&nbsp;${item._highlightResult.FLNG_ENT_ZIP.value}&nbsp;
-          <b>explanation</b>&nbsp;${item._highlightResult.TRANS_EXPLNTN.value}
+          <b>explanation</b>&nbsp;${item._highlightResult.TRANS_EXPLNTN.value} 
+          ${item._highlightResult.PURPOSE_CODE_DESC.value} 
+          ${item._highlightResult.TRANSFER_TYPE_DESC.value}
           </div>
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
-          <div class="hit-rating">Year ${item._highlightResult.ELECTION_YEAR.value} for ${item._highlightResult.FILING_SCHED_DESC.value} <i>Id ${item._highlightResult.TRANS_NUMBER.value} Source ${source}</i></div>
-          <div class="hit-rating">${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value} ${item._highlightResult.FLNG_ENT_ZIP.value}
+          <div class="hit-rating">Year ${item._highlightResult.ELECTION_YEAR.value} for ${item._highlightResult.FILING_SCHED_DESC.value} <i><a target="_blank" href="https://data.ny.gov/resource/e9ss-239a.json?trans_number=${item.TRANS_NUMBER}">Source</a></i></div>
+          <div class="hit-rating">${item._highlightResult.FLNG_ENT_NAME.value} ${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value} ${item._highlightResult.FLNG_ENT_ZIP.value}
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.ORG_AMTint.sum)} average ${format.format(item.stats.ORG_AMTint.avg)} max ${format.format(item.stats.ORG_AMTint.max)})</div>
           </div>
           <!--
