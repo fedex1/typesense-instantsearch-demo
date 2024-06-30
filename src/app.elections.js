@@ -186,6 +186,14 @@ search.addWidgets([
     }),
 
     instantsearch.widgets.refinementList({
+    container: '#refinement-list-year',
+    attribute: "ELECTION_YEAR",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Year",
+    }),
+
+    instantsearch.widgets.refinementList({
     container: '#refinement-list',
     attribute: "ORG_AMTint",
     searchable: true,
