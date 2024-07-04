@@ -74,6 +74,20 @@ search.addWidgets([
     limit: 10,
     searchablePlaceholder: "Search for Price",
     }),
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list-beds',
+    attribute: "beds",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for beds",
+    }),
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list-baths',
+    attribute: "baths",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for baths",
+    }),
   instantsearch.widgets.hits({
     transformItems(items, { results }) {
     console.log('debug transform items', items);
