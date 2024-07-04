@@ -88,7 +88,7 @@ search.addWidgets([
           <div class="hit-authors">
           </div>
           <div class="hit-publication-year">Updated ${item.lastmod}</div>
-          <div class="hit-rating">Body ${item._highlightResult.snippest.value}</div>
+          <div class="hit-rating">Body ${item._highlightResult.snippet.value}</div>
         </div>
       `;
       } catch(e) {
