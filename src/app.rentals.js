@@ -74,7 +74,8 @@ search.addWidgets([
         // console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
-      let text=item.loc;
+      // let text=item.loc;
+      let text=item.location;
       const LIMIT=20
       if (text.length > LIMIT) {
         // text = text.substring(0, LIMIT) + '...';

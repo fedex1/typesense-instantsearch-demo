@@ -77,13 +77,13 @@ search.addWidgets([
       let text=item.loc;
       const LIMIT=20
       if (text.length > LIMIT) {
-        text = text.substring(0, LIMIT) + '...';
+        // text = text.substring(0, LIMIT) + '...';
+        text = text.slice(-LIMIT);
       }
         return `
         <div>
           <div class="hit-name">
-            <a target="_blank" href="${item.loc}">${item.loc}</a>
-            ${text}
+            <a target="_blank" href="${item.loc}">${text}</a>
           </div>
           <div class="hit-authors">
           </div>
