@@ -35,7 +35,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     // queryBy: 'title,authors',
     // queryBy: 'data.PropAddr,data.PropOwner',
     // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-    query_by: "body,loc,lastmod",
+    query_by: "snippest,loc,lastmod",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -88,7 +88,7 @@ search.addWidgets([
           <div class="hit-authors">
           </div>
           <div class="hit-publication-year">Updated ${item.lastmod}</div>
-          <div class="hit-rating">Body ${item._highlightResult.body.value}</div>
+          <div class="hit-rating">Body ${item._highlightResult.snippest.value}</div>
         </div>
       `;
       } catch(e) {
