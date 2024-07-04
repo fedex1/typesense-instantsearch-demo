@@ -2,6 +2,25 @@
 // {"first_name":"Crystal","last_name":"Devitt","addresses":{},"gender":"female","age":46,"birth_date":"1977-11-25","email":"monchiquita@gmail.com","name":"Crystal Devitt"}
 
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
+import debounce from 'lodash.debounce';
+
+function googleAnalyticsMiddleware() {
+  const sendEventDebounced = debounce(() => {
+    // crazy but true leave as a for production
+    // gtag('event', 'page_view', {
+    a('event', 'page_view', {
+      page_location: window.location.pathname + window.location.search,
+    });
+  }, 3000);
+
+  return {
+    onStateChange() {
+      sendEventDebounced();
+    },
+    subscribe() {},
+    unsubscribe() {},
+  };
+}
 
 // const TYPESENSE_API_KEY = "NCF9nxUpkuuxRnRHwDOm2a1tmnzabjik";
 
@@ -146,5 +165,7 @@ search.addWidgets([
     ],
   }),
 ]);
+
+search.use(googleAnalyticsMiddleware);
 
 search.start();
