@@ -139,8 +139,8 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Date (asc)", value: `${index}/sort/lastmod:asc` },
-      { label: "Date (desc)", value: `${index}/sort/lastmod:desc` },
+      { label: "Date (asc)", value: `${index}/sort/lastmodINT:asc` },
+      { label: "Date (desc)", value: `${index}/sort/lastmodINT:desc` },
       { label: "Price (asc)", value: `${index}/sort/priceINT:asc` },
       { label: "Price (desc)", value: `${index}/sort/priceINT:desc` },
     ],
