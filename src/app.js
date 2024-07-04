@@ -67,8 +67,16 @@ search.addWidgets([
     instantsearch.widgets.stats({
       container: '#stats',
     }),
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list-price',
+    attribute: "priceINT",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Price",
+    }),
   instantsearch.widgets.hits({
     transformItems(items, { results }) {
+    console.log('debug transform items', items);
     document.title = `Rental search: ${results.query.substring(0,30)} | Tidalforce`;
     return items.map((item, index) => ({
       ...item,
@@ -119,6 +127,8 @@ search.addWidgets([
        items: [
       { label: "Date (asc)", value: `${index}/sort/lastmod:asc` },
       { label: "Date (desc)", value: `${index}/sort/lastmod:desc` },
+      { label: "Price (asc)", value: `${index}/sort/priceINT:asc` },
+      { label: "Price (desc)", value: `${index}/sort/priceINT:desc` },
     ],
   }),
 ]);
