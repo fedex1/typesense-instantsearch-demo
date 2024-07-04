@@ -67,7 +67,24 @@ search.addWidgets([
     instantsearch.widgets.stats({
       container: '#stats',
     }),
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list-price',
+    attribute: "priceINT",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Price",
+    }),
   instantsearch.widgets.hits({
+    transformItems(items, { results }) {
+    console.log('debug transform items', items);
+    document.title = `Rental search: ${results.query.substring(0,30)} | Tidalforce`;
+    return items.map((item, index) => ({
+      ...item,
+      position: { index, page: results.page },
+      stats: results.facets_stats,
+      query: results.query,
+    }));
+  },
     container: '#hits',
     templates: {
       item(item) {
@@ -90,6 +107,7 @@ search.addWidgets([
           </div>
           <div class="hit-publication-year">Updated ${item.lastmod}</div>
           <div class="hit-rating">Body ${item._highlightResult.snippet.value}</div>
+          <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)})</div>
         </div>
       `;
       } catch(e) {
@@ -109,6 +127,8 @@ search.addWidgets([
        items: [
       { label: "Date (asc)", value: `${index}/sort/lastmod:asc` },
       { label: "Date (desc)", value: `${index}/sort/lastmod:desc` },
+      { label: "Price (asc)", value: `${index}/sort/priceINT:asc` },
+      { label: "Price (desc)", value: `${index}/sort/priceINT:desc` },
     ],
   }),
 ]);

@@ -68,6 +68,15 @@ search.addWidgets([
       container: '#stats',
     }),
   instantsearch.widgets.hits({
+    transformItems(items, { results }) {
+    document.title = `Rental search: ${results.query.substring(0,30)} | Tidalforce`;
+    return items.map((item, index) => ({
+      ...item,
+      position: { index, page: results.page },
+      stats: results.facets_stats,
+      query: results.query,
+    }));
+  },
     container: '#hits',
     templates: {
       item(item) {
@@ -75,7 +84,7 @@ search.addWidgets([
       try {
       // let text=item._highlightResult['Doc Date'].value;
       // let text=item.loc;
-      let text=item.location;
+      let text=item.filter;
       const LIMIT=20
       if (text.length > LIMIT) {
         // text = text.substring(0, LIMIT) + '...';
@@ -90,6 +99,7 @@ search.addWidgets([
           </div>
           <div class="hit-publication-year">Updated ${item.lastmod}</div>
           <div class="hit-rating">Body ${item._highlightResult.snippet.value}</div>
+          <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)})</div>
         </div>
       `;
       } catch(e) {
