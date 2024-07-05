@@ -126,10 +126,10 @@ search.addWidgets([
       // let text=item._highlightResult['Doc Date'].value;
       // let text=item.loc;
       let text=item.filter;
-      const LIMIT=20
+      const LIMIT=30
       if (text.length > LIMIT) {
         // text = text.substring(0, LIMIT) + '...';
-        text = text.slice(-LIMIT);
+        text = text.slice(-LIMIT).replace('/',' ');
       }
         return `
         <div>
