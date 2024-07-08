@@ -56,6 +56,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     // queryBy: 'data.PropAddr,data.PropOwner',
     // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
     query_by: "filter,snippet,loc,lastmod",
+    filter_by: "priceINT:[1000..6000]",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
