@@ -149,7 +149,7 @@ search.addWidgets([
           <div class="hit-authors">
           </div>
           <div class="hit-publication-year">Updated ${item.lastmod}</div>
-          <div class="hit-rating">Body ${item._highlightResult.snippet.value} <a href="${action}">Narrow ${item.location}</a></div>
+          <div class="hit-rating">Body ${item._highlightResult.snippet.value} <a href="${action}">Nearby<!--${item.location}--></a></div>
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)})</div>
         </div>
       `;
