@@ -50,6 +50,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  So you can pass any parameters supported by the search endpoint below.
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
+  geoLocationField: 'location',
   additionalSearchParameters: {
     // queryBy: 'title,authors',
     // queryBy: 'data.PropAddr,data.PropOwner',
@@ -82,6 +83,8 @@ search.addWidgets([
   }),
   instantsearch.widgets.configure({
     hitsPerPage: 10,
+     aroundLatLng: '40.71, -74.01',
+     aroundRadius: 1000,
   }),
     instantsearch.widgets.stats({
       container: '#stats',
@@ -129,8 +132,9 @@ search.addWidgets([
       const LIMIT=100
       if (text.length > LIMIT) {
         // text = text.substring(0, LIMIT) + '...';
-        text = text.slice(-LIMIT).replace('/',' ');
+        text = text.slice(-LIMIT);
       }
+        text = text.replace(/[\/]/g,' ');
         return `
         <div>
           <div class="hit-name">

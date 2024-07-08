@@ -72,6 +72,7 @@ const search = instantsearch({
   // indexName: 'algolia-store',
   indexName: index,
   routing: true,
+  geoLocationField: 'location',
 });
 
             // ${item._highlightResult.title.value}
@@ -82,6 +83,8 @@ search.addWidgets([
   }),
   instantsearch.widgets.configure({
     hitsPerPage: 10,
+     aroundLatLng: '40.71, -74.01',
+     aroundRadius: 1000,
   }),
     instantsearch.widgets.stats({
       container: '#stats',
@@ -126,11 +129,12 @@ search.addWidgets([
       // let text=item._highlightResult['Doc Date'].value;
       // let text=item.loc;
       let text=item.filter;
-      const LIMIT=30
+      const LIMIT=100
       if (text.length > LIMIT) {
         // text = text.substring(0, LIMIT) + '...';
-        text = text.slice(-LIMIT).replace('/',' ');
+        text = text.slice(-LIMIT);
       }
+        text = text.replace(/[\/]/g,' ');
         return `
         <div>
           <div class="hit-name">
