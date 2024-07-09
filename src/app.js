@@ -119,6 +119,7 @@ search.addWidgets([
   instantsearch.widgets.hits({
     transformItems(items, { results }) {
     console.log('debug transform items', items);
+    console.log('debug transform results', results);
     document.title = `Rental search: ${results.query.substring(0,30)} | Tidalforce`;
     return items.map((item, index) => ({
       ...item,
@@ -142,6 +143,8 @@ search.addWidgets([
       }
         text = text.replace(/[\/]/g,' ');
         let nearbylink="";
+        // console.log(`queryparameters: ${search.helper.getQuery().filter}`);
+        const currentfilter=search.helper.getQuery();
         const action=`javascript:window.search.helper.setQueryParameter('aroundLatLng', '${item.location}').setQueryParameter('aroundRadius', '2000m').search();`;
         const actionclear=`javascript:window.search.helper.setQueryParameter('aroundLatLng').setQueryParameter('aroundRadius').search();`;
         if (item.location){
@@ -157,7 +160,7 @@ search.addWidgets([
           </div>
           <div class="hit-publication-year">Updated ${item.lastmod}</div>
           <div class="hit-rating">Body ${item._highlightResult.snippet.value} ${nearbylink}</div>
-          <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)})</div>
+          <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''})</div>
         </div>
       `;
       } catch(e) {
