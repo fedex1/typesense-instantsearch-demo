@@ -142,9 +142,11 @@ search.addWidgets([
       }
         text = text.replace(/[\/]/g,' ');
         let nearbylink="";
-        const action=`javascript:window.search.helper.setQueryParameter('aroundLatLng', '${item.location}').setQueryParameter('aroundRadius', '1000m').search();`;
+        const action=`javascript:window.search.helper.setQueryParameter('aroundLatLng', '${item.location}').setQueryParameter('aroundRadius', '2000m').search();`;
+        const actionclear=`javascript:window.search.helper.setQueryParameter('aroundLatLng').setQueryParameter('aroundRadius').search();`;
         if (item.location){
-         nearbylink=`<a href="${action}">Nearby<!--${item.location}--></a>`;
+         nearbylink=`<a href="${action}">Nearby<!--${item.location}--></a> | 
+         <a href="${actionclear}">All</a>`;
         }
         return `
         <div>
