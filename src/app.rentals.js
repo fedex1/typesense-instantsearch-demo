@@ -56,7 +56,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     // queryBy: 'data.PropAddr,data.PropOwner',
     // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
     query_by: "filter,snippet,loc,lastmod",
-    filter_by: "priceINT:[1000..6000]",
+    // filter_by: "priceINT:[1000..6000]",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -85,6 +85,7 @@ search.addWidgets([
   }),
   instantsearch.widgets.configure({
     hitsPerPage: 10,
+    filters: "priceINT:[1000..6000]",
      // aroundLatLng: '39.930984, -75.1614913',
      // aroundRadius: 1000,
   }),
@@ -140,7 +141,11 @@ search.addWidgets([
         text = text.slice(-LIMIT);
       }
         text = text.replace(/[\/]/g,' ');
+        let nearbylink="";
         const action=`javascript:window.search.helper.setQueryParameter('aroundLatLng', '${item.location}').setQueryParameter('aroundRadius', '1000m').search();`;
+        if (item.location){
+         nearbylink=`<a href="${action}">Nearby<!--${item.location}--></a>`;
+        }
         return `
         <div>
           <div class="hit-name">
@@ -149,7 +154,7 @@ search.addWidgets([
           <div class="hit-authors">
           </div>
           <div class="hit-publication-year">Updated ${item.lastmod}</div>
-          <div class="hit-rating">Body ${item._highlightResult.snippet.value} <a href="${action}">Nearby<!--${item.location}--></a></div>
+          <div class="hit-rating">Body ${item._highlightResult.snippet.value} ${nearbylink}</div>
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)})</div>
         </div>
       `;
