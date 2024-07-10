@@ -118,8 +118,8 @@ search.addWidgets([
     }),
   instantsearch.widgets.hits({
     transformItems(items, { results }) {
-    console.log('debug transform items', items);
-    console.log('debug transform results', results);
+    // console.log('debug transform items', items);
+    // console.log('debug transform results', results);
     document.title = `Rental search: ${results.query.substring(0,30)} | Tidalforce`;
     return items.map((item, index) => ({
       ...item,
