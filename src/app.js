@@ -4,6 +4,34 @@
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import debounce from 'lodash.debounce';
 
+function timeSince(date) {
+
+  var seconds = Math.floor((Date.now() - date) / 1000);
+
+  var interval = seconds / 31536000;
+
+  if (interval > 1) {
+    return Math.floor(interval) + " years";
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return Math.floor(interval) + " months";
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + " days";
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + " hours";
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return Math.floor(interval) + " minutes";
+  }
+  return Math.floor(seconds) + " seconds";
+}
+
 function googleAnalyticsMiddleware() {
   const sendEventDebounced = debounce(() => {
     // crazy but true leave as a for production
@@ -82,6 +110,8 @@ window.search=search;
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
+    placeholder: "Search for zip, address, etc.",
+    autofocus: true,
   }),
   instantsearch.widgets.configure({
     hitsPerPage: 10,
@@ -163,7 +193,7 @@ search.addWidgets([
           </div>
           <div class="hit-authors">
           </div>
-          <div class="hit-publication-year">Updated ${item.lastmod}</div>
+          <div class="hit-publication-year">Updated ${item.lastmod} ${timeSince(item.lastmodINT*1000)}</div>
           <div class="hit-rating">Body ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''})</div>
         </div>
