@@ -136,11 +136,13 @@ search.addWidgets([
       // let text=item._highlightResult['Doc Date'].value;
       // let text=item.loc;
       let text=item.filter||item.id;
-      const LIMIT=100
+      const LIMIT=100;
+      const LIMIT2=200;
       if (text.length > LIMIT) {
         // text = text.substring(0, LIMIT) + '...';
         text = text.slice(-LIMIT);
       }
+
         text = text.replace(/[\/]/g,' ');
         let nearbylink="";
         // console.log(`queryparameters: ${search.helper.getQuery().filter}`);
@@ -150,6 +152,9 @@ search.addWidgets([
         if (item.location){
          nearbylink=`<a href="${action}">Nearby<!--${item.location}--></a> | 
          <a href="${actionclear}">All</a>`;
+            if (currentfilter.aroundLatLng===String(item.location)){
+                nearbylink+= " <b>SELECTED</b>"; 
+            }
         }
         return `
         <div>
@@ -159,7 +164,7 @@ search.addWidgets([
           <div class="hit-authors">
           </div>
           <div class="hit-publication-year">Updated ${item.lastmod}</div>
-          <div class="hit-rating">Body ${item._highlightResult.snippet.value} ${nearbylink}</div>
+          <div class="hit-rating">Body ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''})</div>
         </div>
       `;
