@@ -102,7 +102,66 @@ const search = instantsearch({
   // indexName: 'books',
   // indexName: 'algolia-store',
   indexName: index,
-  routing: true,
+  // routing: true,
+  routing: {
+        stateMapping: {
+      stateToRoute(uiState) {
+        // ...
+        if (window.search.helper){
+        const currentfilter=window.search.helper.getQuery();
+        // console.log(`debug: ${JSON.stringify(currentfilter)}`);
+        if (currentfilter.aroundLatLng){
+            uiState[index].configure.aroundLatLng=currentfilter.aroundLatLng;
+        }
+        if (currentfilter.aroundRadius){
+            uiState[index].configure.aroundRadius=currentfilter.aroundRadius;
+        }
+        }
+        // console.log(`stateToRoute: ${JSON.stringify(uiState)}`);
+        return uiState;
+      },
+      routeToState(routeState) {
+        // ...
+        if (window.search.helper){
+        const currentfilter=window.search.helper.getQuery();
+        // console.log(`debug: ${JSON.stringify(currentfilter)}`);
+        }
+        // console.log(`routeToState: ${JSON.stringify(routeState)}`);
+        return routeState;
+      },
+      }
+    /*
+    instantsearch.routers.history({
+
+      createURL({ qsModule, location, routeState }) {
+        const currentfilter=window.search.helper.getQuery();
+        console.log(`debug: ${JSON.stringify(currentfilter)}`);
+
+        const indexState = routeState[index] || {};
+        const { origin, pathname, hash, search } = location;
+        // grab current query string, remove the trailing `?` and convert to object
+        const queryParameters = qsModule.parse(search.slice(1)) || {};
+
+        // if there is an active search
+        if (Object.keys(indexState).length ){
+          // merge the search params with the current query params
+          Object.assign(queryParameters, routeState);
+        }else{
+          // remove the search params
+          delete queryParameters[index];
+        }
+
+        let queryString = qsModule.stringify(queryParameters);
+
+        if(queryString.length){
+          queryString = `?${queryString}`;
+        }
+
+        return `${origin}${pathname}${queryString}${hash}`;
+      },
+    })
+      */
+  }
 });
 window.search=search;
 
@@ -179,6 +238,7 @@ search.addWidgets([
         // console.log(`queryparameters: ${search.helper.getQuery().filter}`);
         const currentfilter=search.helper.getQuery();
         const action=`javascript:window.search.helper.setQueryParameter('aroundLatLng', '${item.location}').setQueryParameter('aroundRadius', '2000m').search();`;
+        // const action=`javascript:instantsearch.widgets.configure({ aroundLatLng: '${String(item.location)}', aroundRadius: '2000m'  });`;
         const actionclear=`javascript:window.search.helper.setQueryParameter('aroundLatLng').setQueryParameter('aroundRadius').search();`;
         if (item.location){
          nearbylink=`<a href="${action}">Nearby<!--${item.location}--></a> | 
