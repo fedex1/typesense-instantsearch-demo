@@ -3,6 +3,7 @@
 
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import debounce from 'lodash.debounce';
+import { currentRefinements } from 'instantsearch.js/es/widgets';
 
 function timeSince(date) {
 
@@ -210,6 +211,10 @@ search.addWidgets([
   instantsearch.widgets.pagination({
     container: '#pagination',
   }),
+  currentRefinements({
+      container: '#current-refinements',
+  }),
+
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
