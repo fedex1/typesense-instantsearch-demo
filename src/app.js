@@ -109,7 +109,7 @@ const search = instantsearch({
         // ...
         if (window.search.helper){
         const currentfilter=window.search.helper.getQuery();
-        console.log(`debug: ${JSON.stringify(currentfilter)}`);
+        // console.log(`debug: ${JSON.stringify(currentfilter)}`);
         if (currentfilter.aroundLatLng){
             uiState[index].configure.aroundLatLng=currentfilter.aroundLatLng;
         }
@@ -117,16 +117,16 @@ const search = instantsearch({
             uiState[index].configure.aroundRadius=currentfilter.aroundRadius;
         }
         }
-        console.log(`stateToRoute: ${JSON.stringify(uiState)}`);
+        // console.log(`stateToRoute: ${JSON.stringify(uiState)}`);
         return uiState;
       },
       routeToState(routeState) {
         // ...
         if (window.search.helper){
         const currentfilter=window.search.helper.getQuery();
-        console.log(`debug: ${JSON.stringify(currentfilter)}`);
+        // console.log(`debug: ${JSON.stringify(currentfilter)}`);
         }
-        console.log(`routeToState: ${JSON.stringify(routeState)}`);
+        // console.log(`routeToState: ${JSON.stringify(routeState)}`);
         return routeState;
       },
       }
