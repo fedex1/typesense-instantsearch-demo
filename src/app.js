@@ -227,7 +227,7 @@ search.addWidgets([
       // let text=item.loc;
       let text=item.filter||item.id;
       const LIMIT=100;
-      const LIMIT2=200;
+      const LIMIT2=300;
       if (text.length > LIMIT) {
         // text = text.substring(0, LIMIT) + '...';
         text = text.slice(-LIMIT);
