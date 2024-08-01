@@ -3,6 +3,34 @@
 
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
+function timeSince(date) {
+
+  var seconds = Math.floor((Date.now() - date) / 1000);
+
+  var interval = seconds / 31536000;
+
+  if (interval > 1) {
+    return Math.floor(interval) + " years";
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return Math.floor(interval) + " months";
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + " days";
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + " hours";
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return Math.floor(interval) + " minutes";
+  }
+  return Math.floor(seconds) + " seconds";
+}
+
 // const TYPESENSE_API_KEY = "NCF9nxUpkuuxRnRHwDOm2a1tmnzabjik";
 
 // const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
@@ -88,7 +116,7 @@ search.addWidgets([
           </div>
           <div class="hit-authors">
           </div>
-          <div class="hit-publication-year">Updated ${item.changed}</div>
+          <div class="hit-publication-year">Updated <b>${timeSince(item.changeint*1000)} ago</b> ${item.changed}</div>
           <div class="hit-rating">Age ${item.profile.age} for ${item._highlightResult.profile.name.value}</div>
         </div>
       `;
