@@ -116,7 +116,7 @@ search.addWidgets([
           </div>
           <div class="hit-authors">
           </div>
-          <div class="hit-publication-year">Updated <b>${timeSince(item.changeint*1000)} ago</b> ${item.changed}</div>
+          <div class="hit-publication-year">Updated <b>${timeSince(item.changedint*1000)} ago</b> ${item.changed}</div>
           <div class="hit-rating">Age ${item.profile.age} for ${item._highlightResult.profile.name.value}</div>
         </div>
       `;
