@@ -167,6 +167,7 @@ window.search=search;
 
             // ${item._highlightResult.title.value}
           // ${item._highlightResult.authors.map((a) => a.value).join(', ')}
+const lastfewdays_seconds=Math.floor(new Date().getTime()/1000) - (30 * 24 * 60 * 60);
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
@@ -175,7 +176,9 @@ search.addWidgets([
   }),
   instantsearch.widgets.configure({
     hitsPerPage: 10,
-    filters: "priceINT:[1000..6000]",
+    // filters: "priceINT:[1000..6000]",
+    // filters: "priceINT:[1000..6000] && lastmodINT:>1724008973",
+    filters: `priceINT:[1000..6000] && lastmodINT:>${lastfewdays_seconds}`,
      // aroundLatLng: '39.930984, -75.1614913',
      // aroundRadius: 1000,
   }),
