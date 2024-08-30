@@ -167,7 +167,7 @@ window.search=search;
 
             // ${item._highlightResult.title.value}
           // ${item._highlightResult.authors.map((a) => a.value).join(', ')}
-const lastfewdays_seconds=Math.floor(new Date().getTime()/1000) - (7 * 24 * 60 * 60);
+const lastfewdays_seconds=Math.floor(new Date().getTime()/1000) - (30 * 24 * 60 * 60);
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',

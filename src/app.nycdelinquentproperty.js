@@ -70,7 +70,7 @@ search.addWidgets([
         <div>
           <!-- <img src="${item.image_url}" alt="${item.name}" height="100" /> -->
           <div class="hit-name">
-            <a target="_blank" href="https://prop.tidalforce.org/usa/delinquent-property/${item._highlightResult.data.id.value}">${text}</a>
+            <a target="_blank" href="https://app.tidalforce.org/usa/delinquent-property/${item._highlightResult.data.id.value}">${text}</a>
           </div>
           <div class="hit-authors">
           ${item._highlightResult.data.PropOwner?item._highlightResult.data.PropOwner.value:"no-owner"}
