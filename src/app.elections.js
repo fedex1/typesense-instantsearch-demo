@@ -194,6 +194,14 @@ search.addWidgets([
     }),
 
     instantsearch.widgets.refinementList({
+    container: '#refinement-list-candidate',
+    attribute: "CAND_COMM_NAME",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Committee/Candidate",
+    }),
+
+    instantsearch.widgets.refinementList({
     container: '#refinement-list',
     attribute: "ORG_AMTint",
     searchable: true,
