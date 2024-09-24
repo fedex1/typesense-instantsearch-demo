@@ -185,6 +185,15 @@ search.addWidgets([
     searchablePlaceholder: "Search for Zipcodes",
     }),
 
+// FILING_SCHED_DESC
+
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list-description',
+    attribute: "FILING_SCHED_DESC",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Description",
+    }),
     instantsearch.widgets.refinementList({
     container: '#refinement-list-year',
     attribute: "ELECTION_YEAR",
