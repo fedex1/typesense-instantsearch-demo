@@ -172,6 +172,9 @@ search.addWidgets([
     hitsPerPage: 10,
         // facetFilters: ["ORG_AMTint:0"],
   }),
+   instantsearch.widgets.clearRefinements({
+    container: '#clear-refinements',
+  }),
 
     instantsearch.widgets.stats({
       container: '#stats',
