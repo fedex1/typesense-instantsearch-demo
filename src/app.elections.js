@@ -206,6 +206,14 @@ search.addWidgets([
     }),
 
     instantsearch.widgets.refinementList({
+    container: '#refinement-list-source',
+    attribute: "_source",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Source",
+    }),
+
+    instantsearch.widgets.refinementList({
     container: '#refinement-list-candidate',
     attribute: "CAND_COMM_NAME",
     searchable: true,
