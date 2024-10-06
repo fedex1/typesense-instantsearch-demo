@@ -268,9 +268,22 @@ search.addWidgets([
         text = text.substring(0, LIMIT) + '...';
       }
       let source="";
+          let sourcelink="missing";
+          let messagelink="";
       try {
         // source=item._highlightResult._source.value;
         source=item._source;
+        switch(source) {
+        case "NYC_CONTRIBUTIONS":
+        sourcelink=
+          "https://www.nyccfb.info/FTMSearch/Home/FTMSearch";
+        messagelink="We cannot link directly to the NYC Campaign Finance Database. Please click the feedback and ask for a proper way to link to public information";
+        break;
+        default:
+        sourcelink=
+          `https://data.ny.gov/resource/e9ss-239a.json?trans_number=${item.TRANS_NUMBER}`;
+        break;
+        }
       } catch(e){
       }
 
@@ -300,7 +313,8 @@ search.addWidgets([
           ${TRANSFER_TYPE_DESC}
           </div>
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
-          <div class="hit-rating"><b>Year</b> ${item._highlightResult.ELECTION_YEAR.value} <b>for</b> ${item._highlightResult.FILING_SCHED_DESC.value} <i><a target="_blank" href="https://data.ny.gov/resource/e9ss-239a.json?trans_number=${item.TRANS_NUMBER}">Source</a></i></div>
+          <div class="hit-rating"><b>Year</b> ${item._highlightResult.ELECTION_YEAR.value} <b>for</b> ${item._highlightResult.FILING_SCHED_DESC.value} <i><a target="_blank" href="${sourcelink}">Source</a></i></div>
+          <div class="warn">${messagelink}</div>
           <div class="hit-rating">${item._highlightResult.FLNG_ENT_NAME.value} ${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value} ${item._highlightResult.FLNG_ENT_ZIP.value}
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.ORG_AMTint.sum)} average ${format.format(item.stats.ORG_AMTint.avg)} max ${format.format(item.stats.ORG_AMTint.max)})</div>
           </div>

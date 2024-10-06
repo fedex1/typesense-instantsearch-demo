@@ -1,37 +1,56 @@
 /* global instantsearch */
+/* [
+  {
+    "FILER_ID": true,
+    "FILER_PREVIOUS_ID": "A82861",
+    "CAND_COMM_NAME": "Anna Lewis For State Senate",
+    "ELECTION_YEAR": 2010,
+    "ELECTION_TYPE": "State/Local",
+    "COUNTY_DESC": null,
+    "FILING_ABBREV": "A",
+    "FILING_DESC": "32-Day Pre-Primary",
+    "R_AMEND": false,
+    "FILING_CAT_DESC": "Itemized",
+    "FILING_SCHED_ABBREV": "A",
+    "FILING_SCHED_DESC": "Monetary Contributions Received From Ind. & Part.",
+    "LOAN_LIB_NUMBER": null,
+    "TRANS_NUMBER": 8476853,
+    "TRANS_MAPPING": null,
+    "SCHED_DATE": "2010-08-11T00:00:00",
+    "ORG_DATE": null,
+    "CNTRBR_TYPE_DESC": "Individual",
+    "CNTRBN_TYPE_DESC": null,
+    "TRANSFER_TYPE_DESC": null,
+    "RECEIPT_TYPE_DESC": null,
+    "RECEIPT_CODE_DESC": null,
+    "PURPOSE_CODE_DESC": null,
+    "R_SUBCONTRACTOR": null,
+    "FLNG_ENT_NAME": null,
+    "FLNG_ENT_FIRST_NAME": "Lawrence",
+    "FLNG_ENT_MIDDLE_NAME": null,
+    "FLNG_ENT_LAST_NAME": "Yannuzzi Md",
+    "FLNG_ENT_ADD1": "460 Park Avenue 5th Floor",
+    "FLNG_ENT_CITY": "New York",
+    "FLNG_ENT_STATE": "NY",
+    "FLNG_ENT_ZIP": 10022,
+    "FLNG_ENT_COUNTRY": "United States",
+    "PAYMENT_TYPE_DESC": "Check",
+    "PAY_NUMBER": 2930,
+    "OWED_AMT": null,
+    "ORG_AMT": 500,
+    "LOAN_OTHER_DESC": null,
+    "TRANS_EXPLNTN": null,
+    "R_ITEMIZED": true,
+    "R_LIABILITY": null,
+    "ELECTION_YEAR_R": null,
+    "OFFICE_DESC": null,
+    "DISTRICT": null,
+    "DIST_OFF_CAND_BAL_PROP": null
+  }
+]
+*/
 // {"first_name":"Crystal","last_name":"Devitt","addresses":{},"gender":"female","age":46,"birth_date":"1977-11-25","email":"monchiquita@gmail.com","name":"Crystal Devitt"}
-
-import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 import debounce from 'lodash.debounce';
-import { currentRefinements } from 'instantsearch.js/es/widgets';
-
-function timeSince(date) {
-
-  var seconds = Math.floor((Date.now() - date) / 1000);
-
-  var interval = seconds / 31536000;
-
-  if (interval > 1) {
-    return Math.floor(interval) + " years";
-  }
-  interval = seconds / 2592000;
-  if (interval > 1) {
-    return Math.floor(interval) + " months";
-  }
-  interval = seconds / 86400;
-  if (interval > 1) {
-    return Math.floor(interval) + " days";
-  }
-  interval = seconds / 3600;
-  if (interval > 1) {
-    return Math.floor(interval) + " hours";
-  }
-  interval = seconds / 60;
-  if (interval > 1) {
-    return Math.floor(interval) + " minutes";
-  }
-  return Math.floor(seconds) + " seconds";
-}
 
 function googleAnalyticsMiddleware() {
   const sendEventDebounced = debounce(() => {
@@ -50,6 +69,9 @@ function googleAnalyticsMiddleware() {
     unsubscribe() {},
   };
 }
+
+import { connectAutocomplete } from "instantsearch.js/es/connectors";
+import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
 // const TYPESENSE_API_KEY = "NCF9nxUpkuuxRnRHwDOm2a1tmnzabjik";
 
@@ -79,148 +101,153 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  So you can pass any parameters supported by the search endpoint below.
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
-  geoLocationField: 'location',
   additionalSearchParameters: {
-    // queryBy: 'title,authors',
-    // queryBy: 'data.PropAddr,data.PropOwner',
-    // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-    query_by: "filter,snippet,loc,lastmod,source",
-    // filter_by: "priceINT:[1000..6000]",
+    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_ZIP,ELECTION_YEAR,TRANS_EXPLNTN,TRANS_NUMBER,SCHED_DATE,PURPOSE_CODE_DESC,TRANSFER_TYPE_DESC",
+
+    // group_by: "FLNG_ENT_ZIP",
+    // sort_by:  "_group_found:desc",
+
+    // facet_by: "ORG_AMTint",
+
   },
 });
+
+const typesenseInstantsearchAdapterautocomplete = new TypesenseInstantSearchAdapter({
+  server: {
+    apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
+    nodes: [
+      {
+                        host: "tidalforce.share.zrok.io",
+                        port: "443",
+                        protocol: "https",
+      },
+    ],
+  },
+  // The following parameters are directly passed to Typesense's search API endpoint.
+  //  So you can pass any parameters supported by the search endpoint below.
+  //  queryBy is required.
+  //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
+  additionalSearchParameters: {
+    query_by: "_autocomplete",
+    // facet_by: "ORG_AMTint",
+  },
+});
+
 const searchClient = typesenseInstantsearchAdapter.searchClient;
+const searchClientautocomplete = typesenseInstantsearchAdapterautocomplete.searchClient;
+
     const format = new Intl.NumberFormat("en-US", {
         style: "currency",
         maximumFractionDigits: 0,
         minimumFractionDigits: 0,
         currency: "USD",
     });
-const index="rentals";
+const index="nys-election-details";
+const index_autocomplete="nys-election-details-autocomplete";
 
 const search = instantsearch({
   searchClient,
-  // indexName: 'books',
-  // indexName: 'algolia-store',
   indexName: index,
-  // routing: true,
-  routing: {
-        stateMapping: {
-      stateToRoute(uiState) {
-        // ...
-        if (window.search.helper){
-        const currentfilter=window.search.helper.getQuery();
-        // console.log(`debug: ${JSON.stringify(currentfilter)}`);
-        if (currentfilter.aroundLatLng){
-            uiState[index].configure.aroundLatLng=currentfilter.aroundLatLng;
-        }
-        if (currentfilter.aroundRadius){
-            uiState[index].configure.aroundRadius=currentfilter.aroundRadius;
-        }
-        }
-        // console.log(`stateToRoute: ${JSON.stringify(uiState)}`);
-        return uiState;
-      },
-      routeToState(routeState) {
-        // ...
-        if (window.search.helper){
-        const currentfilter=window.search.helper.getQuery();
-        // console.log(`debug: ${JSON.stringify(currentfilter)}`);
-        }
-        // console.log(`routeToState: ${JSON.stringify(routeState)}`);
-        return routeState;
-      },
-      }
-    /*
-    instantsearch.routers.history({
-
-      createURL({ qsModule, location, routeState }) {
-        const currentfilter=window.search.helper.getQuery();
-        console.log(`debug: ${JSON.stringify(currentfilter)}`);
-
-        const indexState = routeState[index] || {};
-        const { origin, pathname, hash, search } = location;
-        // grab current query string, remove the trailing `?` and convert to object
-        const queryParameters = qsModule.parse(search.slice(1)) || {};
-
-        // if there is an active search
-        if (Object.keys(indexState).length ){
-          // merge the search params with the current query params
-          Object.assign(queryParameters, routeState);
-        }else{
-          // remove the search params
-          delete queryParameters[index];
-        }
-
-        let queryString = qsModule.stringify(queryParameters);
-
-        if(queryString.length){
-          queryString = `?${queryString}`;
-        }
-
-        return `${origin}${pathname}${queryString}${hash}`;
-      },
-    })
-      */
-  }
+  facets: ['*'],
+  routing: true,
 });
-window.search=search;
+const suggestions = instantsearch({
+  indexName: index_autocomplete,
+  searchClient: searchClientautocomplete,
+});
 
             // ${item._highlightResult.title.value}
           // ${item._highlightResult.authors.map((a) => a.value).join(', ')}
-const lastfewdays_seconds=Math.floor(new Date().getTime()/1000) - (30 * 24 * 60 * 60);
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
-    placeholder: "Search for zip, address, etc.",
-    autofocus: true,
+    placeholder: 'Type in a search term... ',
+     autofocus: true,
+    cssClasses: {
+      input: 'form-control',
+      loadingIcon: 'stroke-primary',
+    },
   }),
   instantsearch.widgets.configure({
     hitsPerPage: 10,
-    // filters: "priceINT:[1000..6000]",
-    // filters: "priceINT:[1000..6000] && lastmodINT:>1724008973",
-    filters: `priceINT:[1000..6000] && lastmodINT:>${lastfewdays_seconds}`,
-     // aroundLatLng: '39.930984, -75.1614913',
-     // aroundRadius: 1000,
+        // facetFilters: ["ORG_AMTint:0"],
   }),
    instantsearch.widgets.clearRefinements({
     container: '#clear-refinements',
   }),
+
     instantsearch.widgets.stats({
       container: '#stats',
     }),
+
     instantsearch.widgets.refinementList({
-    container: '#refinement-list-price',
-    attribute: "priceINT",
+    container: '#refinement-list-zip',
+    attribute: "FLNG_ENT_ZIP",
     searchable: true,
     limit: 10,
-    searchablePlaceholder: "Search for Price",
+    searchablePlaceholder: "Search for Zipcodes",
     }),
+
+// FILING_SCHED_DESC
+
     instantsearch.widgets.refinementList({
-    container: '#refinement-list-beds',
-    attribute: "beds",
+    container: '#refinement-list-description',
+    attribute: "FILING_SCHED_DESC",
     searchable: true,
     limit: 10,
-    searchablePlaceholder: "Search for beds",
+    searchablePlaceholder: "Search for Description",
     }),
     instantsearch.widgets.refinementList({
-    container: '#refinement-list-baths',
-    attribute: "baths",
+    container: '#refinement-list-year',
+    attribute: "ELECTION_YEAR",
     searchable: true,
     limit: 10,
-    searchablePlaceholder: "Search for baths",
+    searchablePlaceholder: "Search for Year",
     }),
+
     instantsearch.widgets.refinementList({
     container: '#refinement-list-source',
-    attribute: "source",
+    attribute: "_source",
     searchable: true,
     limit: 10,
     searchablePlaceholder: "Search for Source",
     }),
+
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list-candidate',
+    attribute: "CAND_COMM_NAME",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Committee/Candidate",
+    }),
+
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list',
+    attribute: "ORG_AMTint",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Amounts",
+//    templates: {
+//      item(item) {
+//         console.log("item1",item);
+//         }},
+     //templates: {
+     //header: '<h3 class="widgettitle">Skill Level</h3>',
+	// item: '<input type="checkbox" class="ais-refinement-list--checkbox" value="&nbsp; {{label}}" {{#isRefined}}checked="true"{{/isRefined}}> {{label}} <span class="ais-refinement-list--count">({{count}})</span>',
+						//},
+    }),
+
   instantsearch.widgets.hits({
     transformItems(items, { results }) {
-    // console.log('debug transform items', items);
-    // console.log('debug transform results', results);
-    document.title = `Rental search: ${results.query.substring(0,30)} | Tidalforce`;
+    // console.log(`DEBUG: ${JSON.stringify(results)}`);
+    // console.log(`DEBUG: ${JSON.stringify(results)}`);
+    // console.log(`DEBUG: ${JSON.stringify(results.facet_counts)}`);
+    // console.log(`DEBUG: ${typeof(results)}`);
+    // .results[]|.facet_counts[]|.stats|.sum'
+
+    // console.log('debug transform results',results);
+    console.log('debug transform items', items);
+    document.title = `Election search: ${results.query.substring(0,30)} | Tidalforce`;
     return items.map((item, index) => ({
       ...item,
       position: { index, page: results.page },
@@ -231,42 +258,72 @@ search.addWidgets([
     container: '#hits',
     templates: {
       item(item) {
-        // console.log("item",item);
+         console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
-      // let text=item.loc;
-      let text=item.filter||item.id;
-      const LIMIT=100;
-      const LIMIT2=1000;
+      const textfull=item.CAND_COMM_NAME;
+      let text=textfull;
+      const LIMIT=50
       if (text.length > LIMIT) {
-        // text = text.substring(0, LIMIT) + '...';
-        text = text.slice(-LIMIT);
+        text = text.substring(0, LIMIT) + '...';
+      }
+      let source="";
+          let sourcelink="missing";
+          let messagelink="";
+      try {
+        // source=item._highlightResult._source.value;
+        source=item._source;
+        switch(source) {
+        case "NYC_CONTRIBUTIONS":
+        sourcelink=
+          "https://www.nyccfb.info/FTMSearch/Home/FTMSearch";
+        messagelink="We cannot link directly to the NYC Campaign Finance Database. Please click the feedback and ask for a proper way to link to public information";
+        break;
+        default:
+        sourcelink=
+          `https://data.ny.gov/resource/e9ss-239a.json?trans_number=${item.TRANS_NUMBER}`;
+        break;
+        }
+      } catch(e){
       }
 
-        text = text.replace(/[\/]/g,' ');
-        let nearbylink="";
-        // console.log(`queryparameters: ${search.helper.getQuery().filter}`);
-        const currentfilter=search.helper.getQuery();
-        const action=`javascript:window.search.helper.setQueryParameter('aroundLatLng', '${item.location}').setQueryParameter('aroundRadius', '2000m').search();`;
-        // const action=`javascript:instantsearch.widgets.configure({ aroundLatLng: '${String(item.location)}', aroundRadius: '2000m'  });`;
-        const actionclear=`javascript:window.search.helper.setQueryParameter('aroundLatLng').setQueryParameter('aroundRadius').search();`;
-        if (item.location){
-         nearbylink=`<a href="${action}">Nearby<!--${item.location}--></a> | 
-         <a href="${actionclear}">All</a>`;
-            if (currentfilter.aroundLatLng===String(item.location)){
-                nearbylink+= " <b>SELECTED</b>"; 
-            }
-        }
+      let TRANSFER_TYPE_DESC="";
+      try {
+        // TRANSFER_TYPE_DESC=item._highlightResult._TRANSFER_TYPE_DESC.value;
+        TRANSFER_TYPE_DESC=item.TRANSFER_TYPE_DESC;
+      } catch(e){
+      }
+      let PURPOSE_CODE_DESC="";
+      try {
+        // PURPOSE_CODE_DESC=item._highlightResult._PURPOSE_CODE_DESC.value;
+        PURPOSE_CODE_DESC=item.PURPOSE_CODE_DESC;
+      } catch(e){
+      }
+          // ${JSON.stringify(item,"",3)}
         return `
         <div>
           <div class="hit-name">
-            <a target="_blank" href="${item.loc}">${format.format(item.priceINT)} ${text}</a>
+            <!-- <a target="_blank" href="https://app.tidalforce.org/electionsearch/${textfull}">${text}</a> -->
+            ${text}
           </div>
           <div class="hit-authors">
+          ${format.format(item.ORG_AMT)}&nbsp;<b>zip</b>&nbsp;${item._highlightResult.FLNG_ENT_ZIP.value}&nbsp;
+          <b>explanation</b>&nbsp;${item._highlightResult.TRANS_EXPLNTN.value} 
+          ${PURPOSE_CODE_DESC} 
+          ${TRANSFER_TYPE_DESC}
           </div>
-          <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b> ${item.lastmod}</div>
-          <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
-          <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''})</div>
+          <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
+          <div class="hit-rating"><b>Year</b> ${item._highlightResult.ELECTION_YEAR.value} <b>for</b> ${item._highlightResult.FILING_SCHED_DESC.value} <i><a target="_blank" href="${sourcelink}">Source</a></i></div>
+          <div class="warn">${messagelink}</div>
+          <div class="hit-rating">${item._highlightResult.FLNG_ENT_NAME.value} ${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value} ${item._highlightResult.FLNG_ENT_ZIP.value}
+          <div class="stats">(query "${item.query}" sum ${format.format(item.stats.ORG_AMTint.sum)} average ${format.format(item.stats.ORG_AMTint.avg)} max ${format.format(item.stats.ORG_AMTint.max)})</div>
+          </div>
+          <!--
+          <div><pre>
+           ${JSON.stringify(item,"",3)}
+          </pre></div>
+          -->
+
         </div>
       `;
       } catch(e) {
@@ -281,25 +338,112 @@ search.addWidgets([
   instantsearch.widgets.pagination({
     container: '#pagination',
   }),
-  currentRefinements({
-      container: '#current-refinements',
-  }),
-
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Date (asc)", value: `${index}/sort/lastmodINT:asc` },
-      { label: "Date (desc)", value: `${index}/sort/lastmodINT:desc` },
-      { label: "Price (asc)", value: `${index}/sort/priceINT:asc` },
-      { label: "Price (desc)", value: `${index}/sort/priceINT:desc` },
+      { label: "Date (asc)", value: `${index}/sort/SCHED_DATEint:asc` },
+      { label: "Date (desc)", value: `${index}/sort/SCHED_DATEint:desc` },
+      { label: "Amount (asc)", value: `${index}/sort/ORG_AMTint:asc` },
+      { label: "Amount (desc)", value: `${index}/sort/ORG_AMTint:desc` },
     ],
   }),
 ]);
+
 
 search.use(googleAnalyticsMiddleware);
 
 search.start();
 
-// search.helper.setQueryParameter('aroundLatLng', this.value).search();
-// search.helper.setQueryParameter('aroundLatLng', '39.930984, -75.1614913').setQueryParameter('aroundRadius', '1000m').search();
+// ======== Autocomplete
 
+// Helper for the render function
+const renderIndexListItem = ({ hits }) => { /* console.log(hits); */
+hits = hits.filter((value, index, self) =>
+  index === self.findIndex((t) => (
+    t._autocomplete === value._autocomplete
+  ))
+)
+// console.log('hits',hits);
+
+        // const text=item._autocomplete;
+        // const link1 = (encodeURI(`nys-election-details[query]=${text}`));
+        //     ${text} <a href="/elections?${link1}">link</a>
+return `
+  <ol class="autocomplete-list">
+    ${hits
+      .map(
+        (hit) =>
+          `<li class="autocomplete-list-item"><a href="/elections?${encodeURI('nys-election-details[query]='+hit._autocomplete)}">${instantsearch.highlight({
+            attribute: "_autocomplete",
+            //attribute: "*",
+            hit,
+          })}</a><!--<br>${JSON.stringify(hit)}--></li>`
+      )
+      .join("")}
+  </ol>
+`};
+
+// Create the render function
+const renderAutocomplete = (renderOptions, isFirstRender) => {
+  const { indices, currentRefinement, refine, widgetParams } = renderOptions;
+
+  if (isFirstRender) {
+    const input = document.createElement("input");
+    const ul = document.createElement("ul");
+
+    input.addEventListener("input", (event) => {
+      refine(event.currentTarget.value);
+    });
+
+    widgetParams.container.appendChild(input);
+    widgetParams.container.appendChild(ul);
+  }
+
+  widgetParams.container.querySelector("input").value = currentRefinement;
+
+  widgetParams.container.querySelector("ul").innerHTML = indices.map(renderIndexListItem).join("");
+};
+
+// Create the custom widget
+const customAutocomplete = connectAutocomplete(renderAutocomplete);
+
+// Instantiate the custom widget
+suggestions.addWidgets([
+  customAutocomplete({
+    container: document.querySelector("#autocomplete"),
+  }),
+  /*
+  instantsearch.widgets.searchBox({
+    container: '#autocomplete',
+    placeholder: 'Type in a search term... ',
+     autofocus: true,
+    cssClasses: {
+      input: 'form-control',
+      loadingIcon: 'stroke-primary',
+    },
+  }),
+  instantsearch.widgets.hits({
+    container: "#autocomplete",
+    templates: {
+      item(item) {
+      try {
+         // console.log("autocomplete-item",item);
+         const text=item._autocomplete;
+        const link1 = (encodeURI(`nys-election-details[query]=${text}`));
+        return `
+        <div>
+          <div class="hit-name">
+            ${text} <a href="/elections?${link1}">link</a>
+          </div>
+          </div>`;
+      } catch(e) {
+        //console.log(`TRACE: ${JSON.stringify(item)}`);
+        console.log("item",item);
+        return `<div>ISSUE2 ${e} ${JSON.stringify(item)}</div>`;
+      }
+        }},
+        }),
+        */
+]);
+
+suggestions.start();
