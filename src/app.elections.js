@@ -265,6 +265,19 @@ search.addWidgets([
         source=item._source;
       } catch(e){
       }
+
+      let TRANSFER_TYPE_DESC="";
+      try {
+        // TRANSFER_TYPE_DESC=item._highlightResult._TRANSFER_TYPE_DESC.value;
+        TRANSFER_TYPE_DESC=item.TRANSFER_TYPE_DESC;
+      } catch(e){
+      }
+      let PURPOSE_CODE_DESC="";
+      try {
+        // PURPOSE_CODE_DESC=item._highlightResult._PURPOSE_CODE_DESC.value;
+        PURPOSE_CODE_DESC=item.PURPOSE_CODE_DESC;
+      } catch(e){
+      }
           // ${JSON.stringify(item,"",3)}
         return `
         <div>
@@ -275,8 +288,8 @@ search.addWidgets([
           <div class="hit-authors">
           ${format.format(item.ORG_AMT)}&nbsp;<b>zip</b>&nbsp;${item._highlightResult.FLNG_ENT_ZIP.value}&nbsp;
           <b>explanation</b>&nbsp;${item._highlightResult.TRANS_EXPLNTN.value} 
-          ${item._highlightResult.PURPOSE_CODE_DESC.value} 
-          ${item._highlightResult.TRANSFER_TYPE_DESC.value}
+          ${PURPOSE_CODE_DESC} 
+          ${TRANSFER_TYPE_DESC}
           </div>
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
           <div class="hit-rating"><b>Year</b> ${item._highlightResult.ELECTION_YEAR.value} <b>for</b> ${item._highlightResult.FILING_SCHED_DESC.value} <i><a target="_blank" href="https://data.ny.gov/resource/e9ss-239a.json?trans_number=${item.TRANS_NUMBER}">Source</a></i></div>
