@@ -267,6 +267,8 @@ search.addWidgets([
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
+      let employer= {OCCUPATION: item.OCCUPATION, EMPNAME: item.EMPNAME, EMPSTRNO: item.EMPSTRNO, EMPSTRNAME: item.EMPSTRNAME, EMPCITY: item.EMPCITY, EMPSTATE: item.EMPSTATE, MATCHAMNT: item.MATCHAMNT};
+// OCCUPATION: .OCCUPATION, EMPNAME: .EMPNAME, EMPSTRNO: .EMPSTRNO, EMPSTRNAME: .EMPSTRNAME, EMPCITY: .EMPCITY, EMPSTATE: .EMPSTATE, MATCHAMNT: .MATCHAMNT
       let source="";
           let sourcelink="missing";
           let messagelink="";
@@ -277,7 +279,7 @@ search.addWidgets([
         case "NYC_CONTRIBUTIONS":
         sourcelink=
           "https://www.nyccfb.info/FTMSearch/Home/FTMSearch";
-        messagelink="We cannot link directly to the NYC Campaign Finance Database. Please click the Source link and then the feedback link and ask for a proper way to link to public information";
+        messagelink=`We cannot link directly to the NYC Campaign Finance Database. See <a target="_blank" href="https://youtu.be/EmXtxNBm_2w">step by step video</a> Please click the Source link and then the feedback link and ask for a proper way to link to public information`;
         break;
         default:
         sourcelink=
@@ -316,6 +318,7 @@ search.addWidgets([
           <div class="hit-rating"><b>Year</b> ${item._highlightResult.ELECTION_YEAR.value} <b>for</b> ${item._highlightResult.FILING_SCHED_DESC.value} <i><a target="_blank" href="${sourcelink}">Source</a></i></div>
           <div class="warn">${messagelink}</div>
           <div class="hit-rating">${item._highlightResult.FLNG_ENT_NAME.value} ${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value} ${item._highlightResult.FLNG_ENT_CITY.value} ${item._highlightResult.FLNG_ENT_ZIP.value}
+          <div class="hit-employer">${JSON.stringify(employer,"",3)}</div>
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.ORG_AMTint.sum)} average ${format.format(item.stats.ORG_AMTint.avg)} max ${format.format(item.stats.ORG_AMTint.max)})</div>
           </div>
           <!--
