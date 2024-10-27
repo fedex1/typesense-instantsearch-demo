@@ -141,6 +141,13 @@ search.addWidgets([
     instantsearch.widgets.stats({
       container: '#stats',
     }),
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list-videoid',
+    attribute: "videoid",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for videoid",
+    }),
 
   instantsearch.widgets.hits({
     transformItems(items, { results }) {
@@ -167,6 +174,7 @@ search.addWidgets([
       try {
       // let text=item._highlightResult['Doc Date'].value;
       const textfull=item.text;
+      const LIMIT2=1000;
       let text=textfull;
       const LIMIT=50
       if (text.length > LIMIT) {
@@ -183,7 +191,8 @@ search.addWidgets([
           <a target="_blank" href="https://youtu.be/${item.videoid}?t=${start}">Video share link</a>
           </div>
           <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b></div>
-          <div class="stats">(query "${item.query}"</div>
+          <div class="hit-rating">Cache: ${item._highlightResult.text.value.substring(0,LIMIT2)}</div>
+          <div class="stats">(query "${item.query}")</div>
           </div>
           <!--
           <div><pre>
