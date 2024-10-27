@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4BBHW6DZKP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4BBHW6DZKP');
+</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="shortcut icon" href="./favicon.png">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7/themes/algolia-min.css">
+  <link rel="stylesheet" href="./src/index.css">
+  <link rel="stylesheet" href="./src/app.scss">
+
+  <title>Search Video Details</title>
+   <link rel="canonical" href="https://prop.tidalforce.org/transcripts" />
+      <meta name="description" content="An easy and fast search video contents and words."></meta><meta name="author" content="TidalForce, Inc."/><meta name="Copyright" content="Copyright (c) 2006-2024 TidalForce, Inc."></meta>
+      <meta name="robots" content="follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large">
+</head>
+
+<body>
+  <header class="header">
+    <h1 class="header-title">
+        Search videos transcripts
+    </h1>
+  </header>
+
+  <div class="container">
+    <div class="search-panel">
+      <div class="search-panel__results">
+        <b>Search All</b>
+        <div id="searchbox"></div>
+
+        <b>Sort</b>
+        <div id="sort-by"></div>
+        <div id="stats"></div>
+        <div id="hits"></div>
+        <div id="clear-refinements"></div>
+        <div id="pagination"></div>
+      </div>
+    </div>
+
+
+  </div>
+  <div>
+<footer>
+      <i>Search using Typesense and algolia library</i><br>
+      <i>credit to <a href="https://github.com/algolia/instantsearch.js"></i>
+        Typesense + InstantSearch.js
+      <br>
+      </a>
+    </p>
+        <a target="_blank" href="/terms">Terms</a> |&nbsp;
+        <a target="_blank" href="/privacy">Privacy</a> |&nbsp;
+        &copy; Copyright Tidalforce. All Rights Reserved.
+        </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.44.0"></script>
+  <script src="./src/app.js"></script>
+</body>
+
+</html>
