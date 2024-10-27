@@ -1,5 +1,32 @@
 /* global instantsearch */
 import debounce from 'lodash.debounce';
+function timeSince(date) {
+
+  var seconds = Math.floor((Date.now() - date) / 1000);
+
+  var interval = seconds / 31536000;
+
+  if (interval > 1) {
+    return Math.floor(interval) + " years";
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return Math.floor(interval) + " months";
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + " days";
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + " hours";
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return Math.floor(interval) + " minutes";
+  }
+  return Math.floor(seconds) + " seconds";
+}
 
 function googleAnalyticsMiddleware() {
   const sendEventDebounced = debounce(() => {
@@ -125,7 +152,7 @@ search.addWidgets([
 
     // console.log('debug transform results',results);
     console.log('debug transform items', items);
-    document.title = `Election search: ${results.query.substring(0,30)} | Tidalforce`;
+    document.title = `Video search: ${results.query.substring(0,30)} | Tidalforce`;
     return items.map((item, index) => ({
       ...item,
       position: { index, page: results.page },
@@ -139,65 +166,24 @@ search.addWidgets([
          console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
-      const textfull=item.CAND_COMM_NAME;
+      const textfull=item.text;
       let text=textfull;
       const LIMIT=50
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
-      let employer= {OCCUPATION: item.OCCUPATION, EMPNAME: item.EMPNAME, EMPSTRNO: item.EMPSTRNO, EMPSTRNAME: item.EMPSTRNAME, EMPCITY: item.EMPCITY, EMPSTATE: item.EMPSTATE, MATCHAMNT: item.MATCHAMNT};
-// OCCUPATION: .OCCUPATION, EMPNAME: .EMPNAME, EMPSTRNO: .EMPSTRNO, EMPSTRNAME: .EMPSTRNAME, EMPCITY: .EMPCITY, EMPSTATE: .EMPSTATE, MATCHAMNT: .MATCHAMNT
-      let source="";
-          let sourcelink="missing";
-          let messagelink="";
-      try {
-        // source=item._highlightResult._source.value;
-        source=item._source;
-        switch(source) {
-        case "NYC_CONTRIBUTIONS":
-        sourcelink=
-          "https://www.nyccfb.info/FTMSearch/Home/FTMSearch";
-        messagelink=`We cannot link directly to the NYC Campaign Finance Database. See <a target="_blank" href="https://youtu.be/EmXtxNBm_2w">step by step video</a> Please click the Source link and then the feedback link and ask for a proper way to link to public information`;
-        break;
-        default:
-        sourcelink=
-          `https://data.ny.gov/resource/e9ss-239a.json?trans_number=${item.TRANS_NUMBER}`;
-        break;
-        }
-      } catch(e){
-      }
-
-      let TRANSFER_TYPE_DESC="";
-      try {
-        // TRANSFER_TYPE_DESC=item._highlightResult._TRANSFER_TYPE_DESC.value;
-        TRANSFER_TYPE_DESC=item.TRANSFER_TYPE_DESC;
-      } catch(e){
-      }
-      let PURPOSE_CODE_DESC="";
-      try {
-        // PURPOSE_CODE_DESC=item._highlightResult._PURPOSE_CODE_DESC.value;
-        PURPOSE_CODE_DESC=item.PURPOSE_CODE_DESC;
-      } catch(e){
-      }
           // ${JSON.stringify(item,"",3)}
+          const start=parseInt(item.start);
         return `
         <div>
           <div class="hit-name">
-            <!-- <a target="_blank" href="https://app.tidalforce.org/electionsearch/${textfull}">${text}</a> -->
             ${text}
           </div>
           <div class="hit-authors">
-          ${format.format(item.ORG_AMT)}&nbsp;<b>zip</b>&nbsp;${item._highlightResult.FLNG_ENT_ZIP.value}&nbsp;
-          <b>explanation</b>&nbsp;${item._highlightResult.TRANS_EXPLNTN.value} 
-          ${PURPOSE_CODE_DESC} 
-          ${TRANSFER_TYPE_DESC}
+          <a target="_blank" href="https://youtu.be/${item.videoid}?t=${start}">Video share link</a>
           </div>
-          <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
-          <div class="hit-rating"><b>Year</b> ${item._highlightResult.ELECTION_YEAR.value} <b>for</b> ${item._highlightResult.FILING_SCHED_DESC.value} <i><a target="_blank" href="${sourcelink}">Source</a></i></div>
-          <div class="warn">${messagelink}</div>
-          <div class="hit-rating">${item._highlightResult.FLNG_ENT_NAME.value} ${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value} ${item._highlightResult.FLNG_ENT_CITY.value} ${item._highlightResult.FLNG_ENT_ZIP.value}
-          <div class="hit-employer">${JSON.stringify(employer,"",3)}</div>
-          <div class="stats">(query "${item.query}" sum ${format.format(item.stats.ORG_AMTint.sum)} average ${format.format(item.stats.ORG_AMTint.avg)} max ${format.format(item.stats.ORG_AMTint.max)})</div>
+          <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b></div>
+          <div class="stats">(query "${item.query}"</div>
           </div>
           <!--
           <div><pre>
@@ -222,10 +208,8 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Date (asc)", value: `${index}/sort/SCHED_DATEint:asc` },
-      { label: "Date (desc)", value: `${index}/sort/SCHED_DATEint:desc` },
-      { label: "Amount (asc)", value: `${index}/sort/ORG_AMTint:asc` },
-      { label: "Amount (desc)", value: `${index}/sort/ORG_AMTint:desc` },
+      { label: "Date (asc)", value: `${index}/sort/lastmodINT:asc` },
+      { label: "Date (desc)", value: `${index}/sort/lastmodINT:desc` },
     ],
   }),
 ]);
