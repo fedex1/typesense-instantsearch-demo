@@ -208,10 +208,8 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Date (asc)", value: `${index}/sort/SCHED_DATEint:asc` },
-      { label: "Date (desc)", value: `${index}/sort/SCHED_DATEint:desc` },
-      { label: "Amount (asc)", value: `${index}/sort/ORG_AMTint:asc` },
-      { label: "Amount (desc)", value: `${index}/sort/ORG_AMTint:desc` },
+      { label: "Date (asc)", value: `${index}/sort/lastmodINT:asc` },
+      { label: "Date (desc)", value: `${index}/sort/lastmodINT:desc` },
     ],
   }),
 ]);
