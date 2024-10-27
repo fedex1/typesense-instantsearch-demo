@@ -148,6 +148,13 @@ search.addWidgets([
     limit: 10,
     searchablePlaceholder: "Search for videoid",
     }),
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list-source',
+    attribute: "source",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Source",
+    }),
 
   instantsearch.widgets.hits({
     transformItems(items, { results }) {
@@ -181,7 +188,7 @@ search.addWidgets([
         text = text.substring(0, LIMIT) + '...';
       }
           // ${JSON.stringify(item,"",3)}
-          const start=parseInt(item.start);
+          const start=parseInt(item.start||0);
         return `
         <div>
           <div class="hit-name">
