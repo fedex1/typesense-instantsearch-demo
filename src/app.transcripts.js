@@ -183,7 +183,7 @@ search.addWidgets([
           <a target="_blank" href="https://youtu.be/${item.videoid}?t=${start}">Video share link</a>
           </div>
           <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b></div>
-          <div class="stats">(query "${item.query}"</div>
+          <div class="stats">(query "${item.query}")</div>
           </div>
           <!--
           <div><pre>
