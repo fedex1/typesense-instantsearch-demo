@@ -167,7 +167,13 @@ window.search=search;
 
             // ${item._highlightResult.title.value}
           // ${item._highlightResult.authors.map((a) => a.value).join(', ')}
-const lastfewdays_seconds=Math.floor(new Date().getTime()/1000) - (30 * 24 * 60 * 60);
+          // 30 days
+const now_seconds=Math.floor(new Date().getTime()/1000) ;
+const past30days_seconds=Math.floor(new Date().getTime()/1000) - (30 * 24 * 60 * 60);
+const past7days_seconds=Math.floor(new Date().getTime()/1000) - (7 * 24 * 60 * 60);
+const past24hours_seconds=Math.floor(new Date().getTime()/1000) - (1 * 24 * 60 * 60);
+const pasthour_seconds=Math.floor(new Date().getTime()/1000) - (1 * 60 * 60);
+
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
@@ -178,7 +184,7 @@ search.addWidgets([
     hitsPerPage: 10,
     // filters: "priceINT:[1000..6000]",
     // filters: "priceINT:[1000..6000] && lastmodINT:>1724008973",
-    filters: `priceINT:[1000..6000] && lastmodINT:>${lastfewdays_seconds}`,
+    filters: `priceINT:[1000..6000] && lastmodINT:>${past30days_seconds}`,
      // aroundLatLng: '39.930984, -75.1614913',
      // aroundRadius: 1000,
   }),
@@ -215,6 +221,32 @@ search.addWidgets([
     searchable: true,
     limit: 10,
     searchablePlaceholder: "Search for Source",
+    }),
+    instantsearch.widgets.numericMenu({
+    container: '#lastmod-menu',
+    attribute: 'lastmodINT',
+    items: [
+      { label: 'Any time' },
+      { label: 'Past hour', start: pasthour_seconds },
+      { label: 'Past 24 hours', start: past24hours_seconds },
+      { label: 'Past week', start: past7days_seconds },
+      { label: 'Past month', start: past30days_seconds },
+    ],
+  }),
+    instantsearch.widgets.rangeSlider({
+    container: '#lastmod-slider',
+    attribute: 'lastmodINT', // The attribute you want to filter on
+    min: past30days_seconds, // Minimum value for the slider
+    max: now_seconds, // Maximum value for the slider
+    // tooltips: false,
+      tooltips: {
+                    format: function(formattedValue) {
+                        //debugger;
+                        const range = new Date(formattedValue*1000);
+                        console.log(`range: ${range}`);
+                        return range;
+                    }
+                },
     }),
   instantsearch.widgets.hits({
     transformItems(items, { results }) {
