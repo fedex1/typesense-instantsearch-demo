@@ -82,6 +82,7 @@ const TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
     apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
+    timeoutSeconds: 10,
     nodes: [
       {
       /*
