@@ -1,4 +1,11 @@
 #!
+TARGET="rentals"
+cp src/app.${TARGET}.js src/app.js
+npm run clean
+npm run build${TARGET}
+
+exit
+
 cp src/app.elections.js src/app.js
 # cp src/app.rentals.js src/app.js
 # cp src/app.transcripts.js src/app.js

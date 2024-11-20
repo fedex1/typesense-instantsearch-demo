@@ -1,56 +1,32 @@
 /* global instantsearch */
-/* [
-  {
-    "FILER_ID": true,
-    "FILER_PREVIOUS_ID": "A82861",
-    "CAND_COMM_NAME": "Anna Lewis For State Senate",
-    "ELECTION_YEAR": 2010,
-    "ELECTION_TYPE": "State/Local",
-    "COUNTY_DESC": null,
-    "FILING_ABBREV": "A",
-    "FILING_DESC": "32-Day Pre-Primary",
-    "R_AMEND": false,
-    "FILING_CAT_DESC": "Itemized",
-    "FILING_SCHED_ABBREV": "A",
-    "FILING_SCHED_DESC": "Monetary Contributions Received From Ind. & Part.",
-    "LOAN_LIB_NUMBER": null,
-    "TRANS_NUMBER": 8476853,
-    "TRANS_MAPPING": null,
-    "SCHED_DATE": "2010-08-11T00:00:00",
-    "ORG_DATE": null,
-    "CNTRBR_TYPE_DESC": "Individual",
-    "CNTRBN_TYPE_DESC": null,
-    "TRANSFER_TYPE_DESC": null,
-    "RECEIPT_TYPE_DESC": null,
-    "RECEIPT_CODE_DESC": null,
-    "PURPOSE_CODE_DESC": null,
-    "R_SUBCONTRACTOR": null,
-    "FLNG_ENT_NAME": null,
-    "FLNG_ENT_FIRST_NAME": "Lawrence",
-    "FLNG_ENT_MIDDLE_NAME": null,
-    "FLNG_ENT_LAST_NAME": "Yannuzzi Md",
-    "FLNG_ENT_ADD1": "460 Park Avenue 5th Floor",
-    "FLNG_ENT_CITY": "New York",
-    "FLNG_ENT_STATE": "NY",
-    "FLNG_ENT_ZIP": 10022,
-    "FLNG_ENT_COUNTRY": "United States",
-    "PAYMENT_TYPE_DESC": "Check",
-    "PAY_NUMBER": 2930,
-    "OWED_AMT": null,
-    "ORG_AMT": 500,
-    "LOAN_OTHER_DESC": null,
-    "TRANS_EXPLNTN": null,
-    "R_ITEMIZED": true,
-    "R_LIABILITY": null,
-    "ELECTION_YEAR_R": null,
-    "OFFICE_DESC": null,
-    "DISTRICT": null,
-    "DIST_OFF_CAND_BAL_PROP": null
-  }
-]
-*/
-// {"first_name":"Crystal","last_name":"Devitt","addresses":{},"gender":"female","age":46,"birth_date":"1977-11-25","email":"monchiquita@gmail.com","name":"Crystal Devitt"}
 import debounce from 'lodash.debounce';
+function timeSince(date) {
+
+  var seconds = Math.floor((Date.now() - date) / 1000);
+
+  var interval = seconds / 31536000;
+
+  if (interval > 1) {
+    return Math.floor(interval) + " years";
+  }
+  interval = seconds / 2592000;
+  if (interval > 1) {
+    return Math.floor(interval) + " months";
+  }
+  interval = seconds / 86400;
+  if (interval > 1) {
+    return Math.floor(interval) + " days";
+  }
+  interval = seconds / 3600;
+  if (interval > 1) {
+    return Math.floor(interval) + " hours";
+  }
+  interval = seconds / 60;
+  if (interval > 1) {
+    return Math.floor(interval) + " minutes";
+  }
+  return Math.floor(seconds) + " seconds";
+}
 
 function googleAnalyticsMiddleware() {
   const sendEventDebounced = debounce(() => {
@@ -82,7 +58,6 @@ const TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
     apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
-    timeoutSeconds: 10,
     nodes: [
       {
       /*
@@ -103,20 +78,13 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    query_by: "CAND_COMM_NAME,FLNG_ENT_FIRST_NAME,FLNG_ENT_MIDDLE_NAME,FLNG_ENT_LAST_NAME,FLNG_ENT_NAME,FLNG_ENT_ADD1,FILING_SCHED_DESC,FLNG_ENT_CITY,FLNG_ENT_ZIP,ELECTION_YEAR,TRANS_EXPLNTN,TRANS_NUMBER,SCHED_DATE,PURPOSE_CODE_DESC,TRANSFER_TYPE_DESC,EMPNAME",
-
-    // group_by: "FLNG_ENT_ZIP",
-    // sort_by:  "_group_found:desc",
-
-    // facet_by: "ORG_AMTint",
-
+    query_by: "text",
   },
 });
 
 const typesenseInstantsearchAdapterautocomplete = new TypesenseInstantSearchAdapter({
   server: {
     apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
-    timeoutSeconds: 10,
     nodes: [
       {
                         host: "tidalforce.share.zrok.io",
@@ -144,8 +112,7 @@ const searchClientautocomplete = typesenseInstantsearchAdapterautocomplete.searc
         minimumFractionDigits: 0,
         currency: "USD",
     });
-const index="nys-election-details";
-const index_autocomplete="nys-election-details-autocomplete";
+const index="transcripts";
 
 const search = instantsearch({
   searchClient,
@@ -153,13 +120,7 @@ const search = instantsearch({
   facets: ['*'],
   routing: true,
 });
-const suggestions = instantsearch({
-  indexName: index_autocomplete,
-  searchClient: searchClientautocomplete,
-});
 
-            // ${item._highlightResult.title.value}
-          // ${item._highlightResult.authors.map((a) => a.value).join(', ')}
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
@@ -172,7 +133,6 @@ search.addWidgets([
   }),
   instantsearch.widgets.configure({
     hitsPerPage: 10,
-        // facetFilters: ["ORG_AMTint:0"],
   }),
    instantsearch.widgets.clearRefinements({
     container: '#clear-refinements',
@@ -181,62 +141,19 @@ search.addWidgets([
     instantsearch.widgets.stats({
       container: '#stats',
     }),
-
     instantsearch.widgets.refinementList({
-    container: '#refinement-list-zip',
-    attribute: "FLNG_ENT_ZIP",
+    container: '#refinement-list-videoid',
+    attribute: "videoid",
     searchable: true,
     limit: 10,
-    searchablePlaceholder: "Search for Zipcodes",
+    searchablePlaceholder: "Search for videoid",
     }),
-
-// FILING_SCHED_DESC
-
-    instantsearch.widgets.refinementList({
-    container: '#refinement-list-description',
-    attribute: "FILING_SCHED_DESC",
-    searchable: true,
-    limit: 10,
-    searchablePlaceholder: "Search for Description",
-    }),
-    instantsearch.widgets.refinementList({
-    container: '#refinement-list-year',
-    attribute: "ELECTION_YEAR",
-    searchable: true,
-    limit: 10,
-    searchablePlaceholder: "Search for Year",
-    }),
-
     instantsearch.widgets.refinementList({
     container: '#refinement-list-source',
-    attribute: "_source",
+    attribute: "source",
     searchable: true,
     limit: 10,
     searchablePlaceholder: "Search for Source",
-    }),
-
-    instantsearch.widgets.refinementList({
-    container: '#refinement-list-candidate',
-    attribute: "CAND_COMM_NAME",
-    searchable: true,
-    limit: 10,
-    searchablePlaceholder: "Search for Committee/Candidate",
-    }),
-
-    instantsearch.widgets.refinementList({
-    container: '#refinement-list',
-    attribute: "ORG_AMTint",
-    searchable: true,
-    limit: 10,
-    searchablePlaceholder: "Search for Amounts",
-//    templates: {
-//      item(item) {
-//         console.log("item1",item);
-//         }},
-     //templates: {
-     //header: '<h3 class="widgettitle">Skill Level</h3>',
-	// item: '<input type="checkbox" class="ais-refinement-list--checkbox" value="&nbsp; {{label}}" {{#isRefined}}checked="true"{{/isRefined}}> {{label}} <span class="ais-refinement-list--count">({{count}})</span>',
-						//},
     }),
 
   instantsearch.widgets.hits({
@@ -249,7 +166,7 @@ search.addWidgets([
 
     // console.log('debug transform results',results);
     console.log('debug transform items', items);
-    document.title = `Election search: ${results.query.substring(0,30)} | Tidalforce`;
+    document.title = `Video search: ${results.query.substring(0,30)} | Tidalforce`;
     return items.map((item, index) => ({
       ...item,
       position: { index, page: results.page },
@@ -263,65 +180,26 @@ search.addWidgets([
          console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
-      const textfull=item.CAND_COMM_NAME;
+      const textfull=item.text;
+      const LIMIT2=1000;
       let text=textfull;
       const LIMIT=50
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
-      let employer= {OCCUPATION: item.OCCUPATION, EMPNAME: item.EMPNAME, EMPSTRNO: item.EMPSTRNO, EMPSTRNAME: item.EMPSTRNAME, EMPCITY: item.EMPCITY, EMPSTATE: item.EMPSTATE, MATCHAMNT: item.MATCHAMNT};
-// OCCUPATION: .OCCUPATION, EMPNAME: .EMPNAME, EMPSTRNO: .EMPSTRNO, EMPSTRNAME: .EMPSTRNAME, EMPCITY: .EMPCITY, EMPSTATE: .EMPSTATE, MATCHAMNT: .MATCHAMNT
-      let source="";
-          let sourcelink="missing";
-          let messagelink="";
-      try {
-        // source=item._highlightResult._source.value;
-        source=item._source;
-        switch(source) {
-        case "NYC_CONTRIBUTIONS":
-        sourcelink=
-          "https://www.nyccfb.info/FTMSearch/Home/FTMSearch";
-        messagelink=`We cannot link directly to the NYC Campaign Finance Database. See <a target="_blank" href="https://youtu.be/EmXtxNBm_2w">step by step video</a> Please click the Source link and then the feedback link and ask for a proper way to link to public information`;
-        break;
-        default:
-        sourcelink=
-          `https://data.ny.gov/resource/e9ss-239a.json?trans_number=${item.TRANS_NUMBER}`;
-        break;
-        }
-      } catch(e){
-      }
-
-      let TRANSFER_TYPE_DESC="";
-      try {
-        // TRANSFER_TYPE_DESC=item._highlightResult._TRANSFER_TYPE_DESC.value;
-        TRANSFER_TYPE_DESC=item.TRANSFER_TYPE_DESC;
-      } catch(e){
-      }
-      let PURPOSE_CODE_DESC="";
-      try {
-        // PURPOSE_CODE_DESC=item._highlightResult._PURPOSE_CODE_DESC.value;
-        PURPOSE_CODE_DESC=item.PURPOSE_CODE_DESC;
-      } catch(e){
-      }
           // ${JSON.stringify(item,"",3)}
+          const start=parseInt(item.start||0);
         return `
         <div>
           <div class="hit-name">
-            <!-- <a target="_blank" href="https://app.tidalforce.org/electionsearch/${textfull}">${text}</a> -->
             ${text}
           </div>
           <div class="hit-authors">
-          ${format.format(item.ORG_AMT)}&nbsp;<b>zip</b>&nbsp;${item._highlightResult.FLNG_ENT_ZIP.value}&nbsp;
-          <b>explanation</b>&nbsp;${item._highlightResult.TRANS_EXPLNTN.value} 
-          ${PURPOSE_CODE_DESC} 
-          ${TRANSFER_TYPE_DESC}
+          <a target="_blank" href="https://youtu.be/${item.videoid}?t=${start}">Video share link</a>
           </div>
-          <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
-          <div class="hit-rating"><b>Year</b> ${item._highlightResult.ELECTION_YEAR.value} <b>for</b> ${item._highlightResult.FILING_SCHED_DESC.value} <i><a target="_blank" href="${sourcelink}">Source</a></i></div>
-          <div class="warn">${messagelink}</div>
-          <div class="hit-rating">${item._highlightResult.FLNG_ENT_NAME.value} ${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value} ${item._highlightResult.FLNG_ENT_CITY.value} ${item._highlightResult.FLNG_ENT_ZIP.value}
-          <div class="hit-employer">${JSON.stringify(employer,"",3)}</div>
-          <div class="stats">(query "${item.query}" sum ${format.format(item.stats.ORG_AMTint.sum)} average ${format.format(item.stats.ORG_AMTint.avg)} max ${format.format(item.stats.ORG_AMTint.max)})</div>
+          <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b></div>
+          <div class="hit-rating">Cache: ${item._highlightResult.text.value.substring(0,LIMIT2)}</div>
+          <div class="stats">(query "${item.query}")</div>
           </div>
           <!--
           <div><pre>
@@ -346,10 +224,8 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Date (asc)", value: `${index}/sort/SCHED_DATEint:asc` },
-      { label: "Date (desc)", value: `${index}/sort/SCHED_DATEint:desc` },
-      { label: "Amount (asc)", value: `${index}/sort/ORG_AMTint:asc` },
-      { label: "Amount (desc)", value: `${index}/sort/ORG_AMTint:desc` },
+      { label: "Date (asc)", value: `${index}/sort/lastmodINT:asc` },
+      { label: "Date (desc)", value: `${index}/sort/lastmodINT:desc` },
     ],
   }),
 ]);
@@ -359,96 +235,5 @@ search.use(googleAnalyticsMiddleware);
 
 search.start();
 
-// ======== Autocomplete
 
-// Helper for the render function
-const renderIndexListItem = ({ hits }) => { /* console.log(hits); */
-hits = hits.filter((value, index, self) =>
-  index === self.findIndex((t) => (
-    t._autocomplete === value._autocomplete
-  ))
-)
-// console.log('hits',hits);
 
-        // const text=item._autocomplete;
-        // const link1 = (encodeURI(`nys-election-details[query]=${text}`));
-        //     ${text} <a href="/elections?${link1}">link</a>
-return `
-  <ol class="autocomplete-list">
-    ${hits
-      .map(
-        (hit) =>
-          `<li class="autocomplete-list-item"><a href="/elections?${encodeURI('nys-election-details[query]='+hit._autocomplete)}">${instantsearch.highlight({
-            attribute: "_autocomplete",
-            //attribute: "*",
-            hit,
-          })}</a><!--<br>${JSON.stringify(hit)}--></li>`
-      )
-      .join("")}
-  </ol>
-`};
-
-// Create the render function
-const renderAutocomplete = (renderOptions, isFirstRender) => {
-  const { indices, currentRefinement, refine, widgetParams } = renderOptions;
-
-  if (isFirstRender) {
-    const input = document.createElement("input");
-    const ul = document.createElement("ul");
-
-    input.addEventListener("input", (event) => {
-      refine(event.currentTarget.value);
-    });
-
-    widgetParams.container.appendChild(input);
-    widgetParams.container.appendChild(ul);
-  }
-
-  widgetParams.container.querySelector("input").value = currentRefinement;
-
-  widgetParams.container.querySelector("ul").innerHTML = indices.map(renderIndexListItem).join("");
-};
-
-// Create the custom widget
-const customAutocomplete = connectAutocomplete(renderAutocomplete);
-
-// Instantiate the custom widget
-suggestions.addWidgets([
-  customAutocomplete({
-    container: document.querySelector("#autocomplete"),
-  }),
-  /*
-  instantsearch.widgets.searchBox({
-    container: '#autocomplete',
-    placeholder: 'Type in a search term... ',
-     autofocus: true,
-    cssClasses: {
-      input: 'form-control',
-      loadingIcon: 'stroke-primary',
-    },
-  }),
-  instantsearch.widgets.hits({
-    container: "#autocomplete",
-    templates: {
-      item(item) {
-      try {
-         // console.log("autocomplete-item",item);
-         const text=item._autocomplete;
-        const link1 = (encodeURI(`nys-election-details[query]=${text}`));
-        return `
-        <div>
-          <div class="hit-name">
-            ${text} <a href="/elections?${link1}">link</a>
-          </div>
-          </div>`;
-      } catch(e) {
-        //console.log(`TRACE: ${JSON.stringify(item)}`);
-        console.log("item",item);
-        return `<div>ISSUE2 ${e} ${JSON.stringify(item)}</div>`;
-      }
-        }},
-        }),
-        */
-]);
-
-suggestions.start();
