@@ -1,8 +1,10 @@
 #!
-TARGET="rentals"
+# TARGET="rentals"
+TARGET="elections"
 cp src/app.${TARGET}.js src/app.js
 npm run clean
 npm run build${TARGET}
+# npm run start${TARGET}
 
 exit
 

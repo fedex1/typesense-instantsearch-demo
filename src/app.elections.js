@@ -151,7 +151,58 @@ const search = instantsearch({
   searchClient,
   indexName: index,
   facets: ['*'],
-  routing: true,
+  // routing: true,
+  routing: {
+    // Use a custom URL structure for better SEO
+    router: instantsearch.routers.history({
+      createURL({ qsModule, routeState, location }) {
+        const urlParts = [];
+
+        // Handle query parameter
+        if (routeState.query) {
+          urlParts.push(`q=${encodeURIComponent(routeState.query)}`);
+        }
+
+        // Handle refinement lists (facets)
+        for (const facet in routeState.refinementList) {
+          if (routeState.refinementList[facet].length > 0) {
+            const facetValues = routeState.refinementList[facet].map(encodeURIComponent).join('+');
+            urlParts.push(`${facet}=${facetValues}`);
+          }
+        }
+
+        // Handle pagination
+        if (routeState.page && routeState.page > 1) {
+          urlParts.push(`page=${routeState.page}`);
+        }
+
+        const queryString = urlParts.length > 0 ? `?${urlParts.join('&')}` : '';
+        return `${location.origin}${location.pathname}${queryString}`;  // Construct the full URL
+      },
+
+      parseURL({ location }) {
+        const params = new URLSearchParams(location.search);
+        const routeState = {};
+
+        if (params.has('q')) {
+          routeState.query = params.get('q');
+        }
+
+        for (const [key, value] of params.entries()) {
+          if (key !== 'q' && key !== 'page') { // Handle facets differently
+            routeState.refinementList = routeState.refinementList || {};
+            routeState.refinementList[key] = value.split('+').map(decodeURIComponent);
+          }
+        }
+
+        if (params.has('page')) {
+          routeState.page = parseInt(params.get('page'), 10);
+        }
+
+        return routeState;
+      },
+    }),
+  },
 });
 const suggestions = instantsearch({
   indexName: index_autocomplete,
