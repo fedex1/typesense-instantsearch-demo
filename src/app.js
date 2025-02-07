@@ -55,8 +55,8 @@ import debounce from 'lodash.debounce';
 function googleAnalyticsMiddleware() {
   const sendEventDebounced = debounce(() => {
     // crazy but true leave as a for production
-    // gtag('event', 'page_view', {
-    a('event', 'page_view', {
+    gtag('event', 'page_view', {
+    // a('event', 'page_view', {
       page_location: window.location.pathname + window.location.search,
     });
   }, 3000);
@@ -151,12 +151,19 @@ const search = instantsearch({
   searchClient,
   indexName: index,
   facets: ['*'],
-  // routing: true,
+  routing: true,
+  // https://prop.tidalforce.org/elections?nys-election-details%5Bquery%5D=michael%20boomer
+  /*
   routing: {
     // Use a custom URL structure for better SEO
     router: instantsearch.routers.history({
       createURL({ qsModule, routeState, location }) {
         const urlParts = [];
+        if (routeState['nys-election-details']){
+           routeState=routeState['nys-election-details']
+        }
+        console.log(`routeState: ${JSON.stringify(routeState)}`)
+        console.log(`location: ${JSON.stringify(location)}`)
 
         // Handle query parameter
         if (routeState.query) {
@@ -177,11 +184,15 @@ const search = instantsearch({
         }
 
         const queryString = urlParts.length > 0 ? `?${urlParts.join('&')}` : '';
+        console.log( `CREATEURL: ${location.origin}${location.pathname}${queryString}`)  // Construct the full URL
+
         return `${location.origin}${location.pathname}${queryString}`;  // Construct the full URL
       },
 
       parseURL({ location }) {
+        console.log(`parseurl location: ${JSON.stringify(location)}`)
         const params = new URLSearchParams(location.search);
+        console.log(`parseurl params: ${JSON.stringify(params)}`)
         const routeState = {};
 
         if (params.has('q')) {
@@ -203,6 +214,7 @@ const search = instantsearch({
       },
     }),
   },
+  */
 });
 const suggestions = instantsearch({
   indexName: index_autocomplete,
