@@ -270,22 +270,21 @@ search.addWidgets([
       let text=item.filter||item.id;
       const LIMIT=100;
       const LIMIT2=1000;
-      const LIMIT3=50;
+      const LIMIT3=40;
       if (text.length > LIMIT) {
         // text = text.substring(0, LIMIT) + '...';
         text = text.slice(-LIMIT);
       }
 
-        text = text.replace(/[\/]/g,' ');
+        text = text.replace(/[\/]/g,' ').replace(/?.*/,'');
         let nearbylink="";
         // console.log(`queryparameters: ${search.helper.getQuery().filter}`);
         const currentfilter=search.helper.getQuery();
         const action=`javascript:window.search.helper.setQueryParameter('aroundLatLng', '${item.location}').setQueryParameter('aroundRadius', '2000m').search();`;
         // const action=`javascript:instantsearch.widgets.configure({ aroundLatLng: '${String(item.location)}', aroundRadius: '2000m'  });`;
         const actionclear=`javascript:window.search.helper.setQueryParameter('aroundLatLng').setQueryParameter('aroundRadius').search();`;
-        let loc=""
-        if (item.loc) {
-           loc=item.loc.substring(0,LIMIT3) 
+        if (text) {
+           text=text.substring(0,LIMIT3) 
         }
         if (item.location){
          nearbylink=`<a href="${action}">Nearby<!--${item.location}--></a> | 
@@ -297,7 +296,7 @@ search.addWidgets([
         return `
         <div>
           <div class="hit-name">
-            <a target="_blank" href="${loc}">${format.format(item.priceINT)} ${text}</a>
+            <a target="_blank" href="${item.loc}">${format.format(item.priceINT)} ${text}</a>
           </div>
           <div class="hit-authors">
           </div>
