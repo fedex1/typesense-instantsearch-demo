@@ -271,12 +271,12 @@ search.addWidgets([
       const LIMIT=100;
       const LIMIT2=1000;
       const LIMIT3=40;
+      text = text.replace(/[\/]/g,' ').replace(/\?.*/,'');
       if (text.length > LIMIT) {
         // text = text.substring(0, LIMIT) + '...';
         text = text.slice(-LIMIT);
       }
 
-        text = text.replace(/[\/]/g,' ').replace(/\?.*/,'');
         let nearbylink="";
         // console.log(`queryparameters: ${search.helper.getQuery().filter}`);
         const currentfilter=search.helper.getQuery();
