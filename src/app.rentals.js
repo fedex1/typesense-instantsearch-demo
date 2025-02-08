@@ -276,7 +276,7 @@ search.addWidgets([
         text = text.slice(-LIMIT);
       }
 
-        text = text.replace(/[\/]/g,' ').replace(/?.*/,'');
+        text = text.replace(/[\/]/g,' ').replace(/\?.*/,'');
         let nearbylink="";
         // console.log(`queryparameters: ${search.helper.getQuery().filter}`);
         const currentfilter=search.helper.getQuery();
