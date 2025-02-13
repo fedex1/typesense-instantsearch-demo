@@ -342,6 +342,7 @@ search.addWidgets([
         source=item._source;
         switch(source) {
         case "NYC_CONTRIBUTIONS":
+        case "NYC_EXPENDITURES":
         sourcelink=
           "https://www.nyccfb.info/FTMSearch/Home/FTMSearch";
         messagelink=`We cannot link directly to the NYC Campaign Finance Database. See <a target="_blank" href="https://youtu.be/EmXtxNBm_2w">step by step video</a> Please click the Source link and then the feedback link and ask for a proper way to link to public information`;
