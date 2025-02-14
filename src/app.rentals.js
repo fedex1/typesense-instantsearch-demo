@@ -55,7 +55,18 @@ function googleAnalyticsMiddleware() {
 
 // const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
 // all collection search only
-const TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
+
+// const TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
+let TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
+const profile=JSON.parse(localStorage.getItem("tidalforce-profile"))
+// debugger
+console.log("profile",profile)
+console.log("profile.readkey",profile.readkey)
+if (profile.readkey){
+TYPESENSE_API_KEY =  profile.readkey
+//alert(profile.readkey)
+}
+
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
