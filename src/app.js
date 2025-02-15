@@ -64,7 +64,7 @@ console.log("profile",profile)
 console.log("profile.readkey",profile.readkey)
 if (profile.readkey){
 TYPESENSE_API_KEY =  profile.readkey
-alert(profile.readkey)
+//alert(profile.readkey)
 }
 
 
@@ -345,7 +345,20 @@ search.addWidgets([
 
 search.use(googleAnalyticsMiddleware);
 
+window.onerror = function (message, file, line, col, error) {
+   alert("Error occurred: " + error.message);
+   return false;
+};
+window.addEventListener('unhandledrejection', function (e) {
+  alert("Error occurred: " + e.reason.message);
+})
+
+try {
 search.start();
+} catch(e){
+    console.log(e)
+    alert(e)
+}
 
 // search.helper.setQueryParameter('aroundLatLng', this.value).search();
 // search.helper.setQueryParameter('aroundLatLng', '39.930984, -75.1614913').setQueryParameter('aroundRadius', '1000m').search();
