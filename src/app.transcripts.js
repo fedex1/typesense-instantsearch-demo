@@ -53,7 +53,8 @@ import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
 // const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
 // all collection search only
-const TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
+// const TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
+const TYPESENSE_API_KEY =  "PlJ5v2KJBhU3ENl8xYLbe1dT9fIanKoO"
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
