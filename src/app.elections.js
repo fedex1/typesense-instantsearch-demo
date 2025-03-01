@@ -78,7 +78,8 @@ import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 // const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
 // all collection search only
 // const TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
-const TYPESENSE_API_KEY =  "c1b7IEAIWkAKm5OwKRNlq8h2Ac3qrULo";
+// const TYPESENSE_API_KEY =  "c1b7IEAIWkAKm5OwKRNlq8h2Ac3qrULo";
+const TYPESENSE_API_KEY =  "nWWQnzGThboepoIIy3uP6J2h28R6sVai"
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
