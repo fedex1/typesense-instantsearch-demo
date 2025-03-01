@@ -338,7 +338,14 @@ search.addWidgets([
 // OCCUPATION: .OCCUPATION, EMPNAME: .EMPNAME, EMPSTRNO: .EMPSTRNO, EMPSTRNAME: .EMPSTRNAME, EMPCITY: .EMPCITY, EMPSTATE: .EMPSTATE, MATCHAMNT: .MATCHAMNT
       let source="";
           let sourcelink="missing";
+          let latestlink="missing"
+
           let messagelink="";
+          try {
+          latestlink=`https://open.tidalforce.org/opendata/item/e9ss-239a/${encodeURIComponent(textfull)}?offset=0&pagesize=1&order=sched_date+desc#`
+          }
+          catch (e){
+          }
       try {
         // source=item._highlightResult._source.value;
         source=item._source;
@@ -383,7 +390,7 @@ search.addWidgets([
           ${TRANSFER_TYPE_DESC}
           </div>
           <div class="hit-publication-year">Updated ${item.SCHED_DATE}</div>
-          <div class="hit-rating"><b>Year</b> ${item._highlightResult.ELECTION_YEAR.value} <b>for</b> ${item._highlightResult.FILING_SCHED_DESC.value} <i><a target="_blank" href="${sourcelink}">Source</a></i></div>
+          <div class="hit-rating"><b>Year</b> ${item._highlightResult.ELECTION_YEAR.value} <b>for</b> ${item._highlightResult.FILING_SCHED_DESC.value} <i><a target="_blank" href="${sourcelink}">Source</a></i> <b><a target="_blank" href="${latestlink}">Latest</a></b></div>
           <div class="warn">${messagelink}</div>
           <div class="hit-rating">${item._highlightResult.FLNG_ENT_NAME.value} ${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value} ${item._highlightResult.FLNG_ENT_ADD1.value} ${item._highlightResult.FLNG_ENT_CITY.value} ${item._highlightResult.FLNG_ENT_ZIP.value}
           <div class="hit-employer">${JSON.stringify(employer,"",3)}</div>
@@ -463,6 +470,7 @@ const renderAutocomplete = (renderOptions, isFirstRender) => {
     const ul = document.createElement("ul");
 
     input.addEventListener("input", (event) => {
+      // console.log(`REFINE ${event.currentTarget.value}`)
       refine(event.currentTarget.value);
     });
 
