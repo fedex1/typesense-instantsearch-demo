@@ -3,7 +3,8 @@
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
 // const TYPESENSE_API_KEY = "NCF9nxUpkuuxRnRHwDOm2a1tmnzabjik";
-const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
+// const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
+const TYPESENSE_API_KEY = "7slc7YqPHBrLleUWTZiHWdsfizIfAO90";
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
     apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
@@ -29,10 +30,11 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   additionalSearchParameters: {
     // queryBy: 'title,authors',
     // queryBy: 'data.PropAddr,data.PropOwner',
-    queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
+    queryBy: "all.data.searchkey, all.data.id, all.data.BillYear, all.data.PropAddr, all.data.PropAssessed, all.data.PropOwes, all.data.PropOwner, all.data.description, all.data.eventid",
   },
 });
-const index = "algolia-store";
+// const index = "algolia-store";
+const index = "nycdelinquentproperty";
 const searchClient = typesenseInstantsearchAdapter.searchClient;
     const format = new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -62,7 +64,7 @@ search.addWidgets([
       item(item) {
       try {
       // let text=item._highlightResult.data.PropAddr.value;
-      let text=item.data.PropAddr;
+      let text=item.all.data.PropAddr;
       const LIMIT=20
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
@@ -71,13 +73,13 @@ search.addWidgets([
         <div>
           <!-- <img src="${item.image_url}" alt="${item.name}" height="100" /> -->
           <div class="hit-name">
-            <a target="_blank" href="https://app.tidalforce.org/usa/delinquent-property/${item._highlightResult.data.id.value}">${text}</a>
+            <a target="_blank" href="https://app.tidalforce.org/usa/delinquent-property/${item._highlightResult.all.data.id.value}">${text}</a>
           </div>
           <div class="hit-authors">
-          ${item._highlightResult.data.PropOwner?item._highlightResult.data.PropOwner.value:"no-owner"}
+          ${item._highlightResult.all.data.PropOwner?item._highlightResult.all.data.PropOwner.value:"no-owner"}
           </div>
-          <div class="hit-publication-year">${item.data.BillYear}</div>
-          <div class="hit-rating">Owes ${format.format(item.data.PropOwes)}</div>
+          <div class="hit-publication-year">${item.all.data.BillYear}</div>
+          <div class="hit-rating">Owes ${format.format(item.all.data.PropOwes)}</div>
         </div>
       `;
       } catch(e) {
@@ -95,11 +97,11 @@ search.addWidgets([
         items: [
             {
                 label: "Owes (asc)",
-                value: `${index}/sort/propOwes:asc`
+                value: `${index}/sort/PropOwesNUM:asc`
             },
             {
                 label: "Owes (desc)",
-                value: `${index}/sort/propOwes:desc`
+                value: `${index}/sort/PropOwesNUM:desc`
             },
         ],
     }),
