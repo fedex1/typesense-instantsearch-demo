@@ -103,6 +103,5 @@ search.addWidgets([
         ],
     }),
 ]);
-]);
 
 search.start();
