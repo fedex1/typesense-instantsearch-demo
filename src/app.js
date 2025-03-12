@@ -1,61 +1,9 @@
 /* global instantsearch */
-import debounce from 'lodash.debounce';
-function timeSince(date) {
 
-  var seconds = Math.floor((Date.now() - date) / 1000);
-
-  var interval = seconds / 31536000;
-
-  if (interval > 1) {
-    return Math.floor(interval) + " years";
-  }
-  interval = seconds / 2592000;
-  if (interval > 1) {
-    return Math.floor(interval) + " months";
-  }
-  interval = seconds / 86400;
-  if (interval > 1) {
-    return Math.floor(interval) + " days";
-  }
-  interval = seconds / 3600;
-  if (interval > 1) {
-    return Math.floor(interval) + " hours";
-  }
-  interval = seconds / 60;
-  if (interval > 1) {
-    return Math.floor(interval) + " minutes";
-  }
-  return Math.floor(seconds) + " seconds";
-}
-
-function googleAnalyticsMiddleware() {
-  const sendEventDebounced = debounce(() => {
-    // crazy but true leave as a for production
-    // gtag('event', 'page_view', {
-    a('event', 'page_view', {
-      page_location: window.location.pathname + window.location.search,
-    });
-  }, 3000);
-
-  return {
-    onStateChange() {
-      sendEventDebounced();
-    },
-    subscribe() {},
-    unsubscribe() {},
-  };
-}
-
-import { connectAutocomplete } from "instantsearch.js/es/connectors";
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
 // const TYPESENSE_API_KEY = "NCF9nxUpkuuxRnRHwDOm2a1tmnzabjik";
-
-// const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
-// all collection search only
-// const TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
-const TYPESENSE_API_KEY =  "PlJ5v2KJBhU3ENl8xYLbe1dT9fIanKoO"
-
+const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
     apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
@@ -79,141 +27,60 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    query_by: "text",
+    // queryBy: 'title,authors',
+    // queryBy: 'data.PropAddr,data.PropOwner',
+    queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
   },
 });
-
-const typesenseInstantsearchAdapterautocomplete = new TypesenseInstantSearchAdapter({
-  server: {
-    apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
-    nodes: [
-      {
-                        host: "tidalforce.share.zrok.io",
-                        port: "443",
-                        protocol: "https",
-      },
-    ],
-  },
-  // The following parameters are directly passed to Typesense's search API endpoint.
-  //  So you can pass any parameters supported by the search endpoint below.
-  //  queryBy is required.
-  //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
-  additionalSearchParameters: {
-    query_by: "_autocomplete",
-    // facet_by: "ORG_AMTint",
-  },
-});
-
 const searchClient = typesenseInstantsearchAdapter.searchClient;
-const searchClientautocomplete = typesenseInstantsearchAdapterautocomplete.searchClient;
-
     const format = new Intl.NumberFormat("en-US", {
         style: "currency",
         maximumFractionDigits: 0,
         minimumFractionDigits: 0,
         currency: "USD",
     });
-const index="transcripts";
 
 const search = instantsearch({
   searchClient,
-  indexName: index,
-  facets: ['*'],
-  routing: true,
+  // indexName: 'books',
+  indexName: 'algolia-store',
 });
 
+            // ${item._highlightResult.title.value}
+          // ${item._highlightResult.authors.map((a) => a.value).join(', ')}
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
-    placeholder: 'Type in a search term... ',
-     autofocus: true,
-    cssClasses: {
-      input: 'form-control',
-      loadingIcon: 'stroke-primary',
-    },
   }),
   instantsearch.widgets.configure({
-    hitsPerPage: 10,
+    hitsPerPage: 8,
   }),
-   instantsearch.widgets.clearRefinements({
-    container: '#clear-refinements',
-  }),
-
-    instantsearch.widgets.stats({
-      container: '#stats',
-    }),
-    instantsearch.widgets.refinementList({
-    container: '#refinement-list-videoid',
-    attribute: "videoid",
-    searchable: true,
-    limit: 10,
-    searchablePlaceholder: "Search for videoid",
-    }),
-    instantsearch.widgets.refinementList({
-    container: '#refinement-list-source',
-    attribute: "source",
-    searchable: true,
-    limit: 10,
-    searchablePlaceholder: "Search for Source",
-    }),
-
   instantsearch.widgets.hits({
-    transformItems(items, { results }) {
-    // console.log(`DEBUG: ${JSON.stringify(results)}`);
-    // console.log(`DEBUG: ${JSON.stringify(results)}`);
-    // console.log(`DEBUG: ${JSON.stringify(results.facet_counts)}`);
-    // console.log(`DEBUG: ${typeof(results)}`);
-    // .results[]|.facet_counts[]|.stats|.sum'
-
-    // console.log('debug transform results',results);
-    console.log('debug transform items', items);
-    document.title = `Video search: ${results.query.substring(0,30)} | Tidalforce`;
-    return items.map((item, index) => ({
-      ...item,
-      position: { index, page: results.page },
-      stats: results.facets_stats,
-      query: results.query,
-    }));
-  },
     container: '#hits',
     templates: {
       item(item) {
-         console.log("item",item);
       try {
-      // let text=item._highlightResult['Doc Date'].value;
-      const textfull=item.text;
-      const LIMIT2=1000;
-      let text=textfull;
-      const LIMIT=50
+      // let text=item._highlightResult.data.PropAddr.value;
+      let text=item.data.PropAddr;
+      const LIMIT=20
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
-          // ${JSON.stringify(item,"",3)}
-          const start=parseInt(item.start||0);
         return `
         <div>
+          <!-- <img src="${item.image_url}" alt="${item.name}" height="100" /> -->
           <div class="hit-name">
-            ${text}
+            <a target="_blank" href="https://app.tidalforce.org/usa/delinquent-property/${item._highlightResult.data.id.value}">${text}</a>
           </div>
           <div class="hit-authors">
-          <a target="_blank" href="https://youtu.be/${item.videoid}?t=${start}">Video share link</a>
+          ${item._highlightResult.data.PropOwner?item._highlightResult.data.PropOwner.value:"no-owner"}
           </div>
-          <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b></div>
-          <div class="hit-rating">Cache: ${item._highlightResult.text.value.substring(0,LIMIT2)}</div>
-          <div class="stats">(query "${item.query}")</div>
-          </div>
-          <!--
-          <div><pre>
-           ${JSON.stringify(item,"",3)}
-          </pre></div>
-          -->
-
+          <div class="hit-publication-year">${item.data.BillYear}</div>
+          <div class="hit-rating">Owes ${format.format(item.data.PropOwes)}</div>
         </div>
       `;
       } catch(e) {
-        //console.log(`TRACE: ${JSON.stringify(item)}`);
-        console.log("item",item);
-        return `<div>ISSUE ${e} ${JSON.stringify(item)}</div>`;
+        return `<div>ISSUE ${e} ${JSON.stringify(item.data)}</div>`;
       }
       }
       ,
@@ -222,19 +89,20 @@ search.addWidgets([
   instantsearch.widgets.pagination({
     container: '#pagination',
   }),
-  instantsearch.widgets.sortBy({
-    container: '#sort-by',
-       items: [
-      { label: "Date (asc)", value: `${index}/sort/lastmodINT:asc` },
-      { label: "Date (desc)", value: `${index}/sort/lastmodINT:desc` },
-    ],
-  }),
+    instantsearch.widgets.sortBy({
+        container: '#sort-by',
+        items: [
+            {
+                label: "Owes (asc)",
+                value: `${index}/sort/propOwes:asc`
+            },
+            {
+                label: "Owes (desc)",
+                value: `${index}/sort/propOwes:desc`
+            },
+        ],
+    }),
+]);
 ]);
 
-
-search.use(googleAnalyticsMiddleware);
-
 search.start();
-
-
-
