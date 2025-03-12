@@ -32,6 +32,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
   },
 });
+const index = "algolia-store";
 const searchClient = typesenseInstantsearchAdapter.searchClient;
     const format = new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -43,7 +44,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 const search = instantsearch({
   searchClient,
   // indexName: 'books',
-  indexName: 'algolia-store',
+  indexName: `${index}`,
 });
 
             // ${item._highlightResult.title.value}
