@@ -8,6 +8,7 @@
     "startrentals": "parcel rentals.html --port 3000",
     "startelections": "parcel elections.html --port 3000",
     "starttranscripts": "parcel transcripts.html --port 3000",
+    "startnycdelinquentproperty": "parcel nycdelinquentproperty.html --port 3000",
     "build": "parcel build index.html",
     "buildnycmortgage": "parcel build nycmortgage.html",
     "buildevents": "parcel build events.html",
