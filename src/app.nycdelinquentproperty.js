@@ -47,6 +47,7 @@ const search = instantsearch({
   searchClient,
   // indexName: 'books',
   indexName: `${index}`,
+  routing: true,
 });
 
             // ${item._highlightResult.title.value}
