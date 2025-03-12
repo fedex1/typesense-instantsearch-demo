@@ -89,6 +89,20 @@ search.addWidgets([
   instantsearch.widgets.pagination({
     container: '#pagination',
   }),
+    instantsearch.widgets.sortBy({
+        container: '#sort-by',
+        items: [
+            {
+                label: "Owes (asc)",
+                value: `${index}/sort/propOwes:asc`
+            },
+            {
+                label: "Owes (desc)",
+                value: `${index}/sort/propOwes:desc`
+            },
+        ],
+    }),
+]);
 ]);
 
 search.start();
