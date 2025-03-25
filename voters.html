@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4BBHW6DZKP"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4BBHW6DZKP');
+</script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="shortcut icon" href="./favicon.png">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7/themes/algolia-min.css">
+  <link rel="stylesheet" href="./src/index.css">
+  <link rel="stylesheet" href="./src/app.scss">
+
+  <title>Search for Voters</title>
+</head>
+
+<body>
+  <header class="header">
+    <h1 class="header-title">
+        Search for Voters Fast
+    </h1>
+  </header>
+  <a href="https://oxylabs.go2cloud.org/aff_c?offer_id=7&aff_id=1399&file_id=32&file_id=6"><img src="https://media.go2speed.org/brand/files/oxylabs/7/728x90-SS-start.png" width="728" height="90" border="0" /></a><img src="https://oxylabs.go2cloud.org/aff_i?offer_id=7&file_id=6&aff_id=1399&file_id=32" width="0" height="0" style="position:absolute;visibility:hidden;" border="0" />
+
+  <div class="container">
+    <div class="search-panel">
+      <div class="search-panel__results">
+        <a href="/maprentals" target="_blank">Search via map</a>
+        <br><b>Please note this database will be moved behind a pay wall.</b>
+        <div id="searchbox"></div>
+        
+        <div id="current-refinements"></div>
+        <div id="reset"><a href="/rentals">Reset</a></div>
+        <div id="lastmod-menu"></div>
+        <b>Sort</b>
+        <div id="sort-by"></div>
+        <div id="stats"></div>
+        <div id="hits"></div>
+
+        <div id="clear-refinements"></div>
+
+        <div id="refinement-list-price"></div>
+        <div id="refinement-list-beds"></div>
+        <div id="refinement-list-baths"></div>
+        <div id="refinement-list-source"></div>
+        <b>Power users only</b>
+        <i>Custom updated time slider</i>
+        <div id="lastmod-slider"></div>
+      </div>
+    </div>
+
+    <div id="pagination"></div>
+  </div>
+  <div>
+<footer>
+      <i>Property Search using Typesense and algolia library</i><br>
+      <i>credit to <a href="https://github.com/algolia/instantsearch.js"></i>
+        Typesense + InstantSearch.js
+      <br>
+      </a>
+    </p>
+        <a target="_blank" href="/terms">Terms</a> |&nbsp;
+        <a target="_blank" href="/privacy">Privacy</a> |&nbsp;
+        &copy; Copyright Tidalforce. All Rights Reserved.
+        </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.44.0"></script>
+  <script src="./src/app.js"></script>
+</body>
+
+</html>
