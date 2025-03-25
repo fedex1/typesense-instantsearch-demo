@@ -1,7 +1,8 @@
 #!
 # TARGET="rentals"
 # TARGET="elections"
-TARGET="nycdelinquentproperty"
+TARGET="voters"
+# TARGET="nycdelinquentproperty"
 cp src/app.${TARGET}.js src/app.js
 npm run clean
 npm run build${TARGET}
