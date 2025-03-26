@@ -191,7 +191,7 @@ const pasthour_seconds = Math.floor(new Date().getTime() / 1000) - (1 * 60 * 60)
 search.addWidgets([
     instantsearch.widgets.searchBox({
         container: '#searchbox',
-        placeholder: "Search for zip, address, etc.",
+        placeholder: "Search for name, zip, address, etc.",
         autofocus: true,
     }),
     instantsearch.widgets.configure({

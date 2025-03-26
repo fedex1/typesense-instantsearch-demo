@@ -263,7 +263,7 @@ search.addWidgets([
                     return `
         <div>
           <div class="hit-name">
-            <a target="_blank" href="${item.loc}">${format.format(item.priceINT)} ${text}</a>
+            <a target="_blank" href="${item.loc}">${text}</a>
           </div>
           <div class="hit-authors">
           </div>
