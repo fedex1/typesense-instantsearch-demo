@@ -198,7 +198,7 @@ search.addWidgets([
         hitsPerPage: 10,
         // filters: "priceINT:[1000..6000]",
         // filters: "priceINT:[1000..6000] && lastmodINT:>1724008973",
-        filters: `priceINT:[1000..6000] && lastmodINT:>${past30days_seconds}`,
+        // filters: `priceINT:[1000..6000] && lastmodINT:>${past30days_seconds}`,
         // aroundLatLng: '39.930984, -75.1614913',
         // aroundRadius: 1000,
     }),
@@ -208,80 +208,13 @@ search.addWidgets([
     instantsearch.widgets.stats({
         container: '#stats',
     }),
-    instantsearch.widgets.refinementList({
-        container: '#refinement-list-price',
-        attribute: "priceINT",
-        searchable: true,
-        limit: 10,
-        searchablePlaceholder: "Search for Price",
-    }),
-    instantsearch.widgets.refinementList({
-        container: '#refinement-list-beds',
-        attribute: "beds",
-        searchable: true,
-        limit: 10,
-        searchablePlaceholder: "Search for beds",
-    }),
-    instantsearch.widgets.refinementList({
-        container: '#refinement-list-baths',
-        attribute: "baths",
-        searchable: true,
-        limit: 10,
-        searchablePlaceholder: "Search for baths",
-    }),
-    instantsearch.widgets.refinementList({
-        container: '#refinement-list-source',
-        attribute: "source",
-        searchable: true,
-        limit: 10,
-        searchablePlaceholder: "Search for Source",
-    }),
-    instantsearch.widgets.numericMenu({
-        container: '#lastmod-menu',
-        attribute: 'lastmodINT',
-        items: [{
-                label: 'Any time'
-            },
-            {
-                label: 'Past hour',
-                start: pasthour_seconds
-            },
-            {
-                label: 'Past 24 hours',
-                start: past24hours_seconds
-            },
-            {
-                label: 'Past week',
-                start: past7days_seconds
-            },
-            {
-                label: 'Past month',
-                start: past30days_seconds
-            },
-        ],
-    }),
-    instantsearch.widgets.rangeSlider({
-        container: '#lastmod-slider',
-        attribute: 'lastmodINT', // The attribute you want to filter on
-        min: past30days_seconds, // Minimum value for the slider
-        max: now_seconds, // Maximum value for the slider
-        // tooltips: false,
-        tooltips: {
-            format: function(formattedValue) {
-                //debugger;
-                const range = new Date(formattedValue * 1000);
-                console.log(`range: ${range}`);
-                return range;
-            }
-        },
-    }),
     instantsearch.widgets.hits({
         transformItems(items, {
             results
         }) {
             // console.log('debug transform items', items);
             // console.log('debug transform results', results);
-            document.title = `Rental search: ${results.query.substring(0,30)} | Tidalforce`;
+            document.title = `Voter search: ${results.query.substring(0,30)} | Tidalforce`;
             return items.map((item, index) => ({
                 ...item,
                 position: {
@@ -299,7 +232,7 @@ search.addWidgets([
                 try {
                     // let text=item._highlightResult['Doc Date'].value;
                     // let text=item.loc;
-                    let text = item.filter || item.id;
+                    let text = `${item.FIRSTNAME} ${item.LASTNAME}` || item.id;
                     const LIMIT = 100;
                     const LIMIT2 = 1000;
                     const LIMIT3 = 40;
@@ -325,6 +258,8 @@ search.addWidgets([
                             nearbylink += " <b>SELECTED</b>";
                         }
                     }
+          // <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
+          // <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''}) Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
                     return `
         <div>
           <div class="hit-name">
@@ -333,8 +268,6 @@ search.addWidgets([
           <div class="hit-authors">
           </div>
           <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b> ${item.lastmod}</div>
-          <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
-          <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''}) Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
         </div>
       `;
                 } catch (e) {

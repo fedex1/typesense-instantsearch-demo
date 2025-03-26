@@ -232,7 +232,7 @@ search.addWidgets([
                 try {
                     // let text=item._highlightResult['Doc Date'].value;
                     // let text=item.loc;
-                    let text = item.filter || item.id;
+                    let text = `${item.FIRSTNAME} ${item.LASTNAME}` || item.id;
                     const LIMIT = 100;
                     const LIMIT2 = 1000;
                     const LIMIT3 = 40;
@@ -258,16 +258,16 @@ search.addWidgets([
                             nearbylink += " <b>SELECTED</b>";
                         }
                     }
+          // <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
+          // <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''}) Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
                     return `
         <div>
           <div class="hit-name">
-            <a target="_blank" href="${item.loc}">${format.format(item.priceINT)} ${text}</a>
+            <a target="_blank" href="${item.loc}">${text}</a>
           </div>
           <div class="hit-authors">
           </div>
           <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b> ${item.lastmod}</div>
-          <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
-          <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''}) Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
         </div>
       `;
                 } catch (e) {
