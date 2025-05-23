@@ -98,7 +98,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         // queryBy: 'title,authors',
         // queryBy: 'data.PropAddr,data.PropOwner',
         // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-        query_by: "FIRSTNAME,LASTNAME",
+        query_by: "snippet",
         // filter_by: "priceINT:[1000..6000]",
     },
 });
@@ -232,7 +232,7 @@ search.addWidgets([
                 try {
                     // let text=item._highlightResult['Doc Date'].value;
                     // let text=item.loc;
-                    let text = `${item.FIRSTNAME} ${item.LASTNAME}` || item.id;
+                    let text = `${item.parent.FIRSTNAME} ${item.parent.LASTNAME}` || item.id;
                     const LIMIT = 100;
                     const LIMIT2 = 1000;
                     const LIMIT3 = 40;
@@ -267,7 +267,9 @@ search.addWidgets([
           </div>
           <div class="hit-authors">
           </div>
+          <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)}</div>
           <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b> ${item.lastmod}</div>
+          <div class="stats">(query "${item.query}" Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
         </div>
       `;
                 } catch (e) {
