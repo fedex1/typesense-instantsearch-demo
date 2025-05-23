@@ -349,12 +349,17 @@ search.addWidgets([
       try {
         // source=item._highlightResult._source.value;
         source=item._source;
+        // https://propmarketing.share.zrok.io/opendata/all/us/?metaid=qxzj-vkn2
         switch(source) {
         case "NYC_CONTRIBUTIONS":
-        case "NYC_EXPENDITURES":
         sourcelink=
-          "https://www.nyccfb.info/FTMSearch/Home/FTMSearch";
-        messagelink=`We cannot link directly to the NYC Campaign Finance Database. See <a target="_blank" href="https://youtu.be/EmXtxNBm_2w">step by step video</a> Please click the Source link and then the feedback link and ask for a proper way to link to public information`;
+          `https://data.cityofnewyork.us/resource/rjkp-yttg.json?refno=${item.TRANS_NUMBER}`;
+        break;
+        case "NYC_EXPENDITURES":
+        // sourcelink="https://www.nyccfb.info/FTMSearch/Home/FTMSearch";
+        // messagelink=`We cannot link directly to the NYC Campaign Finance Database. See <a target="_blank" href="https://youtu.be/EmXtxNBm_2w">step by step video</a> Please click the Source link and then the feedback link and ask for a proper way to link to public information`;
+        sourcelink=
+          `https://data.cityofnewyork.us/resource/qxzj-vkn2.json?refno=${item.TRANS_NUMBER}`;
         break;
         default:
         sourcelink=

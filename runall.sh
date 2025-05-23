@@ -1,7 +1,7 @@
 #!
 # TARGET="rentals"
-# TARGET="elections"
-TARGET="voters"
+TARGET="elections"
+# TARGET="voters"
 # TARGET="nycdelinquentproperty"
 cp src/app.${TARGET}.js src/app.js
 npm run clean
