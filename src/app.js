@@ -337,29 +337,27 @@ search.addWidgets([
       let employer= {OCCUPATION: item.OCCUPATION, EMPNAME: item.EMPNAME, EMPSTRNO: item.EMPSTRNO, EMPSTRNAME: item.EMPSTRNAME, EMPCITY: item.EMPCITY, EMPSTATE: item.EMPSTATE, MATCHAMNT: item.MATCHAMNT};
 // OCCUPATION: .OCCUPATION, EMPNAME: .EMPNAME, EMPSTRNO: .EMPSTRNO, EMPSTRNAME: .EMPSTRNAME, EMPCITY: .EMPCITY, EMPSTATE: .EMPSTATE, MATCHAMNT: .MATCHAMNT
       let source="";
-          let sourcelink="missing";
+          let sourcelink="missing"
           let latestlink="missing"
+          let socrataid=""
 
-          let messagelink="";
-          try {
-          latestlink=`https://open.tidalforce.org/opendata/item/e9ss-239a/${encodeURIComponent(textfull)}?offset=0&pagesize=1&order=sched_date+desc#`
-          }
-          catch (e){
-          }
+          let messagelink=""
       try {
         // source=item._highlightResult._source.value;
         source=item._source;
         // https://propmarketing.share.zrok.io/opendata/all/us/?metaid=qxzj-vkn2
         switch(source) {
         case "NYC_CONTRIBUTIONS":
+        socrataid="rjkp-yttg"
         sourcelink=
-          `https://data.cityofnewyork.us/resource/qxzj-vkn2.json?refno=${item.TRANS_NUMBER}`;
+          `https://data.cityofnewyork.us/resource/${socrataid}.json?refno=${item.TRANS_NUMBER}`;
         break;
         case "NYC_EXPENDITURES":
         // sourcelink="https://www.nyccfb.info/FTMSearch/Home/FTMSearch";
         // messagelink=`We cannot link directly to the NYC Campaign Finance Database. See <a target="_blank" href="https://youtu.be/EmXtxNBm_2w">step by step video</a> Please click the Source link and then the feedback link and ask for a proper way to link to public information`;
+        socrataid="qxzj-vkn2"
         sourcelink=
-          `https://data.cityofnewyork.us/resource/qxzj-vkn2.json?refno=${item.TRANS_NUMBER}`;
+          `https://data.cityofnewyork.us/resource/${socrataid}.json?refno=${item.TRANS_NUMBER}`;
         break;
         default:
         sourcelink=
@@ -368,6 +366,11 @@ search.addWidgets([
         }
       } catch(e){
       }
+          try {
+          latestlink=`https://open.tidalforce.org/opendata/item/${socrataid}/${encodeURIComponent(textfull)}?offset=0&pagesize=1&order=sched_date+desc#`
+          }
+          catch (e){
+          }
 
       let TRANSFER_TYPE_DESC="";
       try {
