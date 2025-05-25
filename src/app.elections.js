@@ -281,6 +281,14 @@ search.addWidgets([
     }),
 
     instantsearch.widgets.refinementList({
+    container: '#refinement-list-entity',
+    attribute: "FLNG_ENT_NAME",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Entity",
+    }),
+
+    instantsearch.widgets.refinementList({
     container: '#refinement-list-candidate',
     attribute: "CAND_COMM_NAME",
     searchable: true,

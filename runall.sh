@@ -1,4 +1,5 @@
 #!
+nvm use v18.18.2
 # TARGET="rentals"
 TARGET="elections"
 # TARGET="voters"
