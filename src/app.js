@@ -98,7 +98,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         // queryBy: 'title,authors',
         // queryBy: 'data.PropAddr,data.PropOwner',
         // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-        query_by: "snippet",
+        query_by: "snippet,VoterHistory",
         // filter_by: "priceINT:[1000..6000]",
     },
 });
@@ -282,6 +282,7 @@ search.addWidgets([
           <div class="hit-authors">
           </div>
           <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)}</div>
+          <div class="hit-rating">Cache: ${item._highlightResult.VoterHistory.value.substring(0,LIMIT2)}</div>
           <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b> ${item.lastmod}</div>
           <div class="stats">(query "${item.query}" Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
         </div>
