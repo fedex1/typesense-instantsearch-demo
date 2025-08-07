@@ -208,13 +208,13 @@ search.addWidgets([
     instantsearch.widgets.stats({
         container: '#stats',
     }),
-//     instantsearch.widgets.refinementList({
-//     container: '#refinement-list-ad',
-//     attribute: "AD",
-//     searchable: true,
-//     limit: 10,
-//     searchablePlaceholder: "Search for Assembly District",
-//     }),
+     instantsearch.widgets.refinementList({
+     container: '#refinement-list-ad',
+     attribute: "AD",
+     searchable: true,
+     limit: 10,
+     searchablePlaceholder: "Search for Assembly District",
+     }),
     instantsearch.widgets.hits({
         transformItems(items, {
             results
