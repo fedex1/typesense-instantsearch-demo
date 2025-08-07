@@ -208,6 +208,13 @@ search.addWidgets([
     instantsearch.widgets.stats({
         container: '#stats',
     }),
+     instantsearch.widgets.refinementList({
+     container: '#refinement-list-ad',
+     attribute: "AD",
+     searchable: true,
+     limit: 10,
+     searchablePlaceholder: "Search for Assembly District",
+     }),
     instantsearch.widgets.hits({
         transformItems(items, {
             results
@@ -232,7 +239,7 @@ search.addWidgets([
                 try {
                     // let text=item._highlightResult['Doc Date'].value;
                     // let text=item.loc;
-                    let text = `${item.parent.FIRSTNAME} ${item.parent.LASTNAME}` || item.id;
+                    let text = `${item.FIRSTNAME} ${item.LASTNAME}` || item.id;
                     const LIMIT = 100;
                     const LIMIT2 = 1000;
                     const LIMIT3 = 40;
