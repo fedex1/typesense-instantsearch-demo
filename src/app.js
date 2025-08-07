@@ -312,12 +312,12 @@ search.addWidgets([
                 value: `${index}/sort/lastmodINT:desc`
             },
             {
-                label: "Age (asc)",
-                value: `${index}/sort/DOB:asc`
+                label: "Age (youngest)",
+                value: `${index}/sort/DOB:desc`
             },
             {
-                label: "Age (desc)",
-                value: `${index}/sort/DOB:desc`
+                label: "Age (oldest)",
+                value: `${index}/sort/DOB:asc`
             },
         ],
     }),
