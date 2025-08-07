@@ -217,7 +217,7 @@ search.addWidgets([
      }),
      instantsearch.widgets.refinementList({
      container: '#refinement-list-ed',
-     attribute: "AD",
+     attribute: "ED",
      searchable: true,
      limit: 10,
      searchablePlaceholder: "Search for Election District",

@@ -215,6 +215,13 @@ search.addWidgets([
      limit: 10,
      searchablePlaceholder: "Search for Assembly District",
      }),
+     instantsearch.widgets.refinementList({
+     container: '#refinement-list-ed',
+     attribute: "AD",
+     searchable: true,
+     limit: 10,
+     searchablePlaceholder: "Search for Election District",
+     }),
     instantsearch.widgets.hits({
         transformItems(items, {
             results
