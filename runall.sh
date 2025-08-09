@@ -1,8 +1,8 @@
 #!
 nvm use v18.18.2
 # TARGET="rentals"
-TARGET="elections"
-# TARGET="voters"
+# TARGET="elections"
+TARGET="voters"
 # TARGET="nycdelinquentproperty"
 cp src/app.${TARGET}.js src/app.js
 npm run clean

@@ -222,6 +222,13 @@ search.addWidgets([
      limit: 10,
      searchablePlaceholder: "Search for Election District",
      }),
+     instantsearch.widgets.refinementList({
+     container: '#refinement-list-enrollment',
+     attribute: "ENROLLMENT",
+     searchable: true,
+     limit: 10,
+     searchablePlaceholder: "Search for Enrollment",
+     }),
     instantsearch.widgets.hits({
         transformItems(items, {
             results
@@ -250,6 +257,11 @@ search.addWidgets([
                     const LIMIT = 100;
                     const LIMIT2 = 1000;
                     const LIMIT3 = 40;
+
+                    let voterhistory="No History"
+                    if (item.VoterHistory){
+                        voterhistory=item._highlightResult.VoterHistory.value.substring(0,LIMIT2)
+                    }
                     text = text.replace(/[\/]/g, ' ').replace(/\?.*/, '');
                     if (text.length > LIMIT) {
                         // text = text.substring(0, LIMIT) + '...';
@@ -274,6 +286,7 @@ search.addWidgets([
                     }
           // <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
           // <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''}) Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
+          // <div class="hit-rating"><b>VoterHistory:</b> ${item._highlightResult.VoterHistory.value.substring(0,LIMIT2)}</div>
                     return `
         <div>
           <div class="hit-name">
@@ -282,7 +295,7 @@ search.addWidgets([
           <div class="hit-authors">
           </div>
           <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)}</div>
-          <div class="hit-rating">Cache: ${item._highlightResult.VoterHistory.value.substring(0,LIMIT2)}</div>
+          <div class="hit-rating"><b>VoterHistory:</b> ${voterhistory}</div>
           <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b> ${item.lastmod}</div>
           <div class="stats">(query "${item.query}" Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
         </div>
