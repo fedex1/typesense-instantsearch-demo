@@ -297,6 +297,15 @@ search.addWidgets([
     }),
 
     instantsearch.widgets.refinementList({
+    container: '#refinement-list-matchamount',
+    attribute: "MATCHAMNT",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Taxpayer Match",
+    }),
+
+
+    instantsearch.widgets.refinementList({
     container: '#refinement-list',
     attribute: "ORG_AMTint",
     searchable: true,
