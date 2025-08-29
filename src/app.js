@@ -65,7 +65,7 @@ host: "s68pi2uqba0fhj4rp-1.a1.typesense.net",
     // queryBy: 'title,authors',
     // queryBy: 'data.PropAddr,data.PropOwner',
     // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-    query_by: "text",
+    query_by: "text,author",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
@@ -119,6 +119,7 @@ search.addWidgets([
           </div>
           <div class="hit-authors">
            <div class="hit-rating">${item._highlightResult.text.value}</div>
+           <div class="hit-rating">${item._highlightResult.author.value} <img width="50" src="https://unavatar.io/x/${item.author}"></div>
            <div class="hit-publication-year">Created <b>${timeSince(item.createdINT)} ago</b> ${item.created_at}</div>
           </div>
         </div>
