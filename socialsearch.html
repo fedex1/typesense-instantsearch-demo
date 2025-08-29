@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="shortcut icon" href="./favicon.png">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7/themes/algolia-min.css">
+  <link rel="stylesheet" href="./src/index.css">
+  <link rel="stylesheet" href="./src/app.scss">
+
+  <title>Search for Event Participants</title>
+</head>
+
+<body>
+  <header class="header">
+    <h1 class="header-title">
+        Search for Event Participants Fast
+    </h1>
+  </header>
+
+  <div class="container">
+    <div class="search-panel">
+      <div class="search-panel__results">
+        <div id="searchbox"></div>
+        <b>Sort</b>
+        <div id="sort-by"></div>
+        <div id="stats"></div>
+        <div id="hits"></div>
+      </div>
+    </div>
+
+    <div id="pagination"></div>
+  </div>
+  <div>
+<footer>
+      <i>Property Search using Typesense and algolia library</i><br>
+      <i>credit to <a href="https://github.com/algolia/instantsearch.js"></i>
+        Typesense + InstantSearch.js
+      <br>
+      </a>
+    </p>
+        <a target="_blank" href="/terms">Terms</a> |&nbsp;
+        <a target="_blank" href="/privacy">Privacy</a> |&nbsp;
+        &copy; Copyright Tidalforce. All Rights Reserved.
+        </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4.44.0"></script>
+  <script src="./src/app.js"></script>
+</body>
+
+</html>
