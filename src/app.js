@@ -4,7 +4,8 @@
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
 
 function timeSince(date) {
-
+    // console.log(`date: ${date}`)
+    date *= 1000
   var seconds = Math.floor((Date.now() - date) / 1000);
 
   var interval = seconds / 31536000;
@@ -108,17 +109,18 @@ search.addWidgets([
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
+          // <!-- <img src="${item.image_url}" alt="${item.id}" height="100" /> -->
+          // <div class="hit-publication-year">Updated <b>${timeSince(item.changedint)} ago</b> ${item.changed}</div>
+          // <div class="hit-rating">Age ${item.profile.age} for ${item._highlightResult.text.value}</div>
         return `
         <div>
-          <!-- <img src="${item.image_url}" alt="${item.id}" height="100" /> -->
           <div class="hit-name">
-            <!--<a target="_blank" href="https://prop.tidalforce.org/search2/${text}">${text}</a> -->
-            ${text}
+            <a target="_blank" href="${item.id}">${text}</a>
           </div>
           <div class="hit-authors">
+           <div class="hit-rating">${item._highlightResult.text.value}</div>
+           <div class="hit-publication-year">Created <b>${timeSince(item.createdINT)} ago</b> ${item.created_at}</div>
           </div>
-          <div class="hit-publication-year">Updated <b>${timeSince(item.changedint)} ago</b> ${item.changed}</div>
-          <div class="hit-rating">Age ${item.profile.age} for ${item._highlightResult.profile.name.value}</div>
         </div>
       `;
       } catch(e) {
@@ -136,8 +138,8 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Date (asc)", value: `${index}/sort/changedint:asc` },
-      { label: "Date (desc)", value: `${index}/sort/changedint:desc` },
+      { label: "Date (asc)", value: `${index}/sort/createdINT:asc` },
+      { label: "Date (desc)", value: `${index}/sort/createdINT:desc` },
     ],
   }),
 ]);
