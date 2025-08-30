@@ -1,11 +1,7 @@
 /* global instantsearch */
-// {"first_name":"Crystal","last_name":"Devitt","addresses":{},"gender":"female","age":46,"birth_date":"1977-11-25","email":"monchiquita@gmail.com","name":"Crystal Devitt"}
-
-import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
-
+import debounce from 'lodash.debounce';
 function timeSince(date) {
-    // console.log(`date: ${date}`)
-    date *= 1000
+
   var seconds = Math.floor((Date.now() - date) / 1000);
 
   var interval = seconds / 31536000;
@@ -32,11 +28,33 @@ function timeSince(date) {
   return Math.floor(seconds) + " seconds";
 }
 
+function googleAnalyticsMiddleware() {
+  const sendEventDebounced = debounce(() => {
+    // crazy but true leave as a for production
+    // gtag('event', 'page_view', {
+    a('event', 'page_view', {
+      page_location: window.location.pathname + window.location.search,
+    });
+  }, 3000);
+
+  return {
+    onStateChange() {
+      sendEventDebounced();
+    },
+    subscribe() {},
+    unsubscribe() {},
+  };
+}
+
+import { connectAutocomplete } from "instantsearch.js/es/connectors";
+import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
+
 // const TYPESENSE_API_KEY = "NCF9nxUpkuuxRnRHwDOm2a1tmnzabjik";
 
 // const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
 // all collection search only
-const TYPESENSE_API_KEY =  "x7nAh5dmQe4Rb3LVX0Jc0YGZDIEha4yg"
+// const TYPESENSE_API_KEY =  "GGvyHonOH3SQBNNhkyCLr6XnuXFJNHIw";
+const TYPESENSE_API_KEY =  "PlJ5v2KJBhU3ENl8xYLbe1dT9fIanKoO"
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
@@ -50,8 +68,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         */
                         // host: "1ztriixxhgxh.share.zrok.io",
                         // host: "8iv15rppo02e.share.zrok.io",
-                        // host: "tidalforce.share.zrok.io",
-host: "s68pi2uqba0fhj4rp-1.a1.typesense.net",
+                        host: "tidalforce.share.zrok.io",
                         port: "443",
                         protocol: "https",
       },
@@ -62,66 +79,135 @@ host: "s68pi2uqba0fhj4rp-1.a1.typesense.net",
   //  queryBy is required.
   //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
-    // queryBy: 'title,authors',
-    // queryBy: 'data.PropAddr,data.PropOwner',
-    // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-    query_by: "text,author",
+    query_by: "text",
   },
 });
+
+const typesenseInstantsearchAdapterautocomplete = new TypesenseInstantSearchAdapter({
+  server: {
+    apiKey: TYPESENSE_API_KEY, // Be sure to use an API key that only allows searches, in production
+    nodes: [
+      {
+                        host: "tidalforce.share.zrok.io",
+                        port: "443",
+                        protocol: "https",
+      },
+    ],
+  },
+  // The following parameters are directly passed to Typesense's search API endpoint.
+  //  So you can pass any parameters supported by the search endpoint below.
+  //  queryBy is required.
+  //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
+  additionalSearchParameters: {
+    query_by: "_autocomplete",
+    // facet_by: "ORG_AMTint",
+  },
+});
+
 const searchClient = typesenseInstantsearchAdapter.searchClient;
+const searchClientautocomplete = typesenseInstantsearchAdapterautocomplete.searchClient;
+
     const format = new Intl.NumberFormat("en-US", {
         style: "currency",
         maximumFractionDigits: 0,
         minimumFractionDigits: 0,
         currency: "USD",
     });
-const index="twitter-history";
+const index="transcripts";
 
 const search = instantsearch({
   searchClient,
-  // indexName: 'books',
-  // indexName: 'algolia-store',
   indexName: index,
+  facets: ['*'],
   routing: true,
 });
 
-            // ${item._highlightResult.title.value}
-          // ${item._highlightResult.authors.map((a) => a.value).join(', ')}
 search.addWidgets([
   instantsearch.widgets.searchBox({
     container: '#searchbox',
+    placeholder: 'Type in a search term... ',
+     autofocus: true,
+    cssClasses: {
+      input: 'form-control',
+      loadingIcon: 'stroke-primary',
+    },
   }),
   instantsearch.widgets.configure({
     hitsPerPage: 10,
   }),
+   instantsearch.widgets.clearRefinements({
+    container: '#clear-refinements',
+  }),
+
     instantsearch.widgets.stats({
       container: '#stats',
     }),
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list-videoid',
+    attribute: "videoid",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for videoid",
+    }),
+    instantsearch.widgets.refinementList({
+    container: '#refinement-list-source',
+    attribute: "source",
+    searchable: true,
+    limit: 10,
+    searchablePlaceholder: "Search for Source",
+    }),
+
   instantsearch.widgets.hits({
+    transformItems(items, { results }) {
+    // console.log(`DEBUG: ${JSON.stringify(results)}`);
+    // console.log(`DEBUG: ${JSON.stringify(results)}`);
+    // console.log(`DEBUG: ${JSON.stringify(results.facet_counts)}`);
+    // console.log(`DEBUG: ${typeof(results)}`);
+    // .results[]|.facet_counts[]|.stats|.sum'
+
+    // console.log('debug transform results',results);
+    console.log('debug transform items', items);
+    document.title = `Video search: ${results.query.substring(0,30)} | Tidalforce`;
+    return items.map((item, index) => ({
+      ...item,
+      position: { index, page: results.page },
+      stats: results.facets_stats,
+      query: results.query,
+    }));
+  },
     container: '#hits',
     templates: {
       item(item) {
-        // console.log("item",item);
+         console.log("item",item);
       try {
       // let text=item._highlightResult['Doc Date'].value;
-      let text=item.text;
-      const LIMIT=20
+      const textfull=item.text;
+      const LIMIT2=1000;
+      let text=textfull;
+      const LIMIT=50
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
-          // <!-- <img src="${item.image_url}" alt="${item.id}" height="100" /> -->
-          // <div class="hit-publication-year">Updated <b>${timeSince(item.changedint)} ago</b> ${item.changed}</div>
-          // <div class="hit-rating">Age ${item.profile.age} for ${item._highlightResult.text.value}</div>
+          // ${JSON.stringify(item,"",3)}
+          const start=parseInt(item.start||0);
         return `
         <div>
           <div class="hit-name">
-            <a target="_blank" href="${item.id}">${text}</a>
+            ${text}
           </div>
           <div class="hit-authors">
-           <div class="hit-rating">${item._highlightResult.text.value}</div>
-           <div class="hit-rating">${item._highlightResult.author.value} <img width="50" src="https://unavatar.io/x/${item.author}"></div>
-           <div class="hit-publication-year">Created <b>${timeSince(item.createdINT)} ago</b> ${item.created_at}</div>
+          <a target="_blank" href="https://youtu.be/${item.videoid}?t=${start}">Video share link</a>
           </div>
+          <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b></div>
+          <div class="hit-rating">Cache: ${item._highlightResult.text.value.substring(0,LIMIT2)}</div>
+          <div class="stats">(query "${item.query}")</div>
+          </div>
+          <!--
+          <div><pre>
+           ${JSON.stringify(item,"",3)}
+          </pre></div>
+          -->
+
         </div>
       `;
       } catch(e) {
@@ -139,10 +225,16 @@ search.addWidgets([
   instantsearch.widgets.sortBy({
     container: '#sort-by',
        items: [
-      { label: "Date (asc)", value: `${index}/sort/createdINT:asc` },
-      { label: "Date (desc)", value: `${index}/sort/createdINT:desc` },
+      { label: "Date (asc)", value: `${index}/sort/lastmodINT:asc` },
+      { label: "Date (desc)", value: `${index}/sort/lastmodINT:desc` },
     ],
   }),
 ]);
 
+
+search.use(googleAnalyticsMiddleware);
+
 search.start();
+
+
+
