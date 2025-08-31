@@ -36,6 +36,7 @@ function timeSince(date) {
 }
 
 function googleAnalyticsMiddleware() {
+   let timer;
     const sendEventDebounced = debounce(() => {
         // crazy but true leave as a for production
         // gtag('event', 'page_view', {
@@ -43,7 +44,24 @@ function googleAnalyticsMiddleware() {
             page_location: window.location.pathname + window.location.search,
         });
     }, 3000);
-
+/*
+const sendEventDebounced = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          // Send a page_view event to Google Analytics
+          a('event', 'page_view', {
+            page_location: window.location.pathname + window.location.search,
+          });
+          // You can also send custom events for search queries or results
+          // For example:
+           a('event', 'search', {
+             search_term: instantsearch.helper.state.query,
+             event_category: 'Typesense Search',
+             event_label: 'Search Query',
+           });
+        }, 3000); // Debounce the event to avoid excessive hits
+      };
+*/
     return {
         onStateChange() {
             sendEventDebounced();
