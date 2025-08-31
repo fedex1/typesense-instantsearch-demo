@@ -2,6 +2,7 @@
 // {"first_name":"Crystal","last_name":"Devitt","addresses":{},"gender":"female","age":46,"birth_date":"1977-11-25","email":"monchiquita@gmail.com","name":"Crystal Devitt"}
 
 import TypesenseInstantSearchAdapter from 'typesense-instantsearch-adapter';
+import debounce from 'lodash.debounce';
 
 function timeSince(date) {
     // console.log(`date: ${date}`)
@@ -30,6 +31,24 @@ function timeSince(date) {
     return Math.floor(interval) + " minutes";
   }
   return Math.floor(seconds) + " seconds";
+}
+
+function googleAnalyticsMiddleware() {
+    const sendEventDebounced = debounce(() => {
+        // crazy but true leave as a for production
+        // gtag('event', 'page_view', {
+        a('event', 'page_view', {
+            page_location: window.location.pathname + window.location.search,
+        });
+    }, 3000);
+
+    return {
+        onStateChange() {
+            sendEventDebounced();
+        },
+        subscribe() {},
+        unsubscribe() {},
+    };
 }
 
 // const TYPESENSE_API_KEY = "NCF9nxUpkuuxRnRHwDOm2a1tmnzabjik";
@@ -145,4 +164,18 @@ search.addWidgets([
   }),
 ]);
 
-search.start();
+search.use(googleAnalyticsMiddleware);
+
+window.onerror = function(message, file, line, col, error) {
+    alert("Error occurred: " + error.message + ". that's all we know. Please wait 5 minutes before retrying.");
+    return false;
+};
+window.addEventListener('unhandledrejection', function(e) {
+    alert("Error occurred: " + e.reason.message  + ". that's all we know. Please wait 5 minutes before retrying.");
+})
+try {
+    search.start();
+} catch (e) {
+    console.log(e)
+    alert("Error occurred: " + e  + ". that's all we know. Please wait 5 minutes before retrying.");
+}
