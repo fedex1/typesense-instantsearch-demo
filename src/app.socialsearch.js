@@ -137,6 +137,22 @@ search.addWidgets([
       container: '#stats',
     }),
   instantsearch.widgets.hits({
+        transformItems(items, {
+            results
+        }) {
+            // console.log('debug transform items', items);
+            // console.log('debug transform results', results);
+            document.title = `Social search: ${results.query.substring(0,30)} | Tidalforce`;
+            return items.map((item, index) => ({
+                ...item,
+                position: {
+                    index,
+                    page: results.page
+                },
+                stats: results.facets_stats,
+                query: results.query,
+            }));
+        },
     container: '#hits',
     templates: {
       item(item) {
@@ -194,11 +210,13 @@ window.addEventListener('unhandledrejection', function(e) {
     alert("Error occurred: " + e.reason.message  + ". that's all we know. Please wait 5 minutes before retrying.");
 })
 try {
+/*
 search.on('render', (renderOptions) => {
   const query = renderOptions.results.query;
   const pageTitle = query ? `Search for "${query}" | Tidalforce` : `Social Search | Tidalforce`;
   document.title = pageTitle;
 });
+*/
     search.start();
 } catch (e) {
     console.log(e)
