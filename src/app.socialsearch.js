@@ -136,6 +136,13 @@ search.addWidgets([
     instantsearch.widgets.stats({
       container: '#stats',
     }),
+     instantsearch.widgets.refinementList({
+     container: '#refinement-list-author',
+     attribute: "author",
+     searchable: true,
+     limit: 10,
+     searchablePlaceholder: "Search for Author",
+     }),
   instantsearch.widgets.hits({
         transformItems(items, {
             results
