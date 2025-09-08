@@ -247,6 +247,13 @@ search.addWidgets([
      limit: 10,
      searchablePlaceholder: "Search for Enrollment",
      }),
+     instantsearch.widgets.refinementList({
+     container: '#refinement-list-zip5',
+     attribute: "RZIP5",
+     searchable: true,
+     limit: 10,
+     searchablePlaceholder: "Search for Zip5",
+     }),
     instantsearch.widgets.hits({
         transformItems(items, {
             results

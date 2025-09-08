@@ -171,6 +171,10 @@ search.addWidgets([
       if (text.length > LIMIT) {
         text = text.substring(0, LIMIT) + '...';
       }
+      let imagesrc=`https://unavatar.io/x/${item.author}`
+      if (item.author=="ZohranKMamdani"){
+      imagesrc=`/images/${item.author}.jpg`
+      }
           // <!-- <img src="${item.image_url}" alt="${item.id}" height="100" /> -->
           // <div class="hit-publication-year">Updated <b>${timeSince(item.changedint)} ago</b> ${item.changed}</div>
           // <div class="hit-rating">Age ${item.profile.age} for ${item._highlightResult.text.value}</div>
@@ -181,7 +185,7 @@ search.addWidgets([
           </div>
           <div class="hit-authors">
            <div class="hit-rating">${item._highlightResult.text.value}</div>
-           <div class="hit-rating">${item._highlightResult.author.value} <img width="50" src="https://unavatar.io/x/${item.author}"></div>
+           <div class="hit-rating">${item._highlightResult.author.value} <img width="50" src="${imagesrc}"></div>
            <div class="hit-publication-year">Created <b>${timeSince(item.createdINT)} ago</b> ${item.created_at}</div>
           </div>
         </div>
