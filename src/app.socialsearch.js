@@ -214,11 +214,11 @@ search.addWidgets([
 search.use(googleAnalyticsMiddleware);
 
 window.onerror = function(message, file, line, col, error) {
-    alert("Error occurred: " + error.message + ". that's all we know. Please wait 5 minutes before retrying.");
+    alert("Error occurred: " + error.message + ". that's all we know. Please wait 5 minutes before retrying. Or contact ralph@brooklynmarathon.com for a subscription.");
     return false;
 };
 window.addEventListener('unhandledrejection', function(e) {
-    alert("Error occurred: " + e.reason.message  + ". that's all we know. Please wait 5 minutes before retrying.");
+    alert("Error occurred: " + e.reason.message  + ". that's all we know. Please wait 5 minutes before retrying. Or contact ralph@brooklynmarathon.com for a subscription.");
 })
 try {
 /*
@@ -231,5 +231,5 @@ search.on('render', (renderOptions) => {
     search.start();
 } catch (e) {
     console.log(e)
-    alert("Error occurred: " + e  + ". that's all we know. Please wait 5 minutes before retrying.");
+    alert("Error occurred: " + e  + ". that's all we know. Please wait 5 minutes before retrying. Or contact ralph@brooklynmarathon.com for a subscription.");
 }
