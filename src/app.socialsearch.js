@@ -76,7 +76,7 @@ const sendEventDebounced = () => {
 // const TYPESENSE_API_KEY = "LlA8twqNqXHYZDUFml6sQYG16KShHCxY";
 // all collection search only
 // const TYPESENSE_API_KEY =  "x7nAh5dmQe4Rb3LVX0Jc0YGZDIEha4yg" // cloud
-const TYPESENSE_API_KEY =  "nWWQnzGThboepoIIy3uP6J2h28R6sVai" // localhost
+const TYPESENSE_API_KEY =  "TqIl0cg4PSOCFw09lGJGKZogRz0pU2if" // localhost
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
