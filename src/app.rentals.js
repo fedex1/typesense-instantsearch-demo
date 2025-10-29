@@ -353,7 +353,7 @@ search.addWidgets([
           <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b> ${item.lastmod}</div>
           <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
           <!-- <div class="hit-rating">Raw: ${rawtext}</div> -->
-          <div class="hit-rating">Contact: ${contact}</div>
+          <div class="hit-rating">Contact: ${contacttext}</div>
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''}) Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
         </div>
       `;
