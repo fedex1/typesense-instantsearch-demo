@@ -98,7 +98,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         // queryBy: 'title,authors',
         // queryBy: 'data.PropAddr,data.PropOwner',
         // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-        query_by: "filter,snippet,loc,lastmod,source,raw",
+        query_by: "filter,snippet,loc,lastmod,source,raw,contact",
         // filter_by: "priceINT:[1000..6000]",
     },
 });
@@ -311,6 +311,7 @@ search.addWidgets([
 
                     let nearbylink = "";
                     let rawtext=""
+                    let contacttext=""
                     // console.log(`queryparameters: ${search.helper.getQuery().filter}`);
                     const currentfilter = search.helper.getQuery();
                     const action = `javascript:window.search.helper.setQueryParameter('aroundLatLng', '${item.location}').setQueryParameter('aroundRadius', '2000m').search();`;
@@ -328,6 +329,9 @@ search.addWidgets([
                     }
           if(item._highlightResult.raw){
           rawtext=item._highlightResult.raw.value.substring(0,LIMIT2)
+          }
+          if(item._highlightResult.contact){
+          contacttext=item._highlightResult.contact.value.substring(0,LIMIT2)
           }
                     return `
         <div>
