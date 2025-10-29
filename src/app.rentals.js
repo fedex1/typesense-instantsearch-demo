@@ -98,7 +98,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         // queryBy: 'title,authors',
         // queryBy: 'data.PropAddr,data.PropOwner',
         // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-        query_by: "filter,snippet,loc,lastmod,source",
+        query_by: "filter,snippet,loc,lastmod,source,raw",
         // filter_by: "priceINT:[1000..6000]",
     },
 });
@@ -334,6 +334,7 @@ search.addWidgets([
           </div>
           <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b> ${item.lastmod}</div>
           <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
+          <div class="hit-rating">Raw: ${item._highlightResult.raw.value.substring(0,LIMIT2)}</div>
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''}) Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
         </div>
       `;
