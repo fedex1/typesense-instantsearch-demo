@@ -236,6 +236,13 @@ search.addWidgets([
         limit: 10,
         searchablePlaceholder: "Search for Source",
     }),
+    instantsearch.widgets.refinementList({
+        container: '#refinement-list-contacttype',
+        attribute: "contacttype",
+        searchable: true,
+        limit: 10,
+        searchablePlaceholder: "Search for Contact Type",
+    }),
     instantsearch.widgets.numericMenu({
         container: '#lastmod-menu',
         attribute: 'lastmodINT',
