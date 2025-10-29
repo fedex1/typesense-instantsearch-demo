@@ -340,9 +340,6 @@ search.addWidgets([
           if(item._highlightResult.contact){
           contacttext=item._highlightResult.contact.value.substring(0,LIMIT2)
           }
-          if(item._highlightResult.contact){
-          contacttext=item._highlightResult.contact.value.substring(0,LIMIT2)
-          }
                     return `
         <div>
           <div class="hit-name">
