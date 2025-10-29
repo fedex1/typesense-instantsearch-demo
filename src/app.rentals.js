@@ -310,6 +310,7 @@ search.addWidgets([
                     }
 
                     let nearbylink = "";
+                    let rawtext=""
                     // console.log(`queryparameters: ${search.helper.getQuery().filter}`);
                     const currentfilter = search.helper.getQuery();
                     const action = `javascript:window.search.helper.setQueryParameter('aroundLatLng', '${item.location}').setQueryParameter('aroundRadius', '2000m').search();`;
@@ -325,6 +326,9 @@ search.addWidgets([
                             nearbylink += " <b>SELECTED</b>";
                         }
                     }
+          if(item._highlightResult.raw){
+          rawtext=item._highlightResult.raw.value.substring(0,LIMIT2)
+          }
                     return `
         <div>
           <div class="hit-name">
@@ -334,7 +338,7 @@ search.addWidgets([
           </div>
           <div class="hit-publication-year">Updated <b>${timeSince(item.lastmodINT*1000)} ago</b> ${item.lastmod}</div>
           <div class="hit-rating">Cache: ${item._highlightResult.snippet.value.substring(0,LIMIT2)} ${nearbylink}</div>
-          <div class="hit-rating">Raw: ${item._highlightResult.raw.value.substring(0,LIMIT2)}</div>
+          <div class="hit-rating">Raw: ${rawtext}</div>
           <div class="stats">(query "${item.query}" sum ${format.format(item.stats.priceINT.sum)} average ${format.format(item.stats.priceINT.avg)} max ${format.format(item.stats.priceINT.max)}  min ${format.format(item.stats.priceINT.min)} filter: ${currentfilter.filters||''} ${currentfilter.aroundLatLng||''}  ${currentfilter.aroundRadius?currentfilter.aroundRadius+'m':''}) Created ${timeSince(item.createdINT*1000)} ago (${new Date(item.createdINT*1000)})</div>
         </div>
       `;
