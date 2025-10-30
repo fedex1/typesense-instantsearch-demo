@@ -394,18 +394,18 @@ search.addWidgets([
 search.use(googleAnalyticsMiddleware);
 
 window.onerror = function(message, file, line, col, error) {
-    alert("Error occurred: " + error.message + ". that's all we know. Please wait 5 minutes before retrying.");
+    alert("Error occurred: " + error.message + ". that's all we know. Please wait 5 minutes before retrying. (onerror)");
     return false;
 };
 window.addEventListener('unhandledrejection', function(e) {
-    alert("Error occurred: " + e.reason.message  + ". that's all we know. Please wait 5 minutes before retrying.");
+    alert("Error occurred: " + e.reason.message  + ". that's all we know. Please wait 5 minutes before retrying. (unhandledrejection)");
 })
 
 try {
     search.start();
 } catch (e) {
     console.log(e)
-    alert("Error occurred: " + e  + ". that's all we know. Please wait 5 minutes before retrying.");
+    alert("Error occurred: " + e  + ". that's all we know. Please wait 5 minutes before retrying. (catch)");
 }
 
 // search.helper.setQueryParameter('aroundLatLng', this.value).search();
