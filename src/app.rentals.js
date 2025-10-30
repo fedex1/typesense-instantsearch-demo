@@ -98,7 +98,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
         // queryBy: 'title,authors',
         // queryBy: 'data.PropAddr,data.PropOwner',
         // queryBy: "data.searchkey, data.id, data.BillYear, data.PropAddr, data.PropAssessed, data.PropOwes, data.PropOwner, data.description, data.eventid",
-        query_by: "filter,snippet,loc,lastmod,source,raw,contact",
+        query_by: "filter,snippet,loc,lastmod,source,contact",
         // filter_by: "priceINT:[1000..6000]",
     },
 });
@@ -337,8 +337,8 @@ search.addWidgets([
           if(item._highlightResult.raw){
           rawtext=item._highlightResult.raw.value.substring(0,LIMIT2)
           }
-          if(item._highlightResult.contact){
-          contacttext=item._highlightResult.contact.value.substring(0,LIMIT2)
+          if(item.contact){
+          contacttext=JSON.stringify(JSON.parse(item.contact),"",3).substring(0,LIMIT2)
           }
                     return `
         <div>
