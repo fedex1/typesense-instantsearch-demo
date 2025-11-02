@@ -195,7 +195,7 @@ search.addWidgets([
         autofocus: true,
     }),
     instantsearch.widgets.configure({
-        hitsPerPage: 10,
+        hitsPerPage: 4,
         // filters: "priceINT:[1000..6000]",
         // filters: "priceINT:[1000..6000] && lastmodINT:>1724008973",
         filters: `priceINT:[1000..6000] && lastmodINT:>${past30days_seconds}`,
@@ -397,8 +397,22 @@ window.onerror = function(message, file, line, col, error) {
     alert("Error occurred: " + error.message + ". that's all we know. Please wait 5 minutes before retrying. (onerror)");
     return false;
 };
+
 window.addEventListener('unhandledrejection', function(e) {
-    alert("Error occurred: " + e.reason.message  + ". that's all we know. Please wait 5 minutes before retrying. (unhandledrejection)");
+    // alert("Error occurred: message: " + e.reason.message + " promise: " + e.reason.promise + ". that's all we know. Please wait 5 minutes before retrying. (unhandledrejection)");
+    // Check if the reason is an Error object, which typically contains a stack trace
+    if (e.reason instanceof Error) {
+        console.error('Stack Trace:', e.reason.stack);
+        console.error('e:', e.reason);
+        // alert('Stack Trace:' + e.reason.stack + " " + JSON.stringify(e));
+    } else {
+        // If the reason is not an Error object, you can still log its value
+        console.error('Rejection Reason (not an Error object):', event.reason);
+    }
+
+    // Optionally, prevent the default browser handling of unhandled rejections
+    // event.preventDefault();
+    alert("Error occurred: message: " + e.reason.message + ". that's all we know. Please wait 5 minutes before retrying. (unhandledrejection)\n\n Stack Trace: " + e.reason.stack);
 })
 
 try {
