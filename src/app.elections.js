@@ -363,6 +363,8 @@ search.addWidgets([
           let socrataid=""
 
           let messagelink=""
+          let direction="&#8593;"
+          let flowcolor="#27ae60;"
       try {
           // source=item._highlightResult._source.value;
           source = item._source;
@@ -378,6 +380,8 @@ search.addWidgets([
                   // sourcelink="https://www.nyccfb.info/FTMSearch/Home/FTMSearch";
                   // messagelink=`We cannot link directly to the NYC Campaign Finance Database. See <a target="_blank" href="https://youtu.be/EmXtxNBm_2w">step by step video</a> Please click the Source link and then the feedback link and ask for a proper way to link to public information`;
                   socrataid = "qxzj-vkn2"
+                  direction="&#8595;"
+                  flowcolor="#ae2727"
                   sourcelink =
                       `https://data.cityofnewyork.us/resource/${socrataid}.json?refno=${item.TRANS_NUMBER}`;
                   latestlink = `https://open.tidalforce.org/opendata/item/${socrataid}/${encodeURIComponent(textfull)}?offset=0&pagesize=1&order=date+desc#`
@@ -388,6 +392,10 @@ search.addWidgets([
                       `https://data.ny.gov/resource/${socrataid}.json?trans_number=${item.TRANS_NUMBER}`;
                   latestlink = `https://open.tidalforce.org/opendata/item/${socrataid}/${encodeURIComponent(textfull)}?offset=0&pagesize=1&order=sched_date+desc#`
                   break;
+          }
+          if (item.FILING_SCHED_DESC.toLowerCase().includes("expenditure".toLowerCase())){
+                  direction="&#8595;"
+                  flowcolor="#ae2727"
           }
       } catch (e) {}
       /*
@@ -412,6 +420,53 @@ search.addWidgets([
       }
           // ${JSON.stringify(item,"",3)}
         return `
+<div style="width: 126px; font-family: system-ui, sans-serif; border: 1px solid #e0e0e0; border-radius: 6px; padding: 8px; background: #ffffff; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; box-sizing: border-box;">
+  
+  <div style="text-align: center;">
+    <div style="font-size: 9px; color: #888; text-transform: uppercase; font-weight: bold;">Committee</div>
+    <div style="font-size: 11px; font-weight: 700; color: #333; line-height: 1.1; margin-top: 2px;">
+      ${text}
+    </div>
+  </div>
+
+  <div style="text-align: center; margin: 4px 0;">
+    <div style="color: ${flowcolor}" font-weight: 800; font-size: 13px;">${format.format(item.ORG_AMT)}</div>
+    <div style="color: ${flowcolor}" font-size: 16px; line-height: 1;">${direction}</div>
+  </div>
+
+  <div style="text-align: center; margin-bottom: 8px;">
+    <div style="font-size: 9px; color: #888; text-transform: uppercase; font-weight: bold;">Entity</div>
+    <div style="font-size: 11px; font-weight: 700; color: #333; line-height: 1.1; margin-top: 2px;">
+        ${item._highlightResult.FLNG_ENT_NAME.value} ${item._highlightResult.FLNG_ENT_FIRST_NAME.value} ${item._highlightResult.FLNG_ENT_MIDDLE_NAME.value} ${item._highlightResult.FLNG_ENT_LAST_NAME.value}
+    </div>
+    <div style="color: #EAA221; font-weight: 800; font-size: 13px;">
+    TOTAL ${format.format(item.stats.ORG_AMTint.sum)}
+    </div>
+  </div>
+
+  <div style="border-top: 1px solid #eee; margin: 6px 0;"></div>
+
+  <div style="font-size: 9px; color: #555; line-height: 1.2;">
+    <div style="margin-bottom: 4px;">
+      <b style="color: #000;">Purpose:</b><br>
+      ${item._highlightResult.TRANS_EXPLNTN.value}
+          ${PURPOSE_CODE_DESC}
+          ${TRANSFER_TYPE_DESC}
+    </div>
+    <div style="display: flex; justify-content: space-between; color: #999;">
+        <div style="margin-bottom: 4px;">
+          ${item._highlightResult.ELECTION_YEAR.value} Updated ${item.SCHED_DATE}
+          <b>Description</b> ${item._highlightResult.FILING_SCHED_DESC.value} <b><a target="_blank" href="${latestlink}">Latest</a></b>
+        </div>
+    </div>
+  </div>
+</div>
+
+    <div style="margin-top: 15px; font-size: 0.75rem; text-align: right;">
+      <a target="_blank" href="${sourcelink}" style="color: #3498db; text-decoration: none;">View Official Source</a>
+    </div>
+
+  </div>
         <div>
           <div class="hit-name">
             <!-- <a target="_blank" href="https://app.tidalforce.org/electionsearch/${textfull}">${text}</a> -->

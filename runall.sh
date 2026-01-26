@@ -1,9 +1,11 @@
 #!
+export NVM_DIR=$HOME/.nvm;
+source $NVM_DIR/nvm.sh;
 nvm use v18.18.2
 # TARGET="rentals"
-# TARGET="elections"
+TARGET="elections"
 # TARGET="voters"
-TARGET="socialsearch"
+# TARGET="socialsearch"
 # TARGET="nycdelinquentproperty"
 cp src/app.${TARGET}.js src/app.js
 npm run clean
