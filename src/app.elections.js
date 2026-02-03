@@ -234,6 +234,7 @@ search.addWidgets([
     container: '#searchbox',
     placeholder: 'Type in a search term... ',
      autofocus: true,
+     showLoadingIndicator: true,
     cssClasses: {
       input: 'form-control',
       loadingIcon: 'stroke-primary',
@@ -518,6 +519,16 @@ search.addWidgets([
 
 
 search.use(googleAnalyticsMiddleware);
+search.on('render', () => {
+    console.log(`search: ${search.status}`);
+    console.log(`search: ${JSON.stringify(search)}`);
+  const container = document.querySelector('#loading-indicator');
+  if (search.status === 'loading' || search.status === 'stalled') {
+    container.innerText = 'Loading search results';
+  } else {
+    container.innerText = '';
+  }
+})
 
 search.start();
 
