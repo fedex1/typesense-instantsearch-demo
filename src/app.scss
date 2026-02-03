@@ -167,3 +167,36 @@
     transform: rotateY(3600deg);
   }
 }
+/* Centering the loader on the page */
+.loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3f3f3; /* Change this to your site background */
+  z-index: 9999;
+}
+
+/* The Spinner */
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #ccc;
+  border-top: 5px solid #3498db; /* The "moving" color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* The Animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
