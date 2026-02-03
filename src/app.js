@@ -527,7 +527,7 @@ search.on('render', () => {
     // container.innerText = `Loading search results (could take many seconds) status: ${search.status}...`;
     container.innerText = `Loading search results (could take many seconds)...`;
   } else {
-    container.innerText = '';
+    container.innerText = 'XXX';
   }
 })
 
