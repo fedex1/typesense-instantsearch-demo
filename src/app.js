@@ -520,9 +520,11 @@ search.addWidgets([
 
 search.use(googleAnalyticsMiddleware);
 search.on('render', () => {
+    console.log(`search: ${search.status}`);
+    // console.log(search);
   const container = document.querySelector('#loading-indicator');
   if (search.status === 'loading' || search.status === 'stalled') {
-    container.innerText = 'Loading search results';
+    container.innerText = `Loading search results (could take many seconds)) status: ${search.status}...`;
   } else {
     container.innerText = '';
   }
