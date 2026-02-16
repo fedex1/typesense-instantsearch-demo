@@ -254,6 +254,13 @@ search.addWidgets([
      limit: 10,
      searchablePlaceholder: "Search for Zip5",
      }),
+     instantsearch.widgets.refinementList({
+     container: '#refinement-list-zip4',
+     attribute: "RZIP4",
+     searchable: true,
+     limit: 10,
+     searchablePlaceholder: "Search for Zip4",
+     }),
     instantsearch.widgets.hits({
         transformItems(items, {
             results
