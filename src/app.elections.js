@@ -521,6 +521,10 @@ search.addWidgets([
 search.use(googleAnalyticsMiddleware);
 search.on('render', () => {
     console.log(`search: ${search.status}`);
+    if (search.status === "error"){
+    alert("Issue: please reset the page using the 'reset' link.")
+    }
+    console.log(`search: message: ${search.message}`);
     // console.log(search);
     const loader = document.querySelector(".spinner");
   const container = document.querySelector('#loading-indicator');
@@ -534,7 +538,12 @@ search.on('render', () => {
   }
 })
 
+try {
 search.start();
+} catch (error) {
+  console.error("Typesense Adapter Error:", error.message);
+  // Handle error (e.g., display message to user, log for debugging)
+}
 
 // ======== Autocomplete
 
